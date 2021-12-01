@@ -39,6 +39,7 @@ const parseSeriesData = (seriesApiData) => {
     backdrop_path: seriesApiData.backdrop_path,
     episode_run_time: seriesApiData.episode_run_time,
     first_air_date: seriesApiData.first_air_date,
+    homepage: seriesApiData.homepage,
     in_production: seriesApiData.in_production,
     last_air_date: seriesApiData.last_air_date,
     name: seriesApiData.name,
@@ -49,12 +50,19 @@ const parseSeriesData = (seriesApiData) => {
     overview: seriesApiData.overview,
     popularity: seriesApiData.popularity,
     poster_path: seriesApiData.poster_path,
+    seasons: [],
     status: seriesApiData.status,
     tagline: seriesApiData.tagline,
     tmdb_id: seriesApiData.id,
     type: seriesApiData.type,
   };
-  // console.log({ seriesProperties });
+
+  seriesApiData.seasons.forEach((season) => {
+    seriesProperties.seasons.push(season.id);
+    console.log(season.name);
+  });
+
+  console.log({ seriesProperties });
   return seriesProperties;
 };
 
