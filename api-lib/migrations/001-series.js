@@ -24,13 +24,13 @@ async function main() {
 }
 
 async function createSeries(client, newListing) {
-  console.log('creating listing with', newListing.name);
+  console.log('Creating series', newListing.name);
   const result = await client
     .db('production0')
     .collection('tv_series')
     .insertOne(newListing);
   console.log(
-    `New listing created with the following id: ${result.insertedId}`
+    `New series ${newListing.name} created with the following id: ${result.insertedId}`
   );
 }
 
@@ -39,29 +39,23 @@ const getTmdbApiSeriesData = async (series_id) => {
     const resp = await axios.get(
       `https://api.themoviedb.org/3/tv/${series_id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`
     );
-    return resp;
+    return resp.data;
   } catch (err) {
     console.error(err);
   }
 };
 
-const parseSeriesData = (seriesApiData) => {
-  const {
-    backdrop_path,
-    first_air_date,
-    in_production,
-    name,
-    overview,
-    poster_path,
-  } = seriesApiData.data;
-  return {
-    backdrop_path,
-    first_air_date,
-    in_production,
-    name,
-    overview,
-    poster_path,
+const parseSeriesData = async (seriesApiData) => {
+  const seriesProperties = await {
+    backdrop_path: seriesApiData.backdrop_path,
+    first_air_date: seriesApiData.first_air_date,
+    in_production: seriesApiData.in_production,
+    name: seriesApiData.name,
+    overview: seriesApiData.overview,
+    poster_path: seriesApiData.poster_path,
   };
+
+  return seriesProperties;
 };
 
 main().catch(console.error);
