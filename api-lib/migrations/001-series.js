@@ -9,7 +9,7 @@ async function main() {
     // Connect to the MongoDB cluster
     await client.connect();
 
-    const series_id = 61118;
+    const series_id = 1396;
 
     const seriesApiData = await getTmdbApiSeriesData(series_id);
     const seriesProperties = await parseSeriesData(seriesApiData);
@@ -23,17 +23,6 @@ async function main() {
   }
 }
 
-async function createSeries(client, newListing) {
-  console.log('Creating series', newListing.name);
-  const result = await client
-    .db('production0')
-    .collection('tv_series')
-    .insertOne(newListing);
-  console.log(
-    `New series ${newListing.name} created with the following id: ${result.insertedId}`
-  );
-}
-
 const getTmdbApiSeriesData = async (series_id) => {
   try {
     const resp = await axios.get(
@@ -45,17 +34,39 @@ const getTmdbApiSeriesData = async (series_id) => {
   }
 };
 
-const parseSeriesData = async (seriesApiData) => {
-  const seriesProperties = await {
+const parseSeriesData = (seriesApiData) => {
+  const seriesProperties = {
     backdrop_path: seriesApiData.backdrop_path,
+    episode_run_time: seriesApiData.episode_run_time,
     first_air_date: seriesApiData.first_air_date,
     in_production: seriesApiData.in_production,
+    last_air_date: seriesApiData.last_air_date,
     name: seriesApiData.name,
+    next_episode_to_air: seriesApiData.next_episode_to_air,
+    number_of_episodes: seriesApiData.number_of_episodes,
+    number_of_seasons: seriesApiData.number_of_seasons,
+    original_name: seriesApiData.original_name,
     overview: seriesApiData.overview,
+    popularity: seriesApiData.popularity,
     poster_path: seriesApiData.poster_path,
+    status: seriesApiData.status,
+    tagline: seriesApiData.tagline,
+    tmdb_id: seriesApiData.id,
+    type: seriesApiData.type,
   };
-
+  // console.log({ seriesProperties });
   return seriesProperties;
+};
+
+const createSeries = async (client, newListing) => {
+  console.log('Creating series', newListing.name);
+  const result = await client
+    .db('production0')
+    .collection('tv_series')
+    .insertOne(newListing);
+  console.log(
+    `New series ${newListing.name} created with the following id: ${result.insertedId}`
+  );
 };
 
 main().catch(console.error);
