@@ -9,35 +9,13 @@ async function main() {
     // Connect to the MongoDB cluster
     await client.connect();
 
-    // Make the appropriate DB calls
-    await listDatabases(client);
-
     const series_id = 61118;
 
-    // get series data from TMDB API
-    const seriesApiData = await axios.get(
-      `https://api.themoviedb.org/3/tv/${series_id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`
-    );
-
-    let {
-      backdrop_path,
-      first_air_date,
-      in_production,
-      name,
-      overview,
-      poster_path,
-    } = seriesApiData.data;
+    const seriesApiData = await getTmdbApiSeriesData(series_id);
+    const seriesProperties = await parseSeriesData(seriesApiData);
 
     // Initialise data
-    await createListing(client, {
-      name,
-      overview,
-      poster_path,
-      id: series_id,
-      in_production,
-      backdrop_path,
-      first_air_date,
-    });
+    await createSeries(client, seriesProperties);
   } catch (e) {
     console.error(e);
   } finally {
@@ -45,35 +23,45 @@ async function main() {
   }
 }
 
-async function listDatabases(client) {
-  let databasesList = await client.db().admin().listDatabases();
-
-  console.log('Databases:');
-  databasesList.databases.forEach((db) => console.log(` - ${db.name}`));
-}
-
-async function createListing(client, newListing) {
+async function createSeries(client, newListing) {
+  console.log('creating listing with', newListing.name);
   const result = await client
     .db('production0')
-    .collection('series')
+    .collection('tv_series')
     .insertOne(newListing);
   console.log(
     `New listing created with the following id: ${result.insertedId}`
   );
 }
 
-main().catch(console.error);
+const getTmdbApiSeriesData = async (series_id) => {
+  try {
+    const resp = await axios.get(
+      `https://api.themoviedb.org/3/tv/${series_id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`
+    );
+    return resp;
+  } catch (err) {
+    console.error(err);
+  }
+};
 
-// const getTmdbApiSeriesData = async (series_id) => {
-//   axios
-//     .get(
-//       `https://api.themoviedb.org/3/tv/${series_id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`
-//     )
-//     .then((res) => {
-//       console.log(res.data.name);
-//       return res.data;
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
+const parseSeriesData = (seriesApiData) => {
+  const {
+    backdrop_path,
+    first_air_date,
+    in_production,
+    name,
+    overview,
+    poster_path,
+  } = seriesApiData.data;
+  return {
+    backdrop_path,
+    first_air_date,
+    in_production,
+    name,
+    overview,
+    poster_path,
+  };
+};
+
+main().catch(console.error);
