@@ -2,6 +2,8 @@ const { MongoClient } = require('mongodb');
 const axios = require('axios');
 require('dotenv').config();
 
+console.log(process.env.MONGODB_URI);
+
 async function main() {
   const client = new MongoClient(process.env.MONGODB_URI);
 
@@ -11,23 +13,27 @@ async function main() {
 
     const series_id = 1396;
 
-    const seriesApiData = await getTmdbApiSeriesData(series_id);
-    const seriesProperties = await parseSeriesData(seriesApiData);
-    const seriesCreditsData = await getTmdbApiSeriesCreditsData(series_id);
-    const [seriesCast, seriesCrew] = await parseSeriesCredits(
-      seriesCreditsData
-    );
-    seriesProperties['cast'] = seriesCast;
-    seriesProperties['crew'] = seriesCrew;
+    const seriesObj = await createSeriesObj(series_id);
 
     // Initialise data
-    await createSeries(client, seriesProperties);
+    await createSeries(client, seriesObj);
   } catch (e) {
     console.error(e);
   } finally {
     await client.close();
   }
 }
+
+const createSeriesObj = async (series_id) => {
+  const seriesApiData = await getTmdbApiSeriesData(series_id);
+  const seriesProperties = await parseSeriesData(seriesApiData);
+  const seriesCreditsData = await getTmdbApiSeriesCreditsData(series_id);
+  const [seriesCast, seriesCrew] = await parseSeriesCredits(seriesCreditsData);
+  seriesProperties['cast'] = seriesCast;
+  seriesProperties['crew'] = seriesCrew;
+
+  return seriesProperties;
+};
 
 const getTmdbApiSeriesData = async (series_id) => {
   try {
