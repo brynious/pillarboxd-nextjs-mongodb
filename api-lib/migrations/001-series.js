@@ -13,6 +13,12 @@ async function main() {
 
     const seriesApiData = await getTmdbApiSeriesData(series_id);
     const seriesProperties = await parseSeriesData(seriesApiData);
+    const seriesCreditsData = await getTmdbApiSeriesCreditsData(series_id);
+    const [seriesCast, seriesCrew] = await parseSeriesCredits(
+      seriesCreditsData
+    );
+    seriesProperties['cast'] = seriesCast;
+    seriesProperties['crew'] = seriesCrew;
 
     // Initialise data
     await createSeries(client, seriesProperties);
@@ -62,8 +68,24 @@ const parseSeriesData = (seriesApiData) => {
     console.log(season.name);
   });
 
-  console.log({ seriesProperties });
   return seriesProperties;
+};
+
+const getTmdbApiSeriesCreditsData = async (series_id) => {
+  try {
+    const resp = await axios.get(
+      `https://api.themoviedb.org/3/tv/${series_id}/credits?api_key=${process.env.TMDB_API_KEY}&language=en-US`
+    );
+    return resp.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const parseSeriesCredits = async (seriesCreditsData) => {
+  const cast = seriesCreditsData.cast;
+  const crew = seriesCreditsData.crew;
+  return [cast, crew];
 };
 
 const createSeries = async (client, newListing) => {
