@@ -41,13 +41,12 @@ const getMongoObjId = async (client, collection, tmdb_id) => {
 
 const createSeriesObj = async (tmdb_id) => {
   const seriesApiData = await getTmdbApiSeriesData(tmdb_id);
-  const seriesProperties = await parseSeriesData(seriesApiData);
   const seriesCreditsData = await getTmdbApiSeriesCreditsData(tmdb_id);
   const [seriesCast, seriesCrew] = await parseSeriesCredits(seriesCreditsData);
-  seriesProperties['cast'] = seriesCast;
-  seriesProperties['crew'] = seriesCrew;
+  seriesApiData['cast'] = seriesCast;
+  seriesApiData['crew'] = seriesCrew;
 
-  return seriesProperties;
+  return seriesApiData;
 };
 
 const getTmdbApiSeriesData = async (tmdb_id) => {
@@ -55,41 +54,36 @@ const getTmdbApiSeriesData = async (tmdb_id) => {
     const resp = await axios.get(
       `https://api.themoviedb.org/3/tv/${tmdb_id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`
     );
-    return resp.data;
+    const data = resp.data;
+    const seriesProperties = {
+      backdrop_path: data.backdrop_path,
+      episode_run_time: data.episode_run_time,
+      first_air_date: data.first_air_date,
+      homepage: data.homepage,
+      in_production: data.in_production,
+      last_air_date: data.last_air_date,
+      name: data.name,
+      next_episode_to_air: data.next_episode_to_air,
+      number_of_episodes: data.number_of_episodes,
+      number_of_seasons: data.number_of_seasons,
+      original_name: data.original_name,
+      overview: data.overview,
+      popularity: data.popularity,
+      poster_path: data.poster_path,
+      seasons: [],
+      status: data.status,
+      tagline: data.tagline,
+      tmdb_id: data.id,
+      type: data.type,
+    };
+    data.seasons.forEach((season) => {
+      seriesProperties.seasons.push(season.id);
+      console.log(season.id, season.name);
+    });
+    return seriesProperties;
   } catch (err) {
     console.error(err);
   }
-};
-
-const parseSeriesData = (seriesApiData) => {
-  const seriesProperties = {
-    backdrop_path: seriesApiData.backdrop_path,
-    episode_run_time: seriesApiData.episode_run_time,
-    first_air_date: seriesApiData.first_air_date,
-    homepage: seriesApiData.homepage,
-    in_production: seriesApiData.in_production,
-    last_air_date: seriesApiData.last_air_date,
-    name: seriesApiData.name,
-    next_episode_to_air: seriesApiData.next_episode_to_air,
-    number_of_episodes: seriesApiData.number_of_episodes,
-    number_of_seasons: seriesApiData.number_of_seasons,
-    original_name: seriesApiData.original_name,
-    overview: seriesApiData.overview,
-    popularity: seriesApiData.popularity,
-    poster_path: seriesApiData.poster_path,
-    seasons: [],
-    status: seriesApiData.status,
-    tagline: seriesApiData.tagline,
-    tmdb_id: seriesApiData.id,
-    type: seriesApiData.type,
-  };
-
-  seriesApiData.seasons.forEach((season) => {
-    seriesProperties.seasons.push(season.id);
-    console.log(season.id, season.name);
-  });
-
-  return seriesProperties;
 };
 
 const getTmdbApiSeriesCreditsData = async (tmdb_id) => {
