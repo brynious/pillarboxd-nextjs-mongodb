@@ -11,12 +11,15 @@ async function main() {
     // Connect to the MongoDB cluster
     await client.connect();
 
-    const series_id = 1396;
+    const tmdb_id = 1396;
 
-    const seriesObj = await createSeriesObj(series_id);
-
-    // Initialise data
-    await createSeries(client, seriesObj);
+    const MongoSeriesObjId = await getMongoObjId(client, 'tv_series', tmdb_id);
+    if (MongoSeriesObjId) {
+      console.log('series already in DB');
+    } else {
+      const seriesObj = await createSeriesObj(tmdb_id);
+      await addObjToDB(client, 'tv_series', seriesObj);
+    }
   } catch (e) {
     console.error(e);
   } finally {
@@ -24,10 +27,22 @@ async function main() {
   }
 }
 
-const createSeriesObj = async (series_id) => {
-  const seriesApiData = await getTmdbApiSeriesData(series_id);
+const getMongoObjId = async (client, collection, tmdb_id) => {
+  try {
+    const result = await client
+      .db('production0')
+      .collection(collection)
+      .findOne({ tmdb_id: tmdb_id });
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const createSeriesObj = async (tmdb_id) => {
+  const seriesApiData = await getTmdbApiSeriesData(tmdb_id);
   const seriesProperties = await parseSeriesData(seriesApiData);
-  const seriesCreditsData = await getTmdbApiSeriesCreditsData(series_id);
+  const seriesCreditsData = await getTmdbApiSeriesCreditsData(tmdb_id);
   const [seriesCast, seriesCrew] = await parseSeriesCredits(seriesCreditsData);
   seriesProperties['cast'] = seriesCast;
   seriesProperties['crew'] = seriesCrew;
@@ -35,10 +50,10 @@ const createSeriesObj = async (series_id) => {
   return seriesProperties;
 };
 
-const getTmdbApiSeriesData = async (series_id) => {
+const getTmdbApiSeriesData = async (tmdb_id) => {
   try {
     const resp = await axios.get(
-      `https://api.themoviedb.org/3/tv/${series_id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`
+      `https://api.themoviedb.org/3/tv/${tmdb_id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`
     );
     return resp.data;
   } catch (err) {
@@ -71,16 +86,16 @@ const parseSeriesData = (seriesApiData) => {
 
   seriesApiData.seasons.forEach((season) => {
     seriesProperties.seasons.push(season.id);
-    console.log(season.name);
+    console.log(season.id, season.name);
   });
 
   return seriesProperties;
 };
 
-const getTmdbApiSeriesCreditsData = async (series_id) => {
+const getTmdbApiSeriesCreditsData = async (tmdb_id) => {
   try {
     const resp = await axios.get(
-      `https://api.themoviedb.org/3/tv/${series_id}/credits?api_key=${process.env.TMDB_API_KEY}&language=en-US`
+      `https://api.themoviedb.org/3/tv/${tmdb_id}/credits?api_key=${process.env.TMDB_API_KEY}&language=en-US`
     );
     return resp.data;
   } catch (err) {
@@ -94,11 +109,11 @@ const parseSeriesCredits = async (seriesCreditsData) => {
   return [cast, crew];
 };
 
-const createSeries = async (client, newListing) => {
+const addObjToDB = async (client, collection, newListing) => {
   console.log('Creating series', newListing.name);
   const result = await client
     .db('production0')
-    .collection('tv_series')
+    .collection(collection)
     .insertOne(newListing);
   console.log(
     `New series ${newListing.name} created with the following id: ${result.insertedId}`
