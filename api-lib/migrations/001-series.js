@@ -2,8 +2,6 @@ const { MongoClient } = require('mongodb');
 const axios = require('axios');
 require('dotenv').config();
 
-console.log(process.env.MONGODB_URI);
-
 async function main() {
   const client = new MongoClient(process.env.MONGODB_URI);
 
@@ -12,13 +10,16 @@ async function main() {
     await client.connect();
 
     const tmdb_id = 1396;
+    const db_series_obj = await getMongoObjId(client, 'tv_series', tmdb_id);
+    let db_series_obj_id;
 
-    const MongoSeriesObjId = await getMongoObjId(client, 'tv_series', tmdb_id);
-    if (MongoSeriesObjId) {
-      console.log('series already in DB');
+    if (db_series_obj) {
+      // db_series_obj_id = db_series_obj._id;
+      console.log(`Series already in DB: ${db_series_obj._id}`);
     } else {
       const seriesObj = await createSeriesObj(tmdb_id);
-      await addObjToDB(client, 'tv_series', seriesObj);
+      db_series_obj_id = await addObjToDB(client, 'tv_series', seriesObj);
+      console.log(`Series added to DB: ${db_series_obj_id}`);
     }
   } catch (e) {
     console.error(e);
@@ -41,8 +42,7 @@ const getMongoObjId = async (client, collection, tmdb_id) => {
 
 const createSeriesObj = async (tmdb_id) => {
   const seriesApiData = await getTmdbApiSeriesData(tmdb_id);
-  const seriesCreditsData = await getTmdbApiSeriesCreditsData(tmdb_id);
-  const [seriesCast, seriesCrew] = await parseSeriesCredits(seriesCreditsData);
+  const [seriesCast, seriesCrew] = await getTmdbApiSeriesCreditsData(tmdb_id);
   seriesApiData['cast'] = seriesCast;
   seriesApiData['crew'] = seriesCrew;
 
@@ -91,16 +91,14 @@ const getTmdbApiSeriesCreditsData = async (tmdb_id) => {
     const resp = await axios.get(
       `https://api.themoviedb.org/3/tv/${tmdb_id}/credits?api_key=${process.env.TMDB_API_KEY}&language=en-US`
     );
-    return resp.data;
+    // return resp.data;
+
+    const cast = resp.data.cast;
+    const crew = resp.data.crew;
+    return [cast, crew];
   } catch (err) {
     console.error(err);
   }
-};
-
-const parseSeriesCredits = async (seriesCreditsData) => {
-  const cast = seriesCreditsData.cast;
-  const crew = seriesCreditsData.crew;
-  return [cast, crew];
 };
 
 const addObjToDB = async (client, collection, newListing) => {
@@ -112,6 +110,7 @@ const addObjToDB = async (client, collection, newListing) => {
   console.log(
     `New series ${newListing.name} created with the following id: ${result.insertedId}`
   );
+  return result.insertedId;
 };
 
 main().catch(console.error);
