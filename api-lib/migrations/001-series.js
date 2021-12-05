@@ -10,23 +10,28 @@ async function main() {
     await client.connect();
 
     const tmdb_id = 1396;
-    const db_series_obj = await getMongoObjId(client, 'tv_series', tmdb_id);
-    let db_series_obj_id;
-
-    if (db_series_obj) {
-      // db_series_obj_id = db_series_obj._id;
-      console.log(`Series already in DB: ${db_series_obj._id}`);
-    } else {
-      const seriesObj = await createSeriesObj(tmdb_id);
-      db_series_obj_id = await addObjToDB(client, 'tv_series', seriesObj);
-      console.log(`Series added to DB: ${db_series_obj_id}`);
-    }
+    const mongo_id = await mainCreateSeries(client, tmdb_id);
+    console.log(mongo_id);
   } catch (e) {
     console.error(e);
   } finally {
     await client.close();
   }
 }
+
+const mainCreateSeries = async (client, tmdb_id) => {
+  const db_series_obj = await getMongoObjId(client, 'tv_series', tmdb_id);
+
+  if (db_series_obj) {
+    // if series already exists in DB, return DB object ID
+    return db_series_obj._id;
+  } else {
+    // if series not in DB, create obj using TMDB API and add to MongoDB
+    const seriesObj = await createSeriesObj(tmdb_id);
+    const db_series_obj_id = await addObjToDB(client, 'tv_series', seriesObj);
+    return db_series_obj_id;
+  }
+};
 
 const getMongoObjId = async (client, collection, tmdb_id) => {
   try {
@@ -91,7 +96,6 @@ const getTmdbApiSeriesCreditsData = async (tmdb_id) => {
     const resp = await axios.get(
       `https://api.themoviedb.org/3/tv/${tmdb_id}/credits?api_key=${process.env.TMDB_API_KEY}&language=en-US`
     );
-    // return resp.data;
 
     const cast = resp.data.cast;
     const crew = resp.data.crew;
