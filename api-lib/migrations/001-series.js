@@ -1,5 +1,6 @@
 const { MongoClient } = require('mongodb');
 const axios = require('axios');
+const slugify = require('slugify');
 require('dotenv').config();
 
 async function main() {
@@ -76,6 +77,7 @@ const getTmdbApiSeriesData = async (tmdb_id) => {
       popularity: data.popularity,
       poster_path: data.poster_path,
       seasons: [],
+      slug: slugify(data.name, { lower: true }),
       status: data.status,
       tagline: data.tagline,
       tmdb_id: data.id,
