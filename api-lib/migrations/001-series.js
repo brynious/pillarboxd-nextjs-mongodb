@@ -10,7 +10,7 @@ async function main() {
     // Connect to the MongoDB cluster
     await client.connect();
 
-    const tmdb_id = 8277;
+    const tmdb_id = 1396;
     const mongo_id = await mainCreateSeries(client, tmdb_id);
     console.log(mongo_id);
   } catch (e) {
@@ -54,7 +54,6 @@ const createSeriesObj = async (client, tmdb_id) => {
     seriesApiData.slug,
     new Date(seriesApiData.first_air_date).getFullYear()
   );
-  console.log({ verifiedSlug });
   seriesApiData.slug = verifiedSlug;
   const [seriesCast, seriesCrew] = await getTmdbApiSeriesCreditsData(tmdb_id);
   seriesApiData['cast'] = seriesCast;
