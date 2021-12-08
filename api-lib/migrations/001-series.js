@@ -10,7 +10,7 @@ async function main() {
     // Connect to the MongoDB cluster
     await client.connect();
 
-    const tmdb_id = 1396;
+    const tmdb_id = 2240;
     const mongo_id = await mainCreateSeries(client, tmdb_id);
     console.log(mongo_id);
   } catch (e) {
@@ -52,6 +52,7 @@ const createSeriesObj = async (client, tmdb_id) => {
     client,
     'tv_series',
     seriesApiData.slug,
+    seriesApiData.origin_country[0],
     new Date(seriesApiData.first_air_date).getFullYear()
   );
   seriesApiData.slug = verifiedSlug;
@@ -105,7 +106,13 @@ const getTmdbApiSeriesData = async (tmdb_id) => {
   }
 };
 
-const getVerifiedSlug = async (client, collection, defaultSlug, debutYear) => {
+const getVerifiedSlug = async (
+  client,
+  collection,
+  defaultSlug,
+  country_code,
+  premiere_year
+) => {
   try {
     // check if there's a series in DB with this slug already
     const slugTaken = await client
@@ -116,19 +123,31 @@ const getVerifiedSlug = async (client, collection, defaultSlug, debutYear) => {
       return defaultSlug;
     }
 
-    let slugWithYear = defaultSlug + '-' + debutYear;
-    const slugWithYearTaken = await client
+    // if slug taken, first add country code
+    let slugWithCountry = defaultSlug + '-' + country_code.toLowerCase();
+    const slugWithCountryTaken = await client
       .db('production0')
       .collection(collection)
-      .findOne({ slug: slugWithYear });
-    if (!slugWithYearTaken) {
-      return slugWithYear;
+      .findOne({ slug: slugWithCountry });
+    if (!slugWithCountryTaken) {
+      return slugWithCountry;
     }
 
+    // if slug taken, first add country code
+    let slugWithCountryAndDate = slugWithCountry + '-' + premiere_year;
+    const slugWithCountryAndDateTaken = await client
+      .db('production0')
+      .collection(collection)
+      .findOne({ slug: slugWithCountryAndDate });
+    if (!slugWithCountryAndDateTaken) {
+      return slugWithCountryAndDate;
+    }
+
+    // if slug still taken, add next available integer to the end
     let validSlugFound = false;
     let suffix = 1;
     while (!validSlugFound) {
-      let slugWithSuffix = slugWithYear + '-' + suffix.toString();
+      let slugWithSuffix = slugWithCountryAndDate + '-' + suffix.toString();
       const slugWithSuffixTaken = await client
         .db('production0')
         .collection(collection)
