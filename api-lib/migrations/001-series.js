@@ -10,17 +10,27 @@ async function main() {
     // Connect to the MongoDB cluster
     await client.connect();
 
-    const tmdb_id = 2240;
-    const mongo_id = await mainCreateSeries(client, tmdb_id);
-    console.log(mongo_id);
+    const tmdb_id = 1396;
+    const series_id = await findOrCreateSeries(client, tmdb_id);
+    const series_obj = await getMongoObjById(client, 'tv_series', series_id);
+    const season_id = await createOrUpdateSeasons(client, series_obj);
+    console.log({ season_id });
   } catch (e) {
     console.error(e);
   } finally {
-    await client.close();
+    // await client.close();
   }
 }
 
-const mainCreateSeries = async (client, tmdb_id) => {
+const getMongoObjById = async (client, collection, mongo_id) => {
+  const result = await client
+    .db('production0')
+    .collection(collection)
+    .findOne({ _id: mongo_id });
+  return result;
+};
+
+const findOrCreateSeries = async (client, tmdb_id) => {
   const db_series_obj = await getMongoObjId(client, 'tv_series', tmdb_id);
 
   if (db_series_obj) {
@@ -88,7 +98,7 @@ const getTmdbApiSeriesData = async (tmdb_id) => {
       overview: data.overview,
       popularity: data.popularity,
       poster_path: data.poster_path,
-      seasons: [],
+      seasons: data.seasons,
       slug: slugify(data.name, { lower: true }),
       spoken_languages: data.spoken_languages,
       status: data.status,
@@ -96,10 +106,6 @@ const getTmdbApiSeriesData = async (tmdb_id) => {
       tmdb_id: data.id,
       type: data.type,
     };
-    data.seasons.forEach((season) => {
-      seriesProperties.seasons.push(season.id);
-      console.log(season.id, season.name);
-    });
     return seriesProperties;
   } catch (err) {
     console.error(err);
@@ -178,16 +184,78 @@ const getTmdbApiSeriesCreditsData = async (tmdb_id) => {
   }
 };
 
+const createOrUpdateSeasons = async (client, series_obj) => {
+  const series_tmdb_id = series_obj.tmdb_id;
+  series_obj.seasons.forEach(async (season) => {
+    const season_number = season.season_number;
+    const seasonObj = await getTmdbSeasonData(series_tmdb_id, season_number);
+    seasonObj['series_id'] = series_obj._id;
+    const [seasonCast, seasonCrew] = await getTmdbSeasonCredits(
+      series_tmdb_id,
+      season_number
+    );
+    seasonObj['cast'] = seasonCast;
+    seasonObj['crew'] = seasonCrew;
+
+    console.log({ seasonObj });
+
+    const seasonId = await addObjToDB(client, 'tv_season', seasonObj);
+    // return seasonId;
+  });
+};
+
+const getTmdbSeasonCredits = async (series_tmdb_id, season_number) => {
+  try {
+    const resp = await axios.get(
+      `https://api.themoviedb.org/3/tv/${series_tmdb_id}/season/${season_number}/credits?api_key=${process.env.TMDB_API_KEY}&language=en-US`
+    );
+
+    const cast = resp.data.cast;
+    const crew = resp.data.crew;
+    return [cast, crew];
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const getTmdbSeasonData = async (series_tmdb_id, season_number) => {
+  try {
+    const resp = await axios.get(
+      `https://api.themoviedb.org/3/tv/${series_tmdb_id}/season/${season_number}?api_key=${process.env.TMDB_API_KEY}&language=en-US`
+    );
+    const data = resp.data;
+    const seriesProperties = {
+      air_date: data.air_date,
+      episodes: [],
+      name: data.name,
+      overview: data.overview,
+      poster_path: data.poster_path,
+      season_number: data.season_number,
+      tmdb_id: data.id,
+    };
+    await data.episodes.forEach((episode) => {
+      seriesProperties.episodes.push(episode.episode_number);
+    });
+    return seriesProperties;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const addObjToDB = async (client, collection, newListing) => {
-  console.log('Creating series', newListing.name);
-  const result = await client
-    .db('production0')
-    .collection(collection)
-    .insertOne(newListing);
-  console.log(
-    `New series ${newListing.name} created with the following id: ${result.insertedId}`
-  );
-  return result.insertedId;
+  try {
+    console.log('Creating series', newListing.name);
+    const result = await client
+      .db('production0')
+      .collection(collection)
+      .insertOne(newListing);
+    console.log(
+      `New series ${newListing.name} created with the following id: ${result.insertedId}`
+    );
+    return result.insertedId;
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 main().catch(console.error);
