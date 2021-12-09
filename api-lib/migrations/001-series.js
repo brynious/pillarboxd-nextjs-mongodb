@@ -14,11 +14,12 @@ async function main() {
     const series_id = await findOrCreateSeries(client, tmdb_id);
     const series_obj = await getMongoObjById(client, 'tv_series', series_id);
     const season_id = await createOrUpdateSeasons(client, series_obj);
-    console.log({ season_id });
+    // console.log({ season_id });
   } catch (e) {
     console.error(e);
   } finally {
-    // await client.close();
+    // console.log('CLIENT CLOSING');
+    // client.close();
   }
 }
 
@@ -197,10 +198,8 @@ const createOrUpdateSeasons = async (client, series_obj) => {
     seasonObj['cast'] = seasonCast;
     seasonObj['crew'] = seasonCrew;
 
-    console.log({ seasonObj });
-
-    const seasonId = await addObjToDB(client, 'tv_season', seasonObj);
-    // return seasonId;
+    const seasonId = await upsertObjToDB(client, 'tv_season', seasonObj);
+    return seasonId;
   });
 };
 
@@ -231,6 +230,7 @@ const getTmdbSeasonData = async (series_tmdb_id, season_number) => {
       overview: data.overview,
       poster_path: data.poster_path,
       season_number: data.season_number,
+      slug: slugify(data.name, { lower: true }),
       tmdb_id: data.id,
     };
     await data.episodes.forEach((episode) => {
@@ -251,6 +251,24 @@ const addObjToDB = async (client, collection, newListing) => {
       .insertOne(newListing);
     console.log(
       `New series ${newListing.name} created with the following id: ${result.insertedId}`
+    );
+    return result.insertedId;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const upsertObjToDB = async (client, collection, newListing) => {
+  try {
+    console.log(`Upserting ${collection} ${newListing.name}`);
+    const result = await client
+      .db('production0')
+      .collection(collection)
+      .replaceOne({ tmdb_id: newListing.tmdb_id }, newListing, {
+        upsert: true,
+      });
+    console.log(
+      `New item ${newListing.name} created with the following id: ${result.insertedId}`
     );
     return result.insertedId;
   } catch (err) {
