@@ -24,7 +24,6 @@ export async function getServerSideProps(context) {
     context.req.db,
     context.params.seriesTitle
   );
-  console.log({ series });
   if (!series) {
     return {
       notFound: true,

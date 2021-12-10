@@ -3,7 +3,6 @@ import UserHeader from './UserHeader';
 import UserPosts from './UserPosts';
 
 export const User = ({ user }) => {
-  console.log({ user });
   return (
     <div className={styles.root}>
       <UserHeader user={user} />
