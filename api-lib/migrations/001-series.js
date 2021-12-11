@@ -20,7 +20,7 @@ const main = async () => {
   } catch (e) {
     console.error(e);
   } finally {
-    // console.log('CLIENT CLOSING');
+    console.log('Client theoretically should close here, if it weren't broken. To fix.');
     // client.close();
   }
 };
