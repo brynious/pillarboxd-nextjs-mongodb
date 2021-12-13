@@ -85,8 +85,6 @@ const getTmdbApiSeriesData = async (tmdb_id) => {
   }
 };
 
-
-
 const addObjToDB = async (client, collection, newListing) => {
   try {
     console.log('Creating series', newListing.name);
