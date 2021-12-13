@@ -13,15 +13,24 @@ const main = async () => {
     await client.connect();
 
     const tmdb_id = 1396;
-    const series_id = await findOrCreateSeries(client, tmdb_id);
-    const series_obj = await getMongoObjById(client, 'tv_series', series_id);
-    const season_id = await createOrUpdateSeasons(client, series_obj);
+    await refreshSeries(client, tmdb_id);
+
     // console.log({ season_id });
   } catch (e) {
     console.error(e);
   } finally {
-    console.log('Client theoretically should close here, if it weren't broken. To fix.');
+    console.log('Client would close here but needs fix.');
     // client.close();
+  }
+};
+
+const refreshSeries = async (client, tmdb_id) => {
+  try {
+    const series_id = await findOrCreateSeries(client, tmdb_id);
+    const series_obj = await getMongoObjById(client, 'tv_series', series_id);
+    const season_id = await createOrUpdateSeasons(client, series_obj);
+  } catch (e) {
+    console.error(e);
   }
 };
 
