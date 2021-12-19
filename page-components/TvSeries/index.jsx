@@ -5,7 +5,8 @@ const backdropLoader = ({ src }) => {
   return `https://image.tmdb.org/t/p/w500${src}`;
 };
 
-export const TvSeries = ({ series }) => {
+export const TvSeries = ({ series, seasons }) => {
+  console.log(seasons);
   return (
     <div>
       <h1>{series.name}</h1>
@@ -21,6 +22,13 @@ export const TvSeries = ({ series }) => {
           alt={`${series.name} backdrop image`}
         />
       </div>
+      <ul>
+        {seasons.map((season) => (
+          <li key={season.tmdb_id}>
+            {season.name} - {season.slug}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

@@ -10,3 +10,16 @@ export async function findSeasonBySlug(db, seriesSlug, seasonSlug) {
 
   return [series, season];
 }
+
+export async function getSeasonsBySeriesId(db, series_id) {
+  const seasons = [];
+
+  const seasonsPromise = db
+    .collection('tv_season')
+    .find({ series_id: series_id });
+
+  while (await seasonsPromise.hasNext()) {
+    seasons.push(await seasonsPromise.next());
+  }
+  return seasons;
+}
