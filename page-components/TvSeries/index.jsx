@@ -1,5 +1,6 @@
 import styles from './TvSeries.module.css';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const backdropLoader = ({ src }) => {
   return `https://image.tmdb.org/t/p/w500${src}`;
@@ -23,11 +24,15 @@ export const TvSeries = ({ series, seasons }) => {
         />
       </div>
       <ul>
-        {seasons.map((season) => (
-          <li key={season.tmdb_id}>
-            {season.name} - {season.slug}
-          </li>
-        ))}
+        {seasons.map((season) => {
+          return (
+            <li key={season.tmdb_id}>
+              <Link href={`/series/${series.slug}/${season.slug}`}>
+                {season.name}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

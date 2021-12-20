@@ -111,6 +111,9 @@ const Nav = () => {
           <Link href="/series/breaking-bad">
             <a>Breaking Bad</a>
           </Link>
+          <Link href="/series/the-leftovers">
+            <a>The Leftovers</a>
+          </Link>
           <Container>
             {user ? (
               <>

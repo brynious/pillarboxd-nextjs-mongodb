@@ -52,6 +52,9 @@ handler.post(
       bio: '',
       name,
       username,
+      watchlist: [],
+      watching: [],
+      watched: [],
     });
     req.logIn(user, (err) => {
       if (err) throw err;

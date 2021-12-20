@@ -22,6 +22,7 @@ export async function getServerSideProps(context) {
     context.req.db,
     context.params.seriesSlug
   );
+
   let seasons = await getSeasonsBySeriesId(context.req.db, series._id);
   if (!series) {
     return {

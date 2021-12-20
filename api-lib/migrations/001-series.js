@@ -3,7 +3,7 @@ const axios = require('axios');
 const slugify = require('slugify');
 require('dotenv').config();
 
-const { findOrCreateSeries } = require('../db/helpers/tvSeries');
+const { findOrCreateSeries } = require('../db/tmdb/tvSeries');
 
 const main = async () => {
   const client = new MongoClient(process.env.MONGODB_URI);
