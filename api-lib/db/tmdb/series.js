@@ -115,4 +115,4 @@ const getTmdbApiSeriesCreditsData = async (tmdb_id) => {
   }
 };
 
-module.exports = { findOrCreateSeries };
+module.exports = { findOrCreateSeries, createSeriesObj };

@@ -30,7 +30,7 @@ const refreshSeries = async (client, tmdb_id) => {
   try {
     const series_id = await findOrCreateSeries(client, tmdb_id);
     const series_obj = await getMongoObjById(client, 'tv_series', series_id);
-    const season_id = await createOrUpdateSeasons(client, series_obj);
+    await createOrUpdateSeasons(client, series_obj);
   } catch (e) {
     console.error(e);
   }
@@ -44,12 +44,12 @@ const getMongoObjById = async (client, collection, mongo_id) => {
   return result;
 };
 
-const createOrUpdateSeasons = async (client, series_obj) => {
-  const series_tmdb_id = series_obj.tmdb_id;
-  series_obj.seasons.forEach(async (season) => {
+const createOrUpdateSeasons = async (client, seriesObj) => {
+  const series_tmdb_id = seriesObj.tmdb_id;
+  for (const season of seriesObj.seasons) {
     const season_number = season.season_number;
     const seasonObj = await getTmdbSeasonData(series_tmdb_id, season_number);
-    seasonObj['series_id'] = series_obj._id;
+    seasonObj['series_id'] = seriesObj._id;
     const [seasonCast, seasonCrew] = await getTmdbSeasonCredits(
       series_tmdb_id,
       season_number
@@ -58,8 +58,10 @@ const createOrUpdateSeasons = async (client, series_obj) => {
     seasonObj['crew'] = seasonCrew;
 
     const seasonId = await upsertObjToDB(client, 'tv_season', seasonObj);
+    console.log({ seasonId });
+
     return seasonId;
-  });
+  }
 };
 
 const getTmdbSeasonCredits = async (series_tmdb_id, season_number) => {
@@ -84,7 +86,7 @@ const getTmdbSeasonData = async (series_tmdb_id, season_number) => {
     const data = resp.data;
     const seriesProperties = {
       air_date: data.air_date,
-      episodes: [],
+      episodes: data.episodes,
       name: data.name,
       overview: data.overview,
       poster_path: data.poster_path,
@@ -92,9 +94,6 @@ const getTmdbSeasonData = async (series_tmdb_id, season_number) => {
       slug: slugify(data.name, { lower: true }),
       tmdb_id: data.id,
     };
-    await data.episodes.forEach((episode) => {
-      seriesProperties.episodes.push(episode.episode_number);
-    });
     return seriesProperties;
   } catch (err) {
     console.error(err);

@@ -28,7 +28,9 @@ const main = async () => {
       seasons.push(await seasonsPromise.next());
     }
 
-    seasons.forEach((season) => console.log(season.name, season._id));
+    for (const season of seasons) {
+      console.log(season.name, season._id);
+    }
   } catch (e) {
     console.error(e);
   } finally {
