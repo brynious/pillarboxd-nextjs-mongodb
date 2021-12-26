@@ -12,8 +12,8 @@ const main = async () => {
     // Connect to the MongoDB cluster
     await client.connect();
 
-    // const tmdb_id = 1396; // Breaking Bad
-    const tmdb_id = 54344; // The Leftovers
+    const tmdb_id = 1396; // Breaking Bad
+    // const tmdb_id = 54344; // The Leftovers
 
     await refreshSeries(client, tmdb_id);
 
