@@ -9,7 +9,7 @@ const backdropLoader = ({ src }) => {
 
 export const TvSeries = ({ series, seasons }) => {
   return (
-    <Wrapper>
+    <Wrapper className={styles.root}>
       <Container flex={true}>
         <div className={styles.imageContainer}>
           <Image
