@@ -10,7 +10,7 @@
     "lint": "next lint",
     "mig": "node api-lib/migrations/001-series.js",
     "init": "node api-lib/migrations/000-init.js",
-    "test": "node api-lib/migrations/000-season.js"
+    "test": "node api-lib/migrations/000-episode.js"
   },
   "repository": {
     "type": "git",

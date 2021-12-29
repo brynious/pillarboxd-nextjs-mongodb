@@ -1,4 +1,3 @@
-const { MongoClient } = require('mongodb');
 const axios = require('axios');
 const slugify = require('slugify');
 require('dotenv').config();
@@ -6,7 +5,7 @@ require('dotenv').config();
 const updateSeason = async (client, series_tmdb_id, season_number) => {
   try {
     // Connect to the MongoDB cluster
-    await client.connect();
+    // await client.connect();
 
     const series = await searchByTmdbId(client, 'tv_series', series_tmdb_id);
     const seasonData = await getTmdbSeasonData(series_tmdb_id, season_number);
@@ -42,7 +41,6 @@ const getTmdbSeasonData = async (series_tmdb_id, season_number) => {
         const episodeObj = {
           episode_number: episode.episode_number,
           name: episode.name,
-          production_code: episode.production_code,
           tmdb_id: episode.id,
         };
         return episodeObj;
@@ -66,9 +64,7 @@ const upsertObjToDB = async (client, collection, data) => {
     const result = await client
       .db('production0')
       .collection(collection)
-      .replaceOne({ tmdb_id: data.tmdb_id }, data, {
-        upsert: true,
-      });
+      .updateOne({ tmdb_id: data.tmdb_id }, { $set: data }, { upsert: true });
     return result.insertedId;
   } catch (err) {
     console.error(err);

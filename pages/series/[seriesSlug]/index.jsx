@@ -36,6 +36,7 @@ export async function getServerSideProps(context) {
   }
   series._id = String(series._id);
   seasons = seasons.map((season) => {
+    console.log({ season });
     return {
       ...season,
       _id: String(season._id),
