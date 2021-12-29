@@ -57,7 +57,7 @@ const createOrUpdateSeasons = async (client, seriesObj) => {
     seasonObj['cast'] = seasonCast;
     seasonObj['crew'] = seasonCrew;
 
-    const seasonId = await upsertObjToDB(client, 'tv_season', seasonObj);
+    const seasonId = await upsertObjToDB(client, 'tv_seasons', seasonObj);
     console.log({ seasonId });
 
     return seasonId;

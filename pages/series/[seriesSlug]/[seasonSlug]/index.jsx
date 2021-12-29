@@ -20,6 +20,8 @@ export default function SeasonPage({ series, season }) {
 export async function getServerSideProps(context) {
   await nc().use(database).run(context.req, context.res);
 
+  console.log('context.req', context.req);
+
   const [series, season] = await findSeasonBySlug(
     context.req.db,
     context.params.seriesSlug,

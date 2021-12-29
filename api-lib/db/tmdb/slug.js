@@ -1,20 +1,27 @@
 // const slugify = require('slugify');
 
-const getVerifiedSlug = async (
-  client,
-  collection,
-  defaultSlug,
-  country_code,
-  premiere_year
-) => {
+const getVerifiedSlug = async (client, collection, seriesData) => {
+  console.log({ seriesData });
+  const defaultSlug = seriesData.slug;
+  const country_code = seriesData.origin_country[0];
+  const premiere_year = new Date(seriesData.first_air_date).getFullYear();
   try {
-    // check if there's a series in DB with this slug already
+    // use default slug if available
     const slugTaken = await client
       .db('production0')
       .collection(collection)
       .findOne({ slug: defaultSlug });
     if (!slugTaken) {
       return defaultSlug;
+    }
+
+    // use existing slug if series is already in DB
+    const seriesInDb = await client
+      .db('production0')
+      .collection(collection)
+      .findOne({ tmdb_id: seriesData.tmdb_id });
+    if (seriesInDb) {
+      return seriesInDb.slug;
     }
 
     // if slug taken, first add country code

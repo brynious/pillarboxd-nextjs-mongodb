@@ -21,7 +21,7 @@ const main = async () => {
 
     const seasonsPromise = client
       .db('production0')
-      .collection('tv_season')
+      .collection('tv_seasons')
       .find({ series_id: series._id });
 
     while (await seasonsPromise.hasNext()) {
