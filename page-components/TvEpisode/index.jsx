@@ -7,10 +7,6 @@ const backdropLoader = ({ src }) => {
   return `https://image.tmdb.org/t/p/w500${src}`;
 };
 
-const stillLoader = ({ src }) => {
-  return `https://image.tmdb.org/t/p/w1280${src}`;
-};
-
 export const TvEpisode = ({ series, season, episode }) => {
   return (
     <Wrapper className={styles.root}>
@@ -29,12 +25,17 @@ export const TvEpisode = ({ series, season, episode }) => {
           <h1>
             <Link href={`/series/${series.slug}`} passHref>
               {series.name}
-            </Link>{' '}
-            - {season.name}
+            </Link>
+            {' - '}
+            <Link href={`/series/${season.slug}`} passHref>
+              {season.name}
+            </Link>
+            {' - '}
+            {episode.episode_number}. {episode.name}
           </h1>
           <Spacer size={0.5} axis="vertical" />
           <p>{season.tagline}</p>
-          <p>{season.overview}</p>
+          <p>{episode.overview}</p>
         </div>
       </Container>
     </Wrapper>
