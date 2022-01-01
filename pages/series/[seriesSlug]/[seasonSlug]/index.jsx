@@ -13,7 +13,7 @@ export default function SeasonPage({ series, season, episodes }) {
           {series.name} - {season.name}
         </title>
       </Head>
-      <TvSeason series={series} season={season} episode={episodes} />
+      <TvSeason series={series} season={season} episodes={episodes} />
     </>
   );
 }

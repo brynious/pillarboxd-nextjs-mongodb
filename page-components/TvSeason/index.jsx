@@ -7,7 +7,7 @@ const backdropLoader = ({ src }) => {
   return `https://image.tmdb.org/t/p/w500${src}`;
 };
 
-export const TvSeason = ({ series, season }) => {
+export const TvSeason = ({ series, season, episodes }) => {
   return (
     <Wrapper className={styles.root}>
       <Container flex={true}>
@@ -34,14 +34,15 @@ export const TvSeason = ({ series, season }) => {
           <p>{season.overview}</p>
           <Spacer size={0.5} axis="vertical" />
           <ul>
-            {season.episodes.map((episode) => {
+            {episodes.map((episode) => {
+              console.log(episode.slug);
               return (
                 <li key={episode.tmdb_id}>
                   <Link
                     href={`/series/${series.slug}/${season.slug}/${episode.slug}`}
                   >
                     <a>
-                      {episode.episode_number} {episode.name}
+                      {episode.episode_number}. {episode.name}
                     </a>
                   </Link>
                 </li>

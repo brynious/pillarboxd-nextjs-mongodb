@@ -9,11 +9,14 @@ import nc from 'next-connect';
 import Head from 'next/head';
 
 export default function EpisodePage({ series, season, episode }) {
+  const seasonNumLeadingZero = String(season.season_number).padStart(2, '0');
+  const episodeNumLeadingZero = String(episode.episode_number).padStart(2, '0');
   return (
     <>
       <Head>
         <title>
-          {series.name} - {season.name}
+          {series.name} S{seasonNumLeadingZero}E{episodeNumLeadingZero}{' '}
+          {episode.name}
         </title>
       </Head>
       <TvEpisode series={series} season={season} episode={episode} />
