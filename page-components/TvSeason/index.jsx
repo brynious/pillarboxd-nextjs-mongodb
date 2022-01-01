@@ -32,6 +32,22 @@ export const TvSeason = ({ series, season }) => {
           <Spacer size={0.5} axis="vertical" />
           <p>{season.tagline}</p>
           <p>{season.overview}</p>
+          <Spacer size={0.5} axis="vertical" />
+          <ul>
+            {season.episodes.map((episode) => {
+              return (
+                <li key={episode.tmdb_id}>
+                  <Link
+                    href={`/series/${series.slug}/${season.slug}/${episode.episode_number}`}
+                  >
+                    <a>
+                      {episode.episode_number} {episode.name}
+                    </a>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </Container>
     </Wrapper>

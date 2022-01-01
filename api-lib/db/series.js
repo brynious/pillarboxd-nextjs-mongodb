@@ -13,8 +13,6 @@ const findSeriesBySlug = async (db, slug) => {
 };
 
 const getSeriesByTmdbId = async (db, tmdb_id) => {
-  console.log('running getSeriesByTmdbId');
-  console.log({ db });
   return db
     .collection('tv_series')
     .findOne({ tmdb_id })

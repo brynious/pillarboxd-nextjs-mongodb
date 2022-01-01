@@ -1,10 +1,11 @@
 import { findSeasonBySlug } from '@/api-lib/db';
+import { getEpisodesBySeasonId } from '@/api-lib/db/episode';
 import { database } from '@/api-lib/middlewares';
 import { TvSeason } from '@/page-components/TvSeason';
 import nc from 'next-connect';
 import Head from 'next/head';
 
-export default function SeasonPage({ series, season }) {
+export default function SeasonPage({ series, season, episodes }) {
   return (
     <>
       <Head>
@@ -12,15 +13,13 @@ export default function SeasonPage({ series, season }) {
           {series.name} - {season.name}
         </title>
       </Head>
-      <TvSeason series={series} season={season} />
+      <TvSeason series={series} season={season} episode={episodes} />
     </>
   );
 }
 
 export async function getServerSideProps(context) {
   await nc().use(database).run(context.req, context.res);
-
-  console.log('context.req', context.req);
 
   const [series, season] = await findSeasonBySlug(
     context.req.db,
@@ -32,8 +31,19 @@ export async function getServerSideProps(context) {
       notFound: true,
     };
   }
+
+  const episodesArray = await getEpisodesBySeasonId(context.req.db, season._id);
+  const episodes = episodesArray.map((episode) => {
+    return {
+      ...episode,
+      _id: String(episode._id),
+      season_id: String(episode.season_id),
+      series_id: String(episode.series_id),
+    };
+  });
+
   series._id = String(series._id);
   season._id = String(season._id);
   season.series_id = String(season.series_id);
-  return { props: { series, season } };
+  return { props: { series, season, episodes } };
 }
