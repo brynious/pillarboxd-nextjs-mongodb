@@ -38,7 +38,7 @@ export const TvSeason = ({ series, season }) => {
               return (
                 <li key={episode.tmdb_id}>
                   <Link
-                    href={`/series/${series.slug}/${season.slug}/${episode.episode_number}`}
+                    href={`/series/${series.slug}/${season.slug}/${episode.slug}`}
                   >
                     <a>
                       {episode.episode_number} {episode.name}

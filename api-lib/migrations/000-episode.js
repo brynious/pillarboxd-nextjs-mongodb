@@ -29,7 +29,6 @@ const updateEpisode = async (
     );
     episodeData.series_id = series._id;
     episodeData.season_id = season._id;
-    console.log({ episodeData });
 
     await upsertObjToDB(client, 'tv_episodes', episodeData);
     // return episodeData;
@@ -86,7 +85,7 @@ const getTmdbEpisodeData = async (
       season_number: data.season_number,
       series_tmdb_id: series_tmdb_id,
       still_path: data.still_path,
-      slug: slugify(`episode ${episode_number}`, { lower: true }),
+      slug: slugify(String(episode_number) + '-' + name),
       tmdb_id: data.id,
     };
     return seriesProperties;

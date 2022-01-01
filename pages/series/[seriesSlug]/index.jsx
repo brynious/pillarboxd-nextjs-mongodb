@@ -26,8 +26,6 @@ export async function getServerSideProps(context) {
     context.params.seriesSlug
   );
 
-  console.log({ series });
-
   let seasons = await getSeasonsBySeriesId(context.req.db, series._id);
   if (!series) {
     return {
@@ -36,7 +34,6 @@ export async function getServerSideProps(context) {
   }
   series._id = String(series._id);
   seasons = seasons.map((season) => {
-    console.log({ season });
     return {
       ...season,
       _id: String(season._id),

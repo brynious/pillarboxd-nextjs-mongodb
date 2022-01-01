@@ -41,6 +41,7 @@ const getTmdbSeasonData = async (series_tmdb_id, season_number) => {
         const episodeObj = {
           episode_number: episode.episode_number,
           name: episode.name,
+          slug: slugify(String(episode.episode_number) + '-' + episode.name),
           tmdb_id: episode.id,
         };
         return episodeObj;

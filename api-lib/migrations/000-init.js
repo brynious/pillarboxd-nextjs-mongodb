@@ -103,7 +103,6 @@ const upsertObjToDB = async (client, collection, data) => {
       .db('production0')
       .collection(collection)
       .updateOne({ tmdb_id: data.tmdb_id }, { $set: data }, { upsert: true });
-    console.log({ result });
     return result.insertedId;
   } catch (err) {
     console.error(err);

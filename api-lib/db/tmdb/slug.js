@@ -1,7 +1,6 @@
 // const slugify = require('slugify');
 
 const getVerifiedSlug = async (client, collection, seriesData) => {
-  console.log({ seriesData });
   const defaultSlug = seriesData.slug;
   const country_code = seriesData.origin_country[0];
   const premiere_year = new Date(seriesData.first_air_date).getFullYear();
