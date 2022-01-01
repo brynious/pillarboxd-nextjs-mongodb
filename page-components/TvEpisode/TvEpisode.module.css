@@ -1,0 +1,9 @@
+.root {
+  min-height: calc(100vh);
+}
+
+.posterContainer {
+  width: 50em;
+  max-width: 300px;
+  margin: 15px 15px 15px 15px
+}

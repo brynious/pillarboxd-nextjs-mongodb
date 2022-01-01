@@ -85,7 +85,7 @@ const getTmdbEpisodeData = async (
       season_number: data.season_number,
       series_tmdb_id: series_tmdb_id,
       still_path: data.still_path,
-      slug: slugify(String(episode_number) + '-' + name),
+      slug: slugify(String(episode_number) + '-' + data.name),
       tmdb_id: data.id,
     };
     return seriesProperties;

@@ -3,3 +3,4 @@ export * from './token';
 export * from './user';
 export * from './series';
 export * from './season';
+export * from './episode';

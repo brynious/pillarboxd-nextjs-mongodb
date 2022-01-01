@@ -1,15 +1,4 @@
-import { findSeriesBySlug } from '@/api-lib/db';
-import { findSeasonBySlug } from '@/api-lib/db';
-
-export async function findEpisodeBySlug(
-  db,
-  seriesSlug,
-  seasonSlug,
-  episodeSlug
-) {
-  const series = await findSeriesBySlug(db, seriesSlug);
-  const season = await findSeasonBySlug(db, seasonSlug);
-
+export async function findEpisodeBySlug(db, series, season, episodeSlug) {
   const episode = await db
     .collection('tv_episodes')
     .findOne({
@@ -19,7 +8,7 @@ export async function findEpisodeBySlug(
     })
     .then((episode) => episode || null);
 
-  return [series, season, episode];
+  return episode;
 }
 
 export async function getEpisodesBySeasonId(db, season_id) {

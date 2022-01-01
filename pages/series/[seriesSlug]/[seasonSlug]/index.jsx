@@ -1,4 +1,4 @@
-import { findSeasonBySlug } from '@/api-lib/db';
+import { findSeriesBySlug, findSeasonBySlug } from '@/api-lib/db';
 import { getEpisodesBySeasonId } from '@/api-lib/db/episode';
 import { database } from '@/api-lib/middlewares';
 import { TvSeason } from '@/page-components/TvSeason';
@@ -21,11 +21,16 @@ export default function SeasonPage({ series, season, episodes }) {
 export async function getServerSideProps(context) {
   await nc().use(database).run(context.req, context.res);
 
-  const [series, season] = await findSeasonBySlug(
+  const series = await findSeriesBySlug(
     context.req.db,
-    context.params.seriesSlug,
+    context.params.seriesSlug
+  );
+  const season = await findSeasonBySlug(
+    context.req.db,
+    series,
     context.params.seasonSlug
   );
+
   if (!season) {
     return {
       notFound: true,
