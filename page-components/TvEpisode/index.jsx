@@ -27,7 +27,7 @@ export const TvEpisode = ({ series, season, episode }) => {
               {series.name}
             </Link>
             {' - '}
-            <Link href={`/series/${season.slug}`} passHref>
+            <Link href={`/series/${series.slug}/${season.slug}`} passHref>
               {season.name}
             </Link>
             {' - '}
