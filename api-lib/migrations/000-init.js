@@ -13,10 +13,27 @@ const main = async () => {
     // Connect to the MongoDB cluster
     await client.connect();
 
-    const seriesTmdbIds = [1396, 54344, 65495]; // BB, Leftovers
+    const seriesTmdbIds = [
+      {
+        tmdb_id: 54344, // Leftovers
+        approved_specials: [],
+      },
+      {
+        tmdb_id: 65495, // Atlanta
+        approved_specials: [],
+      },
+      {
+        tmdb_id: 42009, // Black Mirror
+        approved_specials: [1188308],
+      },
+    ];
 
-    for (const tmdb_id of seriesTmdbIds) {
-      const seriesData = await getTmdbApiSeriesData(tmdb_id);
+    for (const series of seriesTmdbIds) {
+      const tmdb_id = series.tmdb_id;
+      const seriesData = await getTmdbApiSeriesData(
+        tmdb_id,
+        series.approved_specials
+      );
       seriesData.slug = await getVerifiedSlug(client, 'tv_series', seriesData);
       await upsertObjToDB(client, 'tv_series', seriesData);
       for (const season of seriesData.seasons) {
@@ -35,8 +52,6 @@ const main = async () => {
         }
       }
     }
-
-    // await updateSeason(client, 1396, 1);
   } catch (e) {
     console.error(e);
   } finally {
@@ -45,25 +60,14 @@ const main = async () => {
   }
 };
 
-// const searchByTmdbId = async (client, collection, tmdb_id) => {
-//   try {
-//     const result = await client
-//       .db('production0')
-//       .collection(collection)
-//       .findOne({ tmdb_id: tmdb_id });
-//     return result;
-//   } catch (err) {
-//     console.error(err);
-//   }
-// };
-
-const getTmdbApiSeriesData = async (tmdb_id) => {
+const getTmdbApiSeriesData = async (tmdb_id, approved_specials) => {
   try {
     const resp = await axios.get(
       `https://api.themoviedb.org/3/tv/${tmdb_id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`
     );
     const data = resp.data;
     const seriesProperties = {
+      approved_specials: approved_specials,
       backdrop_path: data.backdrop_path,
       created_by: data.created_by,
       episode_run_time: data.episode_run_time,

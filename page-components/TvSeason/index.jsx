@@ -35,17 +35,21 @@ export const TvSeason = ({ series, season, episodes }) => {
           <ul>
             {episodes.map((episode) => {
               console.log(episode.slug);
-              return (
-                <li key={episode.tmdb_id}>
-                  <Link
-                    href={`/series/${series.slug}/${season.slug}/${episode.slug}`}
-                  >
-                    <a>
-                      {episode.episode_number}. {episode.name}
-                    </a>
-                  </Link>
-                </li>
-              );
+              if (
+                season.name.toLowerCase() !== 'specials' ||
+                series.approved_specials.includes(episode.tmdb_id)
+              )
+                return (
+                  <li key={episode.tmdb_id}>
+                    <Link
+                      href={`/series/${series.slug}/${season.slug}/${episode.slug}`}
+                    >
+                      <a>
+                        {episode.episode_number}. {episode.name}
+                      </a>
+                    </Link>
+                  </li>
+                );
             })}
           </ul>
         </div>

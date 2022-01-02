@@ -10,10 +10,30 @@ const updateSeason = async (client, series_tmdb_id, season_number) => {
     const series = await searchByTmdbId(client, 'tv_series', series_tmdb_id);
     const seasonData = await getTmdbSeasonData(series_tmdb_id, season_number);
     seasonData.series_id = series._id;
+    const [cast, crew] = await getTmdbSeasonCredits(
+      series_tmdb_id,
+      season_number
+    );
+    seasonData.cast = cast;
+    seasonData.crew = crew;
     await upsertObjToDB(client, 'tv_seasons', seasonData);
     return seasonData;
   } catch (e) {
     console.error(e);
+  }
+};
+
+const getTmdbSeasonCredits = async (series_tmdb_id, season_number) => {
+  try {
+    const resp = await axios.get(
+      `https://api.themoviedb.org/3/tv/${series_tmdb_id}/season/${season_number}/credits?api_key=${process.env.TMDB_API_KEY}&language=en-US`
+    );
+
+    const cast = resp.data.cast;
+    const crew = resp.data.crew;
+    return [cast, crew];
+  } catch (err) {
+    console.error(err);
   }
 };
 

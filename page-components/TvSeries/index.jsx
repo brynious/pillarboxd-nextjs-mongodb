@@ -28,14 +28,29 @@ export const TvSeries = ({ series, seasons }) => {
           <Spacer size={0.5} axis="vertical" />
           <ul>
             {seasons.map((season) => {
-              console.log({ season });
-              return (
-                <li key={season.tmdb_id}>
-                  <Link href={`/series/${series.slug}/${season.slug}`}>
-                    {season.name}
-                  </Link>
-                </li>
-              );
+              if (season.name.toLowerCase() !== 'specials') {
+                return (
+                  <li key={season.tmdb_id}>
+                    <Link href={`/series/${series.slug}/${season.slug}`}>
+                      {season.name}
+                    </Link>
+                  </li>
+                );
+              }
+            })}
+            {seasons.map((season) => {
+              if (
+                series.approved_specials.length > 0 &&
+                season.name.toLowerCase() === 'specials'
+              ) {
+                return (
+                  <li key={season.tmdb_id}>
+                    <Link href={`/series/${series.slug}/${season.slug}`}>
+                      {season.name}
+                    </Link>
+                  </li>
+                );
+              }
             })}
           </ul>
         </div>
