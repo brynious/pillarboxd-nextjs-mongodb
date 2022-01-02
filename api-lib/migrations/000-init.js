@@ -14,17 +14,25 @@ const main = async () => {
     await client.connect();
 
     const seriesTmdbIds = [
+      // {
+      //   tmdb_id: 1396, // Breaking Bad
+      //   approved_specials: [62131, 62135],
+      // },
+      // {
+      //   tmdb_id: 54344, // Leftovers
+      //   approved_specials: [],
+      // },
+      // {
+      //   tmdb_id: 65495, // Atlanta
+      //   approved_specials: [],
+      // },
+      // {
+      //   tmdb_id: 42009, // Black Mirror
+      //   approved_specials: [1188308],
+      // },
       {
-        tmdb_id: 54344, // Leftovers
+        tmdb_id: 18347, // Community
         approved_specials: [],
-      },
-      {
-        tmdb_id: 65495, // Atlanta
-        approved_specials: [],
-      },
-      {
-        tmdb_id: 42009, // Black Mirror
-        approved_specials: [1188308],
       },
     ];
 
