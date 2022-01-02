@@ -100,22 +100,6 @@ const getTmdbSeasonData = async (series_tmdb_id, season_number) => {
   }
 };
 
-// const addObjToDB = async (client, collection, newListing) => {
-//   try {
-//     console.log('Creating series', newListing.name);
-//     const result = await client
-//       .db('production0')
-//       .collection(collection)
-//       .insertOne(newListing);
-//     console.log(
-//       `New series ${newListing.name} created with the following id: ${result.insertedId}`
-//     );
-//     return result.insertedId;
-//   } catch (err) {
-//     console.error(err);
-//   }
-// };
-
 const upsertObjToDB = async (client, collection, newListing) => {
   try {
     console.log(`Upserting ${collection} ${newListing.name}`);
