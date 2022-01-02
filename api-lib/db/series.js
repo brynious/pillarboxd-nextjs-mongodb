@@ -25,19 +25,6 @@ const getAllSeries = async (db) => {
   return allSeries;
 };
 
-export async function getEpisodesBySeasonId(db, season_id) {
-  const episodes = [];
-
-  const episodesPromise = db
-    .collection('tv_episodes')
-    .find({ season_id: season_id });
-
-  while (await episodesPromise.hasNext()) {
-    episodes.push(await episodesPromise.next());
-  }
-  return episodes;
-}
-
 module.exports = {
   findSeriesById,
   findSeriesBySlug,

@@ -28,6 +28,7 @@ export const TvSeries = ({ series, seasons }) => {
           <Spacer size={0.5} axis="vertical" />
           <ul>
             {seasons.map((season) => {
+              console.log({ season });
               return (
                 <li key={season.tmdb_id}>
                   <Link href={`/series/${series.slug}/${season.slug}`}>

@@ -17,20 +17,12 @@ const main = async () => {
       .findOne({ tmdb_id: tmdb_id });
     console.log(`Series: ${series._id}`);
 
-    const seasons = [];
-
-    const seasonsPromise = client
+    const cursor = client
       .db('production0')
       .collection('tv_seasons')
       .find({ series_id: series._id });
-
-    while (await seasonsPromise.hasNext()) {
-      seasons.push(await seasonsPromise.next());
-    }
-
-    for (const season of seasons) {
-      console.log(season.name, season._id);
-    }
+    const seasons = await cursor.toArray();
+    return seasons;
   } catch (e) {
     console.error(e);
   } finally {
