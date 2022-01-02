@@ -49,7 +49,7 @@ const getTmdbSeasonData = async (series_tmdb_id, season_number) => {
       overview: data.overview,
       poster_path: data.poster_path,
       season_number: data.season_number,
-      slug: slugify(data.name, { lower: true }),
+      slug: slugify(data.name, { lower: true, strict: true }),
       tmdb_id: data.id,
     };
     return seriesProperties;

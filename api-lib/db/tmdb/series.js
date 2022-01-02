@@ -72,7 +72,7 @@ const getTmdbApiSeriesData = async (tmdb_id) => {
       popularity: data.popularity,
       poster_path: data.poster_path,
       seasons: data.seasons,
-      slug: slugify(data.name, { lower: true }),
+      slug: slugify(data.name, { lower: true, strict: true }),
       spoken_languages: data.spoken_languages,
       status: data.status,
       tagline: data.tagline,
