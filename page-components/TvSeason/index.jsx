@@ -23,7 +23,6 @@ export const TvSeason = ({ series, season, episodes }) => {
         </div>
         <div>
           <h1>
-            {' '}
             <Link href={`/series/${series.slug}`} passHref>
               {series.name}
             </Link>{' '}

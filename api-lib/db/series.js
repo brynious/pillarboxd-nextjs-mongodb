@@ -19,4 +19,33 @@ const getSeriesByTmdbId = async (db, tmdb_id) => {
     .then((series) => series || null);
 };
 
-module.exports = { findSeriesById, findSeriesBySlug, getSeriesByTmdbId };
+const getAllSeries = async (db) => {
+  const series = [];
+
+  const seriesPromise = db.collection('tv_series').find({});
+
+  while (await seriesPromise.hasNext()) {
+    series.push(await seriesPromise.next());
+  }
+  return series;
+};
+
+export async function getEpisodesBySeasonId(db, season_id) {
+  const episodes = [];
+
+  const episodesPromise = db
+    .collection('tv_episodes')
+    .find({ season_id: season_id });
+
+  while (await episodesPromise.hasNext()) {
+    episodes.push(await episodesPromise.next());
+  }
+  return episodes;
+}
+
+module.exports = {
+  findSeriesById,
+  findSeriesBySlug,
+  getSeriesByTmdbId,
+  getAllSeries,
+};

@@ -108,12 +108,11 @@ const Nav = () => {
           <Link href="/">
             <a className={styles.logo}>Next.js MongoDB App</a>
           </Link>
-          <Link href="/series/breaking-bad">
-            <a>Breaking Bad</a>
+
+          <Link href="/series">
+            <a>Series</a>
           </Link>
-          <Link href="/series/the-leftovers">
-            <a>The Leftovers</a>
-          </Link>
+
           <Container>
             {user ? (
               <>

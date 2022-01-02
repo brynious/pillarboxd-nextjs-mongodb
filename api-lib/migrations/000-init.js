@@ -13,7 +13,7 @@ const main = async () => {
     // Connect to the MongoDB cluster
     await client.connect();
 
-    const seriesTmdbIds = [1396, 54344]; // BB, Leftovers
+    const seriesTmdbIds = [1396, 54344, 65495]; // BB, Leftovers
 
     for (const tmdb_id of seriesTmdbIds) {
       const seriesData = await getTmdbApiSeriesData(tmdb_id);
