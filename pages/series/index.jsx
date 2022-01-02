@@ -1,8 +1,9 @@
 import { getAllSeries } from '@/api-lib/db';
 import { database } from '@/api-lib/middlewares';
+import { AllSeries } from '@/page-components/AllSeries';
 import nc from 'next-connect';
 import Head from 'next/head';
-import Link from 'next/link';
+// import Link from 'next/link';
 
 export default function SeriesPage({ series }) {
   return (
@@ -10,8 +11,9 @@ export default function SeriesPage({ series }) {
       <Head>
         <title>Series • Pillarboxd</title>
       </Head>
+      <AllSeries series={series} />
 
-      <ul>
+      {/* <ul>
         {series.map((tvSeries) => {
           return (
             <li key={tvSeries.tmdb_id}>
@@ -21,7 +23,7 @@ export default function SeriesPage({ series }) {
             </li>
           );
         })}
-      </ul>
+      </ul> */}
     </>
   );
 }

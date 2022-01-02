@@ -20,14 +20,9 @@ const getSeriesByTmdbId = async (db, tmdb_id) => {
 };
 
 const getAllSeries = async (db) => {
-  const series = [];
-
-  const seriesPromise = db.collection('tv_series').find({});
-
-  while (await seriesPromise.hasNext()) {
-    series.push(await seriesPromise.next());
-  }
-  return series;
+  const cursor = db.collection('tv_series').find({});
+  const allSeries = await cursor.toArray();
+  return allSeries;
 };
 
 export async function getEpisodesBySeasonId(db, season_id) {
