@@ -10,7 +10,7 @@ export default function SeasonPage({ series, season, episodes }) {
     <>
       <Head>
         <title>
-          {series.name} - {season.name}
+          {series.name} {season.name} • Pillarboxd
         </title>
       </Head>
       <TvSeason series={series} season={season} episodes={episodes} />

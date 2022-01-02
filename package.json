@@ -16,7 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/brynious/pillarboxd-nextjs-mongodb.git"
   },
-  "author": "Hoang Vo (https://brynious.com)",
+  "author": "brynious (https://brynious.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/brynious/pillarboxd-nextjs-mongodb/issues"

@@ -3,7 +3,6 @@ import { database } from '@/api-lib/middlewares';
 import { AllSeries } from '@/page-components/AllSeries';
 import nc from 'next-connect';
 import Head from 'next/head';
-// import Link from 'next/link';
 
 export default function SeriesPage({ series }) {
   return (
@@ -12,18 +11,6 @@ export default function SeriesPage({ series }) {
         <title>Series • Pillarboxd</title>
       </Head>
       <AllSeries series={series} />
-
-      {/* <ul>
-        {series.map((tvSeries) => {
-          return (
-            <li key={tvSeries.tmdb_id}>
-              <Link href={`/series/${tvSeries.slug}`}>
-                <a>{tvSeries.name}</a>
-              </Link>
-            </li>
-          );
-        })}
-      </ul> */}
     </>
   );
 }

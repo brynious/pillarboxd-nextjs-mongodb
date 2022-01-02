@@ -8,7 +8,7 @@ export default function SeriesPage({ series, seasons }) {
   return (
     <>
       <Head>
-        <title>{series.name}</title>
+        <title>{series.name} • Pillarboxd</title>
       </Head>
       <TvSeries series={series} seasons={seasons} />
     </>

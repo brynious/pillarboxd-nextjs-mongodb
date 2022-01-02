@@ -16,7 +16,7 @@ export default function EpisodePage({ series, season, episode }) {
       <Head>
         <title>
           {series.name} S{seasonNumLeadingZero}E{episodeNumLeadingZero}{' '}
-          {episode.name}
+          {episode.name} • Pillarboxd
         </title>
       </Head>
       <TvEpisode series={series} season={season} episode={episode} />
