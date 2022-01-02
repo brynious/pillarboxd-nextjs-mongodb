@@ -26,7 +26,7 @@ const main = async () => {
           season.season_number
         );
         for (const episode of seasonData.episodes) {
-          const episodeData = await updateEpisode(
+          await updateEpisode(
             client,
             tmdb_id,
             season.season_number,
