@@ -34,8 +34,8 @@ export const TvEpisode = ({ series, season, episode }) => {
             {episode.episode_number}. {episode.name}
           </h1>
           <Spacer size={0.5} axis="vertical" />
-          <p>{season.tagline}</p>
-          <p>{episode.overview}</p>
+          {season.tagline && <p>{season.tagline}</p>}
+          {episode.overview ? <p>{episode.overview}</p> : <p>No Overview</p>}
         </div>
       </Container>
     </Wrapper>

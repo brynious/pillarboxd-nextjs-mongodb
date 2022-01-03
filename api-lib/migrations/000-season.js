@@ -9,6 +9,9 @@ const updateSeason = async (client, series_tmdb_id, season_number) => {
 
     const series = await searchByTmdbId(client, 'tv_series', series_tmdb_id);
     const seasonData = await getTmdbSeasonData(series_tmdb_id, season_number);
+    seasonData.poster_path = seasonData.poster_path
+      ? seasonData.poster_path
+      : series.poster_path;
     seasonData.series_id = series._id;
     const [cast, crew] = await getTmdbSeasonCredits(
       series_tmdb_id,

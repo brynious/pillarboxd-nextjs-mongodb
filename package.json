@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "init": "node api-lib/migrations/000-init.js && node scripts/cache.js",
+    "init": "node api-lib/migrations/000-init.js",
     "cache": "node scripts/cache.js"
   },
   "repository": {

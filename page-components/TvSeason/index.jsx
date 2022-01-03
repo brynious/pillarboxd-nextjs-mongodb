@@ -29,8 +29,7 @@ export const TvSeason = ({ series, season, episodes }) => {
             - {season.name}
           </h1>
           <Spacer size={0.5} axis="vertical" />
-          <p>{season.tagline}</p>
-          <p>{season.overview}</p>
+          {season.overview && <p>{season.overview}</p>}
           <Spacer size={0.5} axis="vertical" />
           <ul>
             {episodes.map((episode) => {
