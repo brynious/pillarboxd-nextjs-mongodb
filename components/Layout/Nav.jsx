@@ -110,8 +110,15 @@ const Nav = () => {
             <a className={styles.logo}>Next.js MongoDB App</a>
           </Link>
 
-          <Link href="/series">
-            <a>Series</a>
+          <Link passHref href="/series">
+            <ButtonLink
+              size="small"
+              type="success"
+              variant="ghost"
+              color="link"
+            >
+              Series
+            </ButtonLink>
           </Link>
 
           <Search />
