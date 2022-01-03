@@ -10,7 +10,7 @@ const Footer = () => {
       <Wrapper>
         <Text color="accents-7">
           Made with ❤️, 🔥, and a keyboard by{' '}
-          <TextLink href="https://brynious.com/" color="link">
+          <TextLink href="https://github.com/brynious/" color="link">
             brynious
           </TextLink>
           .
