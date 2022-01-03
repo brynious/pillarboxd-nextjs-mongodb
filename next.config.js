@@ -1,4 +1,11 @@
 module.exports = {
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      require('./scripts/cache');
+    }
+
+    return config;
+  },
   images: {
     domains: ['image.tmdb.org'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],

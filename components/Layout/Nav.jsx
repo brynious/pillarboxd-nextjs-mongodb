@@ -11,6 +11,7 @@ import Container from './Container';
 import styles from './Nav.module.css';
 import Spacer from './Spacer';
 import Wrapper from './Wrapper';
+import Search from './Search';
 
 const UserMenu = ({ user, mutate }) => {
   const menuRef = useRef();
@@ -112,6 +113,8 @@ const Nav = () => {
           <Link href="/series">
             <a>Series</a>
           </Link>
+
+          <Search />
 
           <Container>
             {user ? (

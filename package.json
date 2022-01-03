@@ -8,9 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "mig": "node api-lib/migrations/001-series.js",
-    "init": "node api-lib/migrations/000-init.js",
-    "test": "node api-lib/migrations/000-episode.js"
+    "init": "node api-lib/migrations/000-init.js && node scripts/cache.js",
+    "cache": "node scripts/cache.js"
   },
   "repository": {
     "type": "git",
