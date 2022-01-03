@@ -25,9 +25,9 @@ export const TvSeason = ({ series, season, episodes }) => {
           <h1>
             <Link href={`/series/${series.slug}`} passHref>
               {series.name}
-            </Link>{' '}
-            - {season.name}
+            </Link>
           </h1>
+          <h2>{season.name}</h2>
           <Spacer size={0.5} axis="vertical" />
           {season.overview && <p>{season.overview}</p>}
           <Spacer size={0.5} axis="vertical" />
@@ -51,6 +51,16 @@ export const TvSeason = ({ series, season, episodes }) => {
                 );
             })}
           </ul>
+          <content>
+            <h3>Cast</h3>
+            {season.cast.map((castMember) => {
+              return (
+                <p key={castMember.id}>
+                  {castMember.name} as {castMember.character}
+                </p>
+              );
+            })}
+          </content>
         </div>
       </Container>
     </Wrapper>

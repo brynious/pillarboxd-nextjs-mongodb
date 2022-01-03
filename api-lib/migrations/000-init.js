@@ -30,10 +30,10 @@ const main = async () => {
         tmdb_id: 42009, // Black Mirror
         approved_specials: [1188308],
       },
-      // {
-      //   tmdb_id: 18347, // Community
-      //   approved_specials: [],
-      // },
+      {
+        tmdb_id: 18347, // Community
+        approved_specials: [],
+      },
     ];
 
     for (const series of seriesTmdbIds) {
@@ -43,6 +43,10 @@ const main = async () => {
         series.approved_specials
       );
       seriesData.slug = await getVerifiedSlug(client, 'tv_series', seriesData);
+      const [cast, crew] = await getTmdbSeriesCredits(seriesData.tmdb_id);
+      seriesData.cast = cast;
+      seriesData.crew = crew;
+      console.log({ seriesData });
       await upsertObjToDB(client, 'tv_series', seriesData);
       for (const season of seriesData.seasons) {
         const seasonData = await updateSeason(
@@ -103,6 +107,20 @@ const getTmdbApiSeriesData = async (tmdb_id, approved_specials) => {
       type: data.type,
     };
     return seriesProperties;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const getTmdbSeriesCredits = async (series_tmdb_id) => {
+  try {
+    const resp = await axios.get(
+      `https://api.themoviedb.org/3/tv/${series_tmdb_id}/credits?api_key=${process.env.TMDB_API_KEY}&language=en-US`
+    );
+
+    const cast = resp.data.cast;
+    const crew = resp.data.crew;
+    return [cast, crew];
   } catch (err) {
     console.error(err);
   }

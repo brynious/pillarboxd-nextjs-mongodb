@@ -30,12 +30,22 @@ export const TvEpisode = ({ series, season, episode }) => {
             <Link href={`/series/${series.slug}/${season.slug}`} passHref>
               {season.name}
             </Link>
-            {' - '}
-            {episode.episode_number}. {episode.name}
           </h1>
+          <h2>
+            {episode.episode_number}. {episode.name}
+          </h2>
           <Spacer size={0.5} axis="vertical" />
-          {season.tagline && <p>{season.tagline}</p>}
           {episode.overview ? <p>{episode.overview}</p> : <p>No Overview</p>}
+          <content>
+            <h3>Cast</h3>
+            {episode.guest_stars.map((guest_star) => {
+              return (
+                <p key={guest_star.id}>
+                  {guest_star.name} as {guest_star.character}
+                </p>
+              );
+            })}
+          </content>
         </div>
       </Container>
     </Wrapper>

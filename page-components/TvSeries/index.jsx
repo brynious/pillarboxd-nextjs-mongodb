@@ -26,6 +26,7 @@ export const TvSeries = ({ series, seasons }) => {
           <p>{series.tagline}</p>
           <p>{series.overview}</p>
           <Spacer size={0.5} axis="vertical" />
+          <h3>Seasons</h3>
           <ul>
             {seasons.map((season) => {
               if (season.name.toLowerCase() !== 'specials') {
@@ -53,6 +54,16 @@ export const TvSeries = ({ series, seasons }) => {
               }
             })}
           </ul>
+          <content>
+            <h3>Cast</h3>
+            {series.cast.map((castMember) => {
+              return (
+                <p key={castMember.id}>
+                  {castMember.name} as {castMember.character}
+                </p>
+              );
+            })}
+          </content>
         </div>
       </Container>
     </Wrapper>
