@@ -36,7 +36,7 @@ export const TvEpisode = ({ series, season, episode }) => {
           </h2>
           <Spacer size={0.5} axis="vertical" />
           {episode.overview ? <p>{episode.overview}</p> : <p>No Overview</p>}
-          <content>
+          <section>
             <h3>Cast</h3>
             {episode.guest_stars.map((guest_star) => {
               return (
@@ -45,7 +45,7 @@ export const TvEpisode = ({ series, season, episode }) => {
                 </p>
               );
             })}
-          </content>
+          </section>
         </div>
       </Container>
     </Wrapper>

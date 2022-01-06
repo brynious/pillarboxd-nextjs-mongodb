@@ -51,7 +51,7 @@ export const TvSeason = ({ series, season, episodes }) => {
                 );
             })}
           </ul>
-          <content>
+          <section>
             <h3>Cast</h3>
             {season.cast.map((castMember) => {
               return (
@@ -60,7 +60,7 @@ export const TvSeason = ({ series, season, episodes }) => {
                 </p>
               );
             })}
-          </content>
+          </section>
         </div>
       </Container>
     </Wrapper>
