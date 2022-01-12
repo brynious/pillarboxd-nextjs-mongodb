@@ -28,8 +28,9 @@ export const TvSeries = ({ series, seasons }) => {
           <Spacer size={0.5} axis="vertical" />
           <h3>Seasons</h3>
           <ul>
-            {seasons.map((season) => {
-              if (season.name.toLowerCase() !== 'specials') {
+            {seasons
+              .filter((season) => season.name.toLowerCase() !== 'specials')
+              .map((season) => {
                 return (
                   <li key={season.tmdb_id}>
                     <Link href={`/series/${series.slug}/${season.slug}`}>
@@ -37,13 +38,10 @@ export const TvSeries = ({ series, seasons }) => {
                     </Link>
                   </li>
                 );
-              }
-            })}
-            {seasons.map((season) => {
-              if (
-                series.approved_specials.length > 0 &&
-                season.name.toLowerCase() === 'specials'
-              ) {
+              })}
+            {seasons
+              .filter((season) => season.name.toLowerCase() === 'specials')
+              .map((season) => {
                 return (
                   <li key={season.tmdb_id}>
                     <Link href={`/series/${series.slug}/${season.slug}`}>
@@ -51,8 +49,7 @@ export const TvSeries = ({ series, seasons }) => {
                     </Link>
                   </li>
                 );
-              }
-            })}
+              })}
           </ul>
           <section>
             <h3>Cast</h3>
