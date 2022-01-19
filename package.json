@@ -7,13 +7,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "init": "node api-lib/migrations/000-init.js",
+    "cache": "node scripts/cache.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/brynious/pillarboxd-nextjs-mongodb.git"
   },
-  "author": "Hoang Vo (https://brynious.com)",
+  "author": "brynious (https://brynious.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/brynious/pillarboxd-nextjs-mongodb/issues"
@@ -22,10 +24,13 @@
   "dependencies": {
     "@lukeed/ms": "^2.0.0",
     "ajv": "^8.6.3",
+    "axios": "^0.24.0",
     "bcryptjs": "^2.4.3",
+    "bootstrap": "^5.1.3",
     "cloudinary": "^1.27.0",
     "clsx": "^1.1.1",
     "connect-mongo": "^4.6.0",
+    "dotenv": "^10.0.0",
     "express-session": "^1.17.2",
     "modern-normalize": "^1.1.0",
     "mongodb": "^4.1.2",
@@ -42,6 +47,7 @@
     "react-dom": "^17.0.2",
     "react-hot-toast": "^2.1.1",
     "slug": "^5.1.0",
+    "slugify": "^1.6.3",
     "swr": "^1.0.1",
     "validator": "^13.6.0"
   },

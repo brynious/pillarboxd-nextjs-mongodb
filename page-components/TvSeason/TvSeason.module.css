@@ -1,0 +1,9 @@
+.root {
+  min-height: calc(100vh);
+}
+
+.imageContainer {
+  width: 50em;
+  max-width: 200px;
+  margin: 15px 15px 15px 15px
+}

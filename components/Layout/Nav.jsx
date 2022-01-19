@@ -11,6 +11,7 @@ import Container from './Container';
 import styles from './Nav.module.css';
 import Spacer from './Spacer';
 import Wrapper from './Wrapper';
+import Search from './Search';
 
 const UserMenu = ({ user, mutate }) => {
   const menuRef = useRef();
@@ -75,7 +76,7 @@ const UserMenu = ({ user, mutate }) => {
               <a className={styles.item}>Profile</a>
             </Link>
             <Link passHref href="/settings">
-              <a className={styles.item}>Settngs</a>
+              <a className={styles.item}>Settings</a>
             </Link>
             <div className={styles.item} style={{ cursor: 'auto' }}>
               <Container alignItems="center">
@@ -108,6 +109,20 @@ const Nav = () => {
           <Link href="/">
             <a className={styles.logo}>Next.js MongoDB App</a>
           </Link>
+
+          <Link passHref href="/series">
+            <ButtonLink
+              size="small"
+              type="success"
+              variant="ghost"
+              color="link"
+            >
+              Series
+            </ButtonLink>
+          </Link>
+
+          <Search />
+
           <Container>
             {user ? (
               <>

@@ -24,6 +24,10 @@ async function createIndexes(db) {
       { key: { email: 1 }, unique: true },
       { key: { username: 1 }, unique: true },
     ]),
+    db.collection('tv_series').createIndexes([
+      { key: { tmdb_id: 1 }, unique: true },
+      { key: { slug: 1 }, unique: true },
+    ]),
   ]);
   indexesCreated = true;
 }
