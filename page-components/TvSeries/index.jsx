@@ -39,17 +39,18 @@ export const TvSeries = ({ series, seasons }) => {
                   </li>
                 );
               })}
-            {seasons
-              .filter((season) => season.name.toLowerCase() === 'specials')
-              .map((season) => {
-                return (
-                  <li key={season.tmdb_id}>
-                    <Link href={`/series/${series.slug}/${season.slug}`}>
-                      {season.name}
-                    </Link>
-                  </li>
-                );
-              })}
+            {series.approved_specials.length > 1 &&
+              seasons
+                .filter((season) => season.name.toLowerCase() === 'specials')
+                .map((season) => {
+                  return (
+                    <li key={season.tmdb_id}>
+                      <Link href={`/series/${series.slug}/${season.slug}`}>
+                        {season.name}
+                      </Link>
+                    </li>
+                  );
+                })}
           </ul>
           <section>
             <h3>Cast</h3>
