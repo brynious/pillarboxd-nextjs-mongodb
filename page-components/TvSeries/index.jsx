@@ -39,7 +39,7 @@ export const TvSeries = ({ series, seasons }) => {
                   </li>
                 );
               })}
-            {series.approved_specials.length > 1 &&
+            {series.approved_specials.length > 0 &&
               seasons
                 .filter((season) => season.name.toLowerCase() === 'specials')
                 .map((season) => {
