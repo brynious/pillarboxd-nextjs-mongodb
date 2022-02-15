@@ -107,7 +107,7 @@ const Nav = () => {
           justifyContent="space-between"
         >
           <Link href="/">
-            <a className={styles.logo}>Next.js MongoDB App</a>
+            <a className={styles.logo}>Pillarboxd</a>
           </Link>
 
           <Link passHref href="/series">
