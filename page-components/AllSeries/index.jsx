@@ -1,22 +1,38 @@
 import styles from './AllSeries.module.css';
-// import { Spacer, Wrapper, Container } from '@/components/Layout';
-import { Wrapper } from '@/components/Layout';
+import { Wrapper, Container } from '@/components/Layout';
+import Image from 'next/image';
 import Link from 'next/link';
+
+const backdropLoader = ({ src }) => {
+  return `https://image.tmdb.org/t/p/w500${src}`;
+};
 
 export const AllSeries = ({ series }) => {
   return (
     <Wrapper className={styles.root}>
-      <ul>
+      <Container flex={true} className={styles.flexContainer}>
         {series.map((tvSeries) => {
           return (
-            <li key={tvSeries.tmdb_id}>
+            <div key={tvSeries.tmdb_id} className={styles.imageContainer}>
               <Link href={`/series/${tvSeries.slug}`}>
-                <a>{tvSeries.name}</a>
+                <a>
+                  <div>
+                    <Image
+                      loader={backdropLoader}
+                      src={tvSeries.poster_path}
+                      width={500}
+                      height={750}
+                      layout="responsive"
+                      alt={`${tvSeries.name} backdrop image`}
+                      className={styles.image}
+                    />
+                  </div>
+                </a>
               </Link>
-            </li>
+            </div>
           );
         })}
-      </ul>
+      </Container>
     </Wrapper>
   );
 };
