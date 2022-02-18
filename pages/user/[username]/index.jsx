@@ -27,13 +27,16 @@ export async function getServerSideProps(context) {
       notFound: true,
     };
   } else {
-    const cursor = await findSeriesById(context.req.db, user.watchlist[0]);
-    console.log({ cursor }); // { cursor: null }
-    user.watchlist[0] = { ...cursor, _id: cursor._id.toString() };
-
-    user.watchlist = user.watchlist.map((series) => {
-      return { ...series, name: series.name + 'test' };
-    });
+    for (let index = 0; index < user.watchlist.length; index++) {
+      const cursor = await findSeriesById(
+        context.req.db,
+        user.watchlist[index]
+      );
+      user.watchlist[index] = {
+        ...cursor,
+        _id: cursor._id.toString(),
+      };
+    }
   }
   user._id = String(user._id);
   return { props: { user } };
