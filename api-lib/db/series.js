@@ -1,7 +1,10 @@
-const findSeriesById = async (db, seriesId) => {
+import { ObjectId } from 'mongodb';
+
+const findSeriesById = async (db, idToSearch) => {
+  const _id = ObjectId(idToSearch);
   return db
     .collection('tv_series')
-    .findOne({ _id: seriesId })
+    .findOne({ _id })
     .then((series) => series || null);
 };
 
