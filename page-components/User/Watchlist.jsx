@@ -6,7 +6,7 @@ const Watchlist = ({ user }) => {
     <Container className={styles.root} column alignItems="center">
       <div>
         {user.watchlist.map((watchlistSeries, index) => {
-          return <div key={index}>{watchlistSeries}</div>;
+          return <div key={index}>{watchlistSeries.name}</div>;
         })}
       </div>
       <p>{user.bio}</p>
