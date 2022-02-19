@@ -2,12 +2,15 @@ import styles from './TvSeries.module.css';
 import { Spacer, Wrapper, Container } from '@/components/Layout';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useCurrentUser } from '@/lib/user';
 
 const backdropLoader = ({ src }) => {
   return `https://image.tmdb.org/t/p/w500${src}`;
 };
 
 export const TvSeries = ({ series, seasons }) => {
+  const { data: { user } = {} } = useCurrentUser();
+
   return (
     <Wrapper className={styles.root}>
       <Container flex={true}>
@@ -25,6 +28,12 @@ export const TvSeries = ({ series, seasons }) => {
           <h1>{series.name}</h1>
           <p>{series.tagline}</p>
           <p>{series.overview}</p>
+          <Spacer size={0.5} axis="vertical" />
+
+          {user
+            ? user.watchlist.includes(series._id) && 'Series in watchlist.'
+            : 'Login to add to watchlist'}
+
           <Spacer size={0.5} axis="vertical" />
           <h3>Seasons</h3>
           <ul>
