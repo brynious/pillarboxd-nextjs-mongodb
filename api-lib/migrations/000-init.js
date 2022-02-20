@@ -35,27 +35,27 @@ const main = async () => {
         approved_specials: [],
       },
       {
-        tmdb_id: 60574,
+        tmdb_id: 60574, // Peaky Blinders
         approved_specials: [],
       },
       {
-        tmdb_id: 85552,
+        tmdb_id: 85552, // Euphoria
         approved_specials: [],
       },
       {
-        tmdb_id: 110492,
+        tmdb_id: 110492, // 110492
         approved_specials: [],
       },
       {
-        tmdb_id: 115036,
+        tmdb_id: 115036, // The Book of Boba Fett
         approved_specials: [],
       },
       {
-        tmdb_id: 1402,
+        tmdb_id: 1402, // The Walking Dead
         approved_specials: [],
       },
       {
-        tmdb_id: 456,
+        tmdb_id: 456, // The Simpsons
         approved_specials: [],
       },
     ];

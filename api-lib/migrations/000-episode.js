@@ -31,7 +31,10 @@ const updateEpisode = async (
     episodeData.series_id = series._id;
     episodeData.season_id = season._id;
 
-    if (approved_specials.includes(episodeData.tmdb_id)) {
+    if (
+      episodeData.season_number !== 0 ||
+      approved_specials.includes(episodeData.tmdb_id)
+    ) {
       await upsertObjToDB(client, 'tv_episodes', episodeData);
     }
   } catch (e) {
