@@ -1,6 +1,5 @@
 import styles from './TvSeason.module.css';
 import { Spacer, Wrapper, Container } from '@/components/Layout';
-import PosterImage from '@/components/PosterImage/PosterImage';
 import Image from 'next/image';
 import Link from 'next/link';
 
