@@ -9,9 +9,9 @@
 }
 
 .imageContainer {
-  width: 10em;
+  width: 8em;
   max-width: 160px;
-  margin: 15px 15px 15px 15px;
+  margin: 0.5em 0.5em 0.5em 0.5em;
 }
 
 .image {

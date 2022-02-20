@@ -1,6 +1,7 @@
 import styles from './TvSeries.module.css';
 import { Spacer, Wrapper, Container } from '@/components/Layout';
 import PosterImage from '@/components/PosterImage/PosterImage';
+import ActingCredit from '@/components/Credit/ActingCredit';
 import { useCurrentUser } from '@/lib/user';
 
 export const TvSeries = ({ series, seasons }) => {
@@ -48,14 +49,12 @@ export const TvSeries = ({ series, seasons }) => {
                 .filter((season) => season.name.toLowerCase() === 'specials')
                 .map((season) => {
                   return (
-                    <li key={season.tmdb_id}>
-                      <PosterImage
-                        key={season.tmdb_id}
-                        poster_path={season.poster_path}
-                        slug={`/${series.slug}/${season.slug}`}
-                        name={season.name}
-                      />
-                    </li>
+                    <PosterImage
+                      key={season.tmdb_id}
+                      poster_path={season.poster_path}
+                      slug={`/${series.slug}/${season.slug}`}
+                      name={season.name}
+                    />
                   );
                 })}
           </Container>
@@ -64,9 +63,11 @@ export const TvSeries = ({ series, seasons }) => {
             <h3>Cast</h3>
             {series.cast.map((castMember) => {
               return (
-                <p key={castMember.id}>
-                  {castMember.name} as {castMember.character}
-                </p>
+                <ActingCredit
+                  key={castMember.id}
+                  name={castMember.name}
+                  role={castMember.character}
+                />
               );
             })}
           </section>

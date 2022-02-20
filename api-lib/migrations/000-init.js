@@ -14,48 +14,52 @@ const main = async () => {
     await client.connect();
 
     const seriesTmdbIds = [
+      // {
+      //   tmdb_id: 1396, // Breaking Bad
+      //   approved_specials: [62131, 62135],
+      // },
+      // {
+      //   tmdb_id: 54344, // Leftovers
+      //   approved_specials: [],
+      // },
+      // {
+      //   tmdb_id: 65495, // Atlanta
+      //   approved_specials: [],
+      // },
+      // {
+      //   tmdb_id: 42009, // Black Mirror
+      //   approved_specials: [1188308],
+      // },
+      // {
+      //   tmdb_id: 18347, // Community
+      //   approved_specials: [],
+      // },
+      // {
+      //   tmdb_id: 60574, // Peaky Blinders
+      //   approved_specials: [],
+      // },
+      // {
+      //   tmdb_id: 85552, // Euphoria
+      //   approved_specials: [],
+      // },
+      // {
+      //   tmdb_id: 110492, // 110492
+      //   approved_specials: [],
+      // },
+      // {
+      //   tmdb_id: 115036, // The Book of Boba Fett
+      //   approved_specials: [],
+      // },
+      // {
+      //   tmdb_id: 1402, // The Walking Dead
+      //   approved_specials: [],
+      // },
+      // {
+      //   tmdb_id: 456, // The Simpsons
+      //   approved_specials: [],
+      // },
       {
-        tmdb_id: 1396, // Breaking Bad
-        approved_specials: [62131, 62135],
-      },
-      {
-        tmdb_id: 54344, // Leftovers
-        approved_specials: [],
-      },
-      {
-        tmdb_id: 65495, // Atlanta
-        approved_specials: [],
-      },
-      {
-        tmdb_id: 42009, // Black Mirror
-        approved_specials: [1188308],
-      },
-      {
-        tmdb_id: 18347, // Community
-        approved_specials: [],
-      },
-      {
-        tmdb_id: 60574, // Peaky Blinders
-        approved_specials: [],
-      },
-      {
-        tmdb_id: 85552, // Euphoria
-        approved_specials: [],
-      },
-      {
-        tmdb_id: 110492, // 110492
-        approved_specials: [],
-      },
-      {
-        tmdb_id: 115036, // The Book of Boba Fett
-        approved_specials: [],
-      },
-      {
-        tmdb_id: 1402, // The Walking Dead
-        approved_specials: [],
-      },
-      {
-        tmdb_id: 456, // The Simpsons
+        tmdb_id: 75191,
         approved_specials: [],
       },
     ];
