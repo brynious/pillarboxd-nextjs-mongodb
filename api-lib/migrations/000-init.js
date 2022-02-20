@@ -34,6 +34,30 @@ const main = async () => {
         tmdb_id: 18347, // Community
         approved_specials: [],
       },
+      {
+        tmdb_id: 60574,
+        approved_specials: [],
+      },
+      {
+        tmdb_id: 85552,
+        approved_specials: [],
+      },
+      {
+        tmdb_id: 110492,
+        approved_specials: [],
+      },
+      {
+        tmdb_id: 115036,
+        approved_specials: [],
+      },
+      {
+        tmdb_id: 1402,
+        approved_specials: [],
+      },
+      {
+        tmdb_id: 456,
+        approved_specials: [],
+      },
     ];
 
     for (const series of seriesTmdbIds) {
@@ -59,7 +83,8 @@ const main = async () => {
             client,
             tmdb_id,
             season.season_number,
-            episode.episode_number
+            episode.episode_number,
+            series.approved_specials
           );
         }
       }
