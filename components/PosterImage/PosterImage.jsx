@@ -6,24 +6,38 @@ const backdropLoader = ({ src }) => {
   return `https://image.tmdb.org/t/p/w185${src}`;
 };
 
-const PosterImage = ({ poster_path, slug, name }) => {
+const PosterImage = ({ poster_path, slug, alt }) => {
   return (
     <div className={styles.imageContainer}>
-      <Link href={`/series/${slug}`}>
-        <a>
-          <div>
-            <Image
-              loader={backdropLoader}
-              src={poster_path}
-              width={185}
-              height={185 * 1.5}
-              layout="responsive"
-              alt={`${name} backdrop image`}
-              className={styles.image}
-            />
-          </div>
-        </a>
-      </Link>
+      {slug ? (
+        <Link href={`/series/${slug}`}>
+          <a>
+            <div>
+              <Image
+                loader={backdropLoader}
+                src={poster_path}
+                width={185}
+                height={185 * 1.5}
+                layout="responsive"
+                alt={alt}
+                className={styles.image}
+              />
+            </div>
+          </a>
+        </Link>
+      ) : (
+        <div>
+          <Image
+            loader={backdropLoader}
+            src={poster_path}
+            width={185}
+            height={185 * 1.5}
+            layout="responsive"
+            alt={alt}
+            className={styles.image}
+          />
+        </div>
+      )}
     </div>
   );
 };

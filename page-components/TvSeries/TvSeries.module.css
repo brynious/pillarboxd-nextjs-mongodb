@@ -7,3 +7,7 @@
   max-width: 300px;
   margin: 15px 15px 15px 15px
 }
+
+.flexContainer {
+  flex-wrap: wrap;
+}

@@ -1,12 +1,7 @@
 import styles from './TvSeries.module.css';
 import { Spacer, Wrapper, Container } from '@/components/Layout';
-import Image from 'next/image';
-import Link from 'next/link';
+import PosterImage from '@/components/PosterImage/PosterImage';
 import { useCurrentUser } from '@/lib/user';
-
-const backdropLoader = ({ src }) => {
-  return `https://image.tmdb.org/t/p/w500${src}`;
-};
 
 export const TvSeries = ({ series, seasons }) => {
   const { data: { user } = {} } = useCurrentUser();
@@ -15,12 +10,10 @@ export const TvSeries = ({ series, seasons }) => {
     <Wrapper className={styles.root}>
       <Container flex={true}>
         <div className={styles.imageContainer}>
-          <Image
-            loader={backdropLoader}
-            src={series.poster_path}
-            width={500}
-            height={750}
-            layout="responsive"
+          <PosterImage
+            key={series.tmdb_id}
+            poster_path={series.poster_path}
+            slug={null}
             alt={`${series.name} backdrop image`}
           />
         </div>
@@ -36,16 +29,18 @@ export const TvSeries = ({ series, seasons }) => {
 
           <Spacer size={0.5} axis="vertical" />
           <h3>Seasons</h3>
-          <ul>
+
+          <Container flex={true} className={styles.flexContainer}>
             {seasons
               .filter((season) => season.name.toLowerCase() !== 'specials')
               .map((season) => {
                 return (
-                  <li key={season.tmdb_id}>
-                    <Link href={`/series/${series.slug}/${season.slug}`}>
-                      {season.name}
-                    </Link>
-                  </li>
+                  <PosterImage
+                    key={season.tmdb_id}
+                    poster_path={season.poster_path}
+                    slug={`/${series.slug}/${season.slug}`}
+                    name={season.name}
+                  />
                 );
               })}
             {series.approved_specials.length > 0 &&
@@ -54,13 +49,17 @@ export const TvSeries = ({ series, seasons }) => {
                 .map((season) => {
                   return (
                     <li key={season.tmdb_id}>
-                      <Link href={`/series/${series.slug}/${season.slug}`}>
-                        {season.name}
-                      </Link>
+                      <PosterImage
+                        key={season.tmdb_id}
+                        poster_path={season.poster_path}
+                        slug={`/${series.slug}/${season.slug}`}
+                        name={season.name}
+                      />
                     </li>
                   );
                 })}
-          </ul>
+          </Container>
+
           <section>
             <h3>Cast</h3>
             {series.cast.map((castMember) => {

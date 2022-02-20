@@ -2,17 +2,6 @@
   min-height: calc(100vh);
 }
 
-.imageContainer {
-  width: 10em;
-  max-width: 160px;
-  margin: 15px 15px 15px 15px;
-}
-
 .flexContainer {
   flex-wrap: wrap;
-}
-
-.image {
-  border-radius: 3px;
-  pointer-events: none;
 }
