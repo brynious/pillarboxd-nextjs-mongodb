@@ -1,5 +1,4 @@
 const { MongoClient } = require('mongodb');
-const axios = require('axios');
 require('dotenv').config();
 
 const main = async () => {

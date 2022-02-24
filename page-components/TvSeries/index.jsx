@@ -4,6 +4,8 @@ import PosterImage from '@/components/PosterImage/PosterImage';
 import ActingCredit from '@/components/Credit/ActingCredit';
 import { useCurrentUser } from '@/lib/user';
 
+import Poster from './Watchlist';
+
 export const TvSeries = ({ series, seasons }) => {
   const { data: { user } = {} } = useCurrentUser();
 
@@ -19,6 +21,8 @@ export const TvSeries = ({ series, seasons }) => {
           />
         </div>
         <div>
+          <Poster />
+
           <h1>{series.name}</h1>
           <p>{series.tagline}</p>
           <p>{series.overview}</p>
@@ -71,6 +75,7 @@ export const TvSeries = ({ series, seasons }) => {
               );
             })}
           </section>
+          <Spacer size={5} axis="vertical" />
         </div>
       </Container>
     </Wrapper>
