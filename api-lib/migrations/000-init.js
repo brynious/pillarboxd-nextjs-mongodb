@@ -58,8 +58,40 @@ const main = async () => {
       //   tmdb_id: 456, // The Simpsons
       //   approved_specials: [],
       // },
+      // {
+      //   tmdb_id: 75191,
+      //   approved_specials: [],
+      // },
+      // {
+      //   tmdb_id: 4194, // Star Wars: The Clone Wars
+      //   approved_specials: [],
+      // },
+      // {
+      //   tmdb_id: 60554, // Star Wars: Rebels
+      //   approved_specials: [],
+      // },
+      // {
+      //   tmdb_id: 79093, // Star Wars: Resistance
+      //   approved_specials: [],
+      // },
+      // {
+      //   tmdb_id: 3122, // Star Wars: Clone Wars
+      //   approved_specials: [],
+      // },
+      // {
+      //   tmdb_id: 82856, // Star Wars: The Mandalorian
+      //   approved_specials: [],
+      // },
+      // {
+      //   tmdb_id: 105971, // Star Wars: The Bad Batch
+      //   approved_specials: [],
+      // },
+      // {
+      //   tmdb_id: 60839, // Broad City
+      //   approved_specials: [],
+      // },
       {
-        tmdb_id: 75191,
+        tmdb_id: 40075, // Gravity Falls
         approved_specials: [],
       },
     ];

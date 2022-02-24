@@ -2,6 +2,7 @@ import styles from './TvSeason.module.css';
 import { Spacer, Wrapper, Container } from '@/components/Layout';
 import Image from 'next/image';
 import Link from 'next/link';
+import ActingCredit from '@/components/Credit/ActingCredit';
 
 const backdropLoader = ({ src }) => {
   return `https://image.tmdb.org/t/p/w500${src}`;
@@ -55,9 +56,11 @@ export const TvSeason = ({ series, season, episodes }) => {
             <h3>Cast</h3>
             {season.cast.map((castMember) => {
               return (
-                <p key={castMember.id}>
-                  {castMember.name} as {castMember.character}
-                </p>
+                <ActingCredit
+                  key={castMember.id}
+                  name={castMember.name}
+                  role={castMember.character}
+                />
               );
             })}
           </section>
