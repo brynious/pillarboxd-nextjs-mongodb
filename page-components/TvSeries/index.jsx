@@ -4,7 +4,7 @@ import PosterImage from '@/components/PosterImage/PosterImage';
 import ActingCredit from '@/components/Credit/ActingCredit';
 import { useCurrentUser } from '@/lib/user';
 
-import Poster from './Watchlist';
+import Watchlist from './Watchlist';
 
 export const TvSeries = ({ series, seasons }) => {
   const { data: { user } = {} } = useCurrentUser();
@@ -21,7 +21,7 @@ export const TvSeries = ({ series, seasons }) => {
           />
         </div>
         <div>
-          <Poster />
+          <Watchlist seriesId={series._id} />
 
           <h1>{series.name}</h1>
           <p>{series.tagline}</p>

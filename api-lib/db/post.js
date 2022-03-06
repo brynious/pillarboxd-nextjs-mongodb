@@ -59,3 +59,18 @@ export async function insertPost(db, { content, creatorId }) {
   post._id = insertedId;
   return post;
 }
+
+export async function insertWatchlist(db, { content, creatorId }) {
+  const watchlistItem = {
+    seriesId: content,
+    loggedAt: new Date(),
+  };
+
+  const userId = ObjectId(creatorId);
+
+  const updatedUser = await db
+    .collection('users')
+    .update({ _id: userId }, { $push: { watchlist: watchlistItem } });
+
+  return updatedUser;
+}

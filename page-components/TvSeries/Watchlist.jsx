@@ -12,7 +12,7 @@ import { useCallback, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import styles from './Watchlist.module.css';
 
-const WatchlistInner = ({ user }) => {
+const WatchlistInner = ({ user, seriesId }) => {
   const contentRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -26,7 +26,7 @@ const WatchlistInner = ({ user }) => {
         await fetcher('/api/user/watchlist', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content: contentRef.current.value }),
+          body: JSON.stringify({ content: seriesId }),
         });
         toast.success('You have posted successfully');
         contentRef.current.value = '';
@@ -59,7 +59,7 @@ const WatchlistInner = ({ user }) => {
   );
 };
 
-const Watchlist = () => {
+const Watchlist = ({ seriesId }) => {
   const { data, error } = useCurrentUser();
   const loading = !data && !error;
 
@@ -70,7 +70,7 @@ const Watchlist = () => {
         {loading ? (
           <LoadingDots>Loading</LoadingDots>
         ) : data?.user ? (
-          <WatchlistInner user={data.user} />
+          <WatchlistInner user={data.user} seriesId={seriesId} />
         ) : (
           <Text color="secondary">
             Please{' '}

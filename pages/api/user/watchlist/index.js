@@ -1,5 +1,5 @@
 import { ValidateProps } from '@/api-lib/constants';
-import { findPosts, insertPost } from '@/api-lib/db';
+import { findPosts, insertPost, insertWatchlist } from '@/api-lib/db';
 import { auths, database, validateBody } from '@/api-lib/middlewares';
 import { ncOpts } from '@/api-lib/nc';
 import nc from 'next-connect';
@@ -34,7 +34,9 @@ handler.post(
       return res.status(401).end();
     }
 
-    const post = await insertPost(req.db, {
+    console.log('THIS IS WORKING');
+
+    const post = await insertWatchlist(req.db, {
       content: req.body.content,
       creatorId: req.user._id,
     });
