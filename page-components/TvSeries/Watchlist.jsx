@@ -1,6 +1,4 @@
-import { Avatar } from '@/components/Avatar';
 import { Button } from '@/components/Button';
-import { Input } from '@/components/Input';
 import { Container, Wrapper } from '@/components/Layout';
 import { LoadingDots } from '@/components/LoadingDots';
 import { Text, TextLink } from '@/components/Text';
@@ -8,12 +6,11 @@ import { fetcher } from '@/lib/fetch';
 import { usePostPages } from '@/lib/post';
 import { useCurrentUser } from '@/lib/user';
 import Link from 'next/link';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import styles from './Watchlist.module.css';
 
 const WatchlistInner = ({ user, seriesId }) => {
-  const contentRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
 
   const { mutate } = usePostPages();
@@ -29,7 +26,6 @@ const WatchlistInner = ({ user, seriesId }) => {
           body: JSON.stringify({ content: seriesId }),
         });
         toast.success('You have posted successfully');
-        contentRef.current.value = '';
         // refresh post lists
         mutate();
       } catch (e) {
@@ -42,20 +38,17 @@ const WatchlistInner = ({ user, seriesId }) => {
   );
 
   return (
-    <form onSubmit={onSubmit}>
-      <Container className={styles.poster}>
-        <Avatar size={40} username={user.username} url={user.profilePicture} />
-        <Input
-          ref={contentRef}
-          className={styles.input}
-          placeholder={`What's on your mind, ${user.name}?`}
-          ariaLabel={`What's on your mind, ${user.name}?`}
-        />
-        <Button type="success" loading={isLoading}>
-          Post
+    <Container className={styles.poster}>
+      {user.watchlist
+        .map((series) => series.seriesId === seriesId)
+        .includes(true) ? (
+        'Series in watchlist.'
+      ) : (
+        <Button onClick={onSubmit} loading={isLoading} type="secondary">
+          Add to Watchlist
         </Button>
-      </Container>
-    </form>
+      )}
+    </Container>
   );
 };
 
@@ -64,9 +57,9 @@ const Watchlist = ({ seriesId }) => {
   const loading = !data && !error;
 
   return (
-    <Wrapper>
+    <section className={styles.listContainer}>
       <div className={styles.root}>
-        <h3 className={styles.heading}>Share your thoughts</h3>
+        <h3 className={styles.heading}>Your lists</h3>
         {loading ? (
           <LoadingDots>Loading</LoadingDots>
         ) : data?.user ? (
@@ -76,14 +69,14 @@ const Watchlist = ({ seriesId }) => {
             Please{' '}
             <Link href="/login" passHref>
               <TextLink color="link" variant="highlight">
-                sign in
+                Sign in
               </TextLink>
             </Link>{' '}
-            to post
+            to track series
           </Text>
         )}
       </div>
-    </Wrapper>
+    </section>
   );
 };
 

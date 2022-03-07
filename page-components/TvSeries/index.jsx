@@ -21,8 +21,6 @@ export const TvSeries = ({ series, seasons }) => {
           />
         </div>
         <div>
-          <Watchlist seriesId={series._id} />
-
           <h1>{series.name}</h1>
           <p>{series.tagline}</p>
           <p>{series.overview}</p>
@@ -76,6 +74,13 @@ export const TvSeries = ({ series, seasons }) => {
             })}
           </section>
           <Spacer size={5} axis="vertical" />
+        </div>
+        <div>
+          {user ? (
+            <Watchlist seriesId={series._id} />
+          ) : (
+            'Login to add to watchlist'
+          )}
         </div>
       </Container>
     </Wrapper>
