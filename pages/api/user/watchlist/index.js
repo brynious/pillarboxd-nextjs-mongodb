@@ -34,12 +34,12 @@ handler.post(
       return res.status(401).end();
     }
 
-    const post = await insertWatchlist(req.db, {
+    const user = await insertWatchlist(req.db, {
       content: req.body.content,
       creatorId: req.user._id,
     });
 
-    return res.json({ post });
+    return res.json({ user });
   }
 );
 

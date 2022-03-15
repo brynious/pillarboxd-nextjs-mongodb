@@ -34,7 +34,6 @@ export const TvSeason = ({ series, season, episodes }) => {
           <Spacer size={0.5} axis="vertical" />
           <ul>
             {episodes.map((episode) => {
-              console.log(episode.slug);
               if (
                 season.name.toLowerCase() !== 'specials' ||
                 series.approved_specials.includes(episode.tmdb_id)

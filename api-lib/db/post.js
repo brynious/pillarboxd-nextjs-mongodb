@@ -70,7 +70,11 @@ export async function insertWatchlist(db, { content, creatorId }) {
 
   const updatedUser = await db
     .collection('users')
-    .update({ _id: userId }, { $push: { watchlist: watchlistItem } });
+    .findOneAndUpdate(
+      { _id: userId },
+      { $push: { watchlist: watchlistItem } },
+      { returnDocument: 'after', projection: { password: 0 } }
+    );
 
-  return updatedUser;
+  return updatedUser.value;
 }
