@@ -1,5 +1,9 @@
 import { ValidateProps } from '@/api-lib/constants';
-import { findPosts, insertWatchlist } from '@/api-lib/db';
+import {
+  findPosts,
+  insertWatchlist,
+  deleteSeriesFromWatchlist,
+} from '@/api-lib/db';
 import { auths, database, validateBody } from '@/api-lib/middlewares';
 import { ncOpts } from '@/api-lib/nc';
 import nc from 'next-connect';
@@ -35,6 +39,30 @@ handler.post(
     }
 
     const user = await insertWatchlist(req.db, {
+      content: req.body.content,
+      creatorId: req.user._id,
+    });
+
+    return res.json({ user });
+  }
+);
+
+handler.delete(
+  ...auths,
+  validateBody({
+    type: 'object',
+    properties: {
+      content: ValidateProps.post.content,
+    },
+    required: ['content'],
+    additionalProperties: false,
+  }),
+  async (req, res) => {
+    if (!req.user) {
+      return res.status(401).end();
+    }
+
+    const user = await deleteSeriesFromWatchlist(req.db, {
       content: req.body.content,
       creatorId: req.user._id,
     });

@@ -12,7 +12,7 @@ import styles from './Watchlist.module.css';
 const WatchlistInner = ({ user, mutate, seriesId }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = useCallback(
+  const addToWatchlist = useCallback(
     async (e) => {
       e.preventDefault();
       try {
@@ -23,7 +23,28 @@ const WatchlistInner = ({ user, mutate, seriesId }) => {
           body: JSON.stringify({ content: seriesId }),
         });
         mutate({ user: response.user }, false);
-        toast.success('Added to your watchlist');
+        toast.success('Series added to your Watchlist');
+      } catch (e) {
+        toast.error(e.message);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [mutate, seriesId]
+  );
+
+  const removeFromWatchlist = useCallback(
+    async (e) => {
+      e.preventDefault();
+      try {
+        setIsLoading(true);
+        const response = await fetcher('/api/user/watchlist', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: seriesId }),
+        });
+        mutate({ user: response.user }, false);
+        toast.success('Series removed from your Watchlist');
       } catch (e) {
         toast.error(e.message);
       } finally {
@@ -38,9 +59,15 @@ const WatchlistInner = ({ user, mutate, seriesId }) => {
       {user.watchlist
         .map((series) => series.seriesId === seriesId)
         .includes(true) ? (
-        'Series in watchlist.'
+        <Button
+          onClick={removeFromWatchlist}
+          loading={isLoading}
+          type="secondary"
+        >
+          Remove from Watchlist
+        </Button>
       ) : (
-        <Button onClick={onSubmit} loading={isLoading} type="secondary">
+        <Button onClick={addToWatchlist} loading={isLoading} type="secondary">
           Add to Watchlist
         </Button>
       )}

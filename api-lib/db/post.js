@@ -78,3 +78,19 @@ export async function insertWatchlist(db, { content, creatorId }) {
 
   return updatedUser.value;
 }
+
+export async function deleteSeriesFromWatchlist(db, { content, creatorId }) {
+  const userId = ObjectId(creatorId);
+
+  console.log('test here');
+
+  const updatedUser = await db
+    .collection('users')
+    .findOneAndUpdate(
+      { _id: userId },
+      { $pull: { watchlist: { seriesId: content } } },
+      { returnDocument: 'after', projection: { password: 0 } }
+    );
+
+  return updatedUser.value;
+}
