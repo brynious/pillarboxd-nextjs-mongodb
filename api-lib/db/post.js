@@ -79,7 +79,7 @@ export async function insertWatchlist(db, { content, creatorId }) {
   return updatedUser.value;
 }
 
-export async function deleteSeriesFromWatchlist(db, { content, creatorId }) {
+export async function deleteFromWatchlist(db, { content, creatorId }) {
   const userId = ObjectId(creatorId);
 
   const updatedUser = await db
@@ -87,6 +87,39 @@ export async function deleteSeriesFromWatchlist(db, { content, creatorId }) {
     .findOneAndUpdate(
       { _id: userId },
       { $pull: { watchlist: { seriesId: content } } },
+      { returnDocument: 'after', projection: { password: 0 }, multi: true }
+    );
+
+  return updatedUser.value;
+}
+
+export async function insertToWatching(db, { content, creatorId }) {
+  const watchingItem = {
+    seriesId: content,
+    loggedAt: new Date(),
+  };
+
+  const userId = ObjectId(creatorId);
+
+  const updatedUser = await db
+    .collection('users')
+    .findOneAndUpdate(
+      { _id: userId },
+      { $push: { watching: watchingItem } },
+      { returnDocument: 'after', projection: { password: 0 } }
+    );
+
+  return updatedUser.value;
+}
+
+export async function deleteFromWatching(db, { content, creatorId }) {
+  const userId = ObjectId(creatorId);
+
+  const updatedUser = await db
+    .collection('users')
+    .findOneAndUpdate(
+      { _id: userId },
+      { $pull: { watching: { seriesId: content } } },
       { returnDocument: 'after', projection: { password: 0 }, multi: true }
     );
 

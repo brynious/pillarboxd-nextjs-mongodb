@@ -54,6 +54,48 @@ const WatchlistInner = ({ user, mutate, seriesId }) => {
     [mutate, seriesId]
   );
 
+  const addToWatching = useCallback(
+    async (e) => {
+      e.preventDefault();
+      try {
+        setIsLoading(true);
+        const response = await fetcher('/api/user/watching', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: seriesId }),
+        });
+        mutate({ user: response.user }, false);
+        toast.success('Series added to your Watching');
+      } catch (e) {
+        toast.error(e.message);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [mutate, seriesId]
+  );
+
+  const removeFromWatching = useCallback(
+    async (e) => {
+      e.preventDefault();
+      try {
+        setIsLoading(true);
+        const response = await fetcher('/api/user/watching', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: seriesId }),
+        });
+        mutate({ user: response.user }, false);
+        toast.success('Series removed from your Watching');
+      } catch (e) {
+        toast.error(e.message);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [mutate, seriesId]
+  );
+
   return (
     <Container className={styles.poster}>
       {user.watchlist
@@ -69,6 +111,22 @@ const WatchlistInner = ({ user, mutate, seriesId }) => {
       ) : (
         <Button onClick={addToWatchlist} loading={isLoading} type="secondary">
           Add to Watchlist
+        </Button>
+      )}
+
+      {user.watching
+        .map((series) => series.seriesId === seriesId)
+        .includes(true) ? (
+        <Button
+          onClick={removeFromWatching}
+          loading={isLoading}
+          type="secondary"
+        >
+          Remove from Watching
+        </Button>
+      ) : (
+        <Button onClick={addToWatching} loading={isLoading} type="secondary">
+          Add to Watching
         </Button>
       )}
     </Container>
