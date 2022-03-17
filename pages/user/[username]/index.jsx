@@ -30,14 +30,37 @@ export async function getServerSideProps(context) {
     for (let index = 0; index < user.watchlist.length; index++) {
       const cursor = await findSeriesById(
         context.req.db,
-        user.watchlist[index]
+        user.watchlist[index].seriesId
       );
       user.watchlist[index] = {
         ...cursor,
         _id: cursor._id.toString(),
       };
     }
+
+    for (let index = 0; index < user.watching.length; index++) {
+      const cursor = await findSeriesById(
+        context.req.db,
+        user.watching[index].seriesId
+      );
+      user.watching[index] = {
+        ...cursor,
+        _id: cursor._id.toString(),
+      };
+    }
+
+    for (let index = 0; index < user.watched.length; index++) {
+      const cursor = await findSeriesById(
+        context.req.db,
+        user.watched[index].seriesId
+      );
+      user.watched[index] = {
+        ...cursor,
+        _id: cursor._id.toString(),
+      };
+    }
   }
   user._id = String(user._id);
+  console.log({ user });
   return { props: { user } };
 }

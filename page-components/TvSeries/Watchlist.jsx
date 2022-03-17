@@ -96,6 +96,48 @@ const WatchlistInner = ({ user, mutate, seriesId }) => {
     [mutate, seriesId]
   );
 
+  const addToWatched = useCallback(
+    async (e) => {
+      e.preventDefault();
+      try {
+        setIsLoading(true);
+        const response = await fetcher('/api/user/watched', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: seriesId }),
+        });
+        mutate({ user: response.user }, false);
+        toast.success('Series added to your Watched list');
+      } catch (e) {
+        toast.error(e.message);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [mutate, seriesId]
+  );
+
+  const removeFromWatched = useCallback(
+    async (e) => {
+      e.preventDefault();
+      try {
+        setIsLoading(true);
+        const response = await fetcher('/api/user/watched', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: seriesId }),
+        });
+        mutate({ user: response.user }, false);
+        toast.success('Series removed from your Watched');
+      } catch (e) {
+        toast.error(e.message);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [mutate, seriesId]
+  );
+
   return (
     <Container className={styles.poster}>
       {user.watchlist
@@ -127,6 +169,22 @@ const WatchlistInner = ({ user, mutate, seriesId }) => {
       ) : (
         <Button onClick={addToWatching} loading={isLoading} type="secondary">
           Add to Watching
+        </Button>
+      )}
+
+      {user.watched
+        .map((series) => series.seriesId === seriesId)
+        .includes(true) ? (
+        <Button
+          onClick={removeFromWatched}
+          loading={isLoading}
+          type="secondary"
+        >
+          Remove from Watched
+        </Button>
+      ) : (
+        <Button onClick={addToWatched} loading={isLoading} type="secondary">
+          Add to Watched
         </Button>
       )}
     </Container>
