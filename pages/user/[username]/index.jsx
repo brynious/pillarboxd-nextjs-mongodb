@@ -61,6 +61,5 @@ export async function getServerSideProps(context) {
     }
   }
   user._id = String(user._id);
-  console.log({ user });
   return { props: { user } };
 }

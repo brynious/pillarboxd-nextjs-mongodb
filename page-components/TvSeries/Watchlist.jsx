@@ -146,45 +146,37 @@ const WatchlistInner = ({ user, mutate, seriesId }) => {
         <Button
           onClick={removeFromWatchlist}
           loading={isLoading}
-          type="secondary"
+          type="success"
         >
-          Remove from Watchlist
+          Watchlist
         </Button>
       ) : (
         <Button onClick={addToWatchlist} loading={isLoading} type="secondary">
-          Add to Watchlist
+          Watchlist
         </Button>
       )}
 
       {user.watching
         .map((series) => series.seriesId === seriesId)
         .includes(true) ? (
-        <Button
-          onClick={removeFromWatching}
-          loading={isLoading}
-          type="secondary"
-        >
-          Remove from Watching
+        <Button onClick={removeFromWatching} loading={isLoading} type="success">
+          Watching
         </Button>
       ) : (
         <Button onClick={addToWatching} loading={isLoading} type="secondary">
-          Add to Watching
+          Watching
         </Button>
       )}
 
       {user.watched
         .map((series) => series.seriesId === seriesId)
         .includes(true) ? (
-        <Button
-          onClick={removeFromWatched}
-          loading={isLoading}
-          type="secondary"
-        >
-          Remove from Watched
+        <Button onClick={removeFromWatched} loading={isLoading} type="success">
+          Watched
         </Button>
       ) : (
         <Button onClick={addToWatched} loading={isLoading} type="secondary">
-          Add to Watched
+          Watched
         </Button>
       )}
     </Container>
