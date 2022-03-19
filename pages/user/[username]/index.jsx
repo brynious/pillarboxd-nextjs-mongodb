@@ -27,37 +27,17 @@ export async function getServerSideProps(context) {
       notFound: true,
     };
   } else {
-    for (let index = 0; index < user.watchlist.length; index++) {
-      const cursor = await findSeriesById(
-        context.req.db,
-        user.watchlist[index].seriesId
-      );
-      user.watchlist[index] = {
-        ...cursor,
-        _id: cursor._id.toString(),
-      };
-    }
-
-    for (let index = 0; index < user.watching.length; index++) {
-      const cursor = await findSeriesById(
-        context.req.db,
-        user.watching[index].seriesId
-      );
-      user.watching[index] = {
-        ...cursor,
-        _id: cursor._id.toString(),
-      };
-    }
-
-    for (let index = 0; index < user.watched.length; index++) {
-      const cursor = await findSeriesById(
-        context.req.db,
-        user.watched[index].seriesId
-      );
-      user.watched[index] = {
-        ...cursor,
-        _id: cursor._id.toString(),
-      };
+    for (const listType of ['watchlist', 'watching', 'watched']) {
+      for (let index = 0; index < user[listType].length; index++) {
+        const cursor = await findSeriesById(
+          context.req.db,
+          user[listType][index].seriesId
+        );
+        user[listType][index] = {
+          ...cursor,
+          _id: cursor._id.toString(),
+        };
+      }
     }
   }
   user._id = String(user._id);
