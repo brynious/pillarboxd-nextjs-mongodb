@@ -75,6 +75,15 @@ const UserMenu = ({ user, mutate }) => {
             <Link passHref href={`/user/${user.username}`}>
               <a className={styles.item}>Profile</a>
             </Link>
+            <Link passHref href={`/user/${user.username}/watchlist`}>
+              <a className={styles.item}>Watchlist</a>
+            </Link>
+            <Link passHref href={`/user/${user.username}/watching`}>
+              <a className={styles.item}>Watching</a>
+            </Link>
+            <Link passHref href={`/user/${user.username}/watched`}>
+              <a className={styles.item}>Watched</a>
+            </Link>
             <Link passHref href="/settings">
               <a className={styles.item}>Settings</a>
             </Link>
