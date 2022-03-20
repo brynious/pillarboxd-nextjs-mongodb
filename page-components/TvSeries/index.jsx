@@ -4,7 +4,7 @@ import PosterImage from '@/components/PosterImage/PosterImage';
 import ActingCredit from '@/components/Credit/ActingCredit';
 import { useCurrentUser } from '@/lib/user';
 
-import Watchlist from './Watchlist';
+import ListControllers from './ListControllers';
 
 export const TvSeries = ({ series, seasons }) => {
   const { data: { user } = {} } = useCurrentUser();
@@ -77,7 +77,7 @@ export const TvSeries = ({ series, seasons }) => {
         </div>
         <div>
           {user ? (
-            <Watchlist seriesId={series._id} />
+            <ListControllers seriesId={series._id} />
           ) : (
             'Login to add to watchlist'
           )}

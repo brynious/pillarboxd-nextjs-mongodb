@@ -7,7 +7,7 @@ import { useCurrentUser } from '@/lib/user';
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
-import styles from './Watchlist.module.css';
+import styles from './ListControllers.module.css';
 
 const WatchlistInner = ({ user, mutate, seriesId }) => {
   const [isLoading, setIsLoading] = useState(false);
