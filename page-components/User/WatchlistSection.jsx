@@ -1,5 +1,5 @@
 import { Container } from '@/components/Layout';
-import styles from './Watchlist.module.css';
+import styles from './WatchlistSection.module.css';
 
 const Watchlist = ({ user }) => {
   return (
