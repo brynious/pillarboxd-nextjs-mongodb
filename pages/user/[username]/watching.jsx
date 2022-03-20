@@ -8,9 +8,9 @@ export default function UserPage({ user }) {
   return (
     <>
       <Head>
-        <title>{user.name}&apos;s Watchlist • Pillarboxd</title>
+        <title>{user.name}&apos;s Watching • Pillarboxd</title>
       </Head>
-      <DefaultList user={user} listType="watchlist" />
+      <DefaultList user={user} listType="watching" />
     </>
   );
 }

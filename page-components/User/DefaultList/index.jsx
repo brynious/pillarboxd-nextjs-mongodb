@@ -1,17 +1,16 @@
-import styles from './Watchlist.module.css';
+import styles from './DefaultList.module.css';
 import { Wrapper, Container } from '@/components/Layout';
 import PosterImage from '@/components/PosterImage/PosterImage';
 
-export const Watchlist = ({ user }) => {
+export const DefaultList = ({ user, listType }) => {
   return (
-    // <div className={styles.root}>
-    //   <p>This is the watchlist page</p>
-    //   <p>{user.name}</p>
-    // </div>
     <Wrapper className={styles.root}>
-      <h1>{user.name}&apos;s Watchlist</h1>
+      <h1>
+        {user.name}&apos;s {listType[0].toUpperCase() + listType.slice(1)}
+      </h1>
+
       <Container flex={true} className={styles.flexContainer}>
-        {user.watchlist.map((tvSeries) => {
+        {user[listType].map((tvSeries) => {
           return (
             <PosterImage
               key={tvSeries.tmdb_id}
