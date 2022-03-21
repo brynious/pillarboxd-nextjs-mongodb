@@ -29,11 +29,15 @@ export async function getServerSideProps(context) {
   } else {
     for (const listType of ['watchlist', 'watching', 'watched']) {
       for (let index = 0; index < user[listType].length; index++) {
+        const initial = user[listType][index];
+
         const cursor = await findSeriesById(
           context.req.db,
           user[listType][index].seriesId
         );
         user[listType][index] = {
+          seriesId: initial.seriesId,
+          loggedAt: initial.loggedAt.toJSON(),
           ...cursor,
           _id: cursor._id.toString(),
         };

@@ -3,6 +3,17 @@ import { Wrapper, Container } from '@/components/Layout';
 import PosterImage from '@/components/PosterImage/PosterImage';
 
 export const DefaultList = ({ user, listType }) => {
+  const seriesList = user[listType];
+  const orderedList = seriesList.sort((a, b) => {
+    if (a.loggedAt > b.loggedAt) {
+      return -1;
+    }
+    if (a.loggedAt < b.loggedAt) {
+      return 1;
+    }
+    return 0;
+  });
+
   return (
     <Wrapper className={styles.root}>
       <h1>
@@ -10,7 +21,7 @@ export const DefaultList = ({ user, listType }) => {
       </h1>
 
       <Container flex={true} className={styles.flexContainer}>
-        {user[listType].map((tvSeries) => {
+        {orderedList.map((tvSeries) => {
           return (
             <PosterImage
               key={tvSeries.tmdb_id}
