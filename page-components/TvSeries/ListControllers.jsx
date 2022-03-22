@@ -9,7 +9,7 @@ import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
 import styles from './ListControllers.module.css';
 
-const WatchlistInner = ({ user, mutate, seriesId }) => {
+const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const addToWatchlist = useCallback(
@@ -183,7 +183,7 @@ const WatchlistInner = ({ user, mutate, seriesId }) => {
   );
 };
 
-const Watchlist = ({ seriesId }) => {
+const DefaultListControllers = ({ seriesId }) => {
   const { data, error, mutate } = useCurrentUser();
   const loading = !data && !error;
 
@@ -194,7 +194,7 @@ const Watchlist = ({ seriesId }) => {
         {loading ? (
           <LoadingDots>Loading</LoadingDots>
         ) : data?.user ? (
-          <WatchlistInner
+          <DefaultListControllersInner
             user={data.user}
             mutate={mutate}
             seriesId={seriesId}
@@ -215,4 +215,4 @@ const Watchlist = ({ seriesId }) => {
   );
 };
 
-export default Watchlist;
+export default DefaultListControllers;
