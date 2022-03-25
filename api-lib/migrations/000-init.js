@@ -90,8 +90,12 @@ const main = async () => {
       //   tmdb_id: 60839, // Broad City
       //   approved_specials: [],
       // },
+      // {
+      //   tmdb_id: 40075, // Gravity Falls
+      //   approved_specials: [],
+      // },
       {
-        tmdb_id: 40075, // Gravity Falls
+        tmdb_id: 2190, // South Park
         approved_specials: [],
       },
     ];
