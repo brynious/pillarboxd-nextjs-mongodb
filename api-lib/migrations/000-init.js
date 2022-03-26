@@ -68,7 +68,7 @@ const main = async () => {
       // },
       // {
       //   tmdb_id: 60554, // Star Wars: Rebels
-      //   approved_specials: [],
+      //   approved_specials: [1152428],
       // },
       // {
       //   tmdb_id: 79093, // Star Wars: Resistance
@@ -94,10 +94,10 @@ const main = async () => {
       //   tmdb_id: 40075, // Gravity Falls
       //   approved_specials: [],
       // },
-      {
-        tmdb_id: 2190, // South Park
-        approved_specials: [],
-      },
+      // {
+      //   tmdb_id: 2190, // South Park
+      //   approved_specials: [],
+      // },
     ];
 
     for (const series of seriesTmdbIds) {
@@ -110,9 +110,12 @@ const main = async () => {
       const [cast, crew] = await getTmdbSeriesCredits(seriesData.tmdb_id);
       seriesData.cast = cast;
       seriesData.crew = crew;
-      console.log({ seriesData });
+
       await upsertObjToDB(client, 'tv_series', seriesData);
       for (const season of seriesData.seasons) {
+        if (season.season_number === 0 && series.approved_specials.length === 0)
+          return;
+
         const seasonData = await updateSeason(
           client,
           tmdb_id,
