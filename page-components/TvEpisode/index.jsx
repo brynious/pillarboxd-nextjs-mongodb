@@ -38,7 +38,7 @@ export const TvEpisode = ({ series, season, episode }) => {
           <Spacer size={0.5} axis="vertical" />
           {episode.overview ? <p>{episode.overview}</p> : <p>No Overview</p>}
           <section>
-            <h3>Cast</h3>
+            {episode.guest_stars.length > 0 && <h3>Guest Stars</h3>}
             {episode.guest_stars.map((castMember) => {
               return (
                 <ActingCredit

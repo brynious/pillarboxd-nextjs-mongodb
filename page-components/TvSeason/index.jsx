@@ -52,7 +52,7 @@ export const TvSeason = ({ series, season, episodes }) => {
             })}
           </ul>
           <section>
-            <h3>Cast</h3>
+            {season.cast.length > 1 && <h3>Cast</h3>}
             {season.cast.map((castMember) => {
               return (
                 <ActingCredit

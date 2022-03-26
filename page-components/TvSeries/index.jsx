@@ -62,7 +62,7 @@ export const TvSeries = ({ series, seasons }) => {
           </Container>
 
           <section>
-            <h3>Cast</h3>
+            {series.cast.length > 1 && <h3>Cast</h3>}
             {series.cast.map((castMember) => {
               return (
                 <ActingCredit
