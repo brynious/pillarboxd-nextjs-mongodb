@@ -116,5 +116,3 @@ const upsertObjToDB = async (client, collection, data) => {
 };
 
 module.exports = { updateEpisode };
-
-// updateEpisode(1396, 1, 1).catch(console.error);
