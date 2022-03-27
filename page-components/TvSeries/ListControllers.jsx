@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
 import styles from './ListControllers.module.css';
+import { Ribbon, Television, Check } from '@/components/Icons/Icons';
 
 const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -148,11 +149,11 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
           loading={isLoading}
           type="success"
         >
-          Watchlist
+          <Ribbon />
         </Button>
       ) : (
         <Button onClick={addToWatchlist} loading={isLoading} type="secondary">
-          Watchlist
+          <Ribbon />
         </Button>
       )}
 
@@ -160,11 +161,11 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
         .map((series) => series.seriesId === seriesId)
         .includes(true) ? (
         <Button onClick={removeFromWatching} loading={isLoading} type="success">
-          Watching
+          <Television />
         </Button>
       ) : (
         <Button onClick={addToWatching} loading={isLoading} type="secondary">
-          Watching
+          <Television />
         </Button>
       )}
 
@@ -172,11 +173,11 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
         .map((series) => series.seriesId === seriesId)
         .includes(true) ? (
         <Button onClick={removeFromWatched} loading={isLoading} type="success">
-          Watched
+          <Check />
         </Button>
       ) : (
         <Button onClick={addToWatched} loading={isLoading} type="secondary">
-          Watched
+          <Check />
         </Button>
       )}
     </Container>

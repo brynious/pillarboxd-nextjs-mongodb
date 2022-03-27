@@ -12,9 +12,7 @@ import styles from './Nav.module.css';
 import Spacer from './Spacer';
 import Wrapper from './Wrapper';
 import Search from './Search';
-import { Ribbon } from '../Icons/Ribbon';
-import { Television } from '../Icons/Television';
-import { Check } from '../Icons/Check';
+import { Ribbon, Television, Check } from '../Icons/Icons';
 
 const UserMenu = ({ user, mutate }) => {
   const menuRef = useRef();
