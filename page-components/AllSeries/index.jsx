@@ -1,5 +1,5 @@
 import styles from './AllSeries.module.css';
-import { Wrapper, Container } from '@/components/Layout';
+import { Wrapper, Container, Spacer } from '@/components/Layout';
 import PosterImage from '@/components/PosterImage/PosterImage';
 import { useAllSeries } from '@/lib/series';
 import { Button } from '@/components/Button';
@@ -13,6 +13,7 @@ export const AllSeries = () => {
 
   return (
     <Wrapper className={styles.root}>
+      <Spacer size={2} axis="vertical" />
       <Container flex={true} className={styles.flexContainer}>
         {series.map((tvSeries) => {
           return (
@@ -25,6 +26,7 @@ export const AllSeries = () => {
           );
         })}
       </Container>
+      <Spacer size={2} axis="vertical" />
       <Container justifyContent="center">
         {isReachingEnd ? (
           <Text color="secondary">No more posts are found</Text>
@@ -39,6 +41,7 @@ export const AllSeries = () => {
           </Button>
         )}
       </Container>
+      <Spacer size={2} axis="vertical" />
     </Wrapper>
   );
 };
