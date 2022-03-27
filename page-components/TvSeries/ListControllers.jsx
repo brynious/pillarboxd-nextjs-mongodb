@@ -189,7 +189,7 @@ const DefaultListControllers = ({ seriesId }) => {
   const loading = !data && !error;
 
   return (
-    <section className={styles.listContainer}>
+    <section>
       <div className={styles.root}>
         <h3 className={styles.heading}>Your lists</h3>
         {loading ? (
