@@ -12,9 +12,7 @@
   width: 8em;
   max-width: 160px;
   margin: 0.5em 0.5em 0.5em 0.5em;
-}
-
-.image {
+  border: 1px solid gray;
   border-radius: 3px;
   pointer-events: none;
 }
