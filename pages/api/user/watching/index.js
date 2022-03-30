@@ -49,7 +49,7 @@ handler.post(
       creatorId: req.user._id,
     });
 
-    return res.json({ user });
+    return res.json({ user, message: 'Series added to Watching' });
   }
 );
 
@@ -73,7 +73,7 @@ handler.delete(
       creatorId: req.user._id,
     });
 
-    return res.json({ user });
+    return res.json({ user, message: 'Series removed from Watching' });
   }
 );
 

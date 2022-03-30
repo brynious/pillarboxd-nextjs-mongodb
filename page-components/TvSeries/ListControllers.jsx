@@ -13,123 +13,17 @@ import { Ribbon, Television, Check } from '@/components/Icons/Icons';
 const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const addToWatchlist = useCallback(
-    async (e) => {
-      e.preventDefault();
+  const listController = useCallback(
+    async (action, list) => {
       try {
         setIsLoading(true);
-        const response = await fetcher('/api/user/watchlist', {
-          method: 'POST',
+        const response = await fetcher(`/api/user/${list}`, {
+          method: action,
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ content: seriesId }),
         });
         mutate({ user: response.user }, false);
-        toast.success('Series added to your Watchlist');
-      } catch (e) {
-        toast.error(e.message);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [mutate, seriesId]
-  );
-
-  const removeFromWatchlist = useCallback(
-    async (e) => {
-      e.preventDefault();
-      try {
-        setIsLoading(true);
-        const response = await fetcher('/api/user/watchlist', {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content: seriesId }),
-        });
-        mutate({ user: response.user }, false);
-        toast.success('Series removed from your Watchlist');
-      } catch (e) {
-        toast.error(e.message);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [mutate, seriesId]
-  );
-
-  const addToWatching = useCallback(
-    async (e) => {
-      e.preventDefault();
-      try {
-        setIsLoading(true);
-        const response = await fetcher('/api/user/watching', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content: seriesId }),
-        });
-        mutate({ user: response.user }, false);
-        toast.success('Series added to your Watching');
-      } catch (e) {
-        toast.error(e.message);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [mutate, seriesId]
-  );
-
-  const removeFromWatching = useCallback(
-    async (e) => {
-      e.preventDefault();
-      try {
-        setIsLoading(true);
-        const response = await fetcher('/api/user/watching', {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content: seriesId }),
-        });
-        mutate({ user: response.user }, false);
-        toast.success('Series removed from your Watching');
-      } catch (e) {
-        toast.error(e.message);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [mutate, seriesId]
-  );
-
-  const addToWatched = useCallback(
-    async (e) => {
-      e.preventDefault();
-      try {
-        setIsLoading(true);
-        const response = await fetcher('/api/user/watched', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content: seriesId }),
-        });
-        mutate({ user: response.user }, false);
-        toast.success('Series added to your Watched list');
-      } catch (e) {
-        toast.error(e.message);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [mutate, seriesId]
-  );
-
-  const removeFromWatched = useCallback(
-    async (e) => {
-      e.preventDefault();
-      try {
-        setIsLoading(true);
-        const response = await fetcher('/api/user/watched', {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content: seriesId }),
-        });
-        mutate({ user: response.user }, false);
-        toast.success('Series removed from your Watched');
+        toast.success(response.message);
       } catch (e) {
         toast.error(e.message);
       } finally {
@@ -145,14 +39,18 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
         .map((series) => series.seriesId === seriesId)
         .includes(true) ? (
         <Button
-          onClick={removeFromWatchlist}
+          onClick={() => listController('DELETE', 'watchlist')}
           loading={isLoading}
           type="success"
         >
           <Ribbon />
         </Button>
       ) : (
-        <Button onClick={addToWatchlist} loading={isLoading} type="secondary">
+        <Button
+          onClick={() => listController('POST', 'watchlist')}
+          loading={isLoading}
+          type="secondary"
+        >
           <Ribbon />
         </Button>
       )}
@@ -160,11 +58,19 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
       {user.watching
         .map((series) => series.seriesId === seriesId)
         .includes(true) ? (
-        <Button onClick={removeFromWatching} loading={isLoading} type="success">
+        <Button
+          onClick={() => listController('DELETE', 'watching')}
+          loading={isLoading}
+          type="success"
+        >
           <Television />
         </Button>
       ) : (
-        <Button onClick={addToWatching} loading={isLoading} type="secondary">
+        <Button
+          onClick={() => listController('POST', 'watching')}
+          loading={isLoading}
+          type="secondary"
+        >
           <Television />
         </Button>
       )}
@@ -172,11 +78,19 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
       {user.watched
         .map((series) => series.seriesId === seriesId)
         .includes(true) ? (
-        <Button onClick={removeFromWatched} loading={isLoading} type="success">
+        <Button
+          onClick={() => listController('DELETE', 'watched')}
+          loading={isLoading}
+          type="success"
+        >
           <Check />
         </Button>
       ) : (
-        <Button onClick={addToWatched} loading={isLoading} type="secondary">
+        <Button
+          onClick={() => listController('POST', 'watched')}
+          loading={isLoading}
+          type="secondary"
+        >
           <Check />
         </Button>
       )}
