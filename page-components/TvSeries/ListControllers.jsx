@@ -10,6 +10,8 @@ import toast from 'react-hot-toast';
 import styles from './ListControllers.module.css';
 import { Ribbon, Television, Check } from '@/components/Icons/Icons';
 
+import Rating from './Rating';
+
 const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,67 +36,72 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
   );
 
   return (
-    <Container className={styles.controllerContainer}>
-      {user.watchlist
-        .map((series) => series.seriesId === seriesId)
-        .includes(true) ? (
-        <Button
-          onClick={() => listController('DELETE', 'watchlist')}
-          loading={isLoading}
-          type="success"
-        >
-          <Ribbon />
-        </Button>
-      ) : (
-        <Button
-          onClick={() => listController('POST', 'watchlist')}
-          loading={isLoading}
-          type="secondary"
-        >
-          <Ribbon />
-        </Button>
-      )}
+    <div>
+      <Container className={styles.controllerContainer}>
+        {user.watchlist
+          .map((series) => series.seriesId === seriesId)
+          .includes(true) ? (
+          <Button
+            onClick={() => listController('DELETE', 'watchlist')}
+            loading={isLoading}
+            type="success"
+          >
+            <Ribbon />
+          </Button>
+        ) : (
+          <Button
+            onClick={() => listController('POST', 'watchlist')}
+            loading={isLoading}
+            type="secondary"
+          >
+            <Ribbon />
+          </Button>
+        )}
 
-      {user.watching
-        .map((series) => series.seriesId === seriesId)
-        .includes(true) ? (
-        <Button
-          onClick={() => listController('DELETE', 'watching')}
-          loading={isLoading}
-          type="success"
-        >
-          <Television />
-        </Button>
-      ) : (
-        <Button
-          onClick={() => listController('POST', 'watching')}
-          loading={isLoading}
-          type="secondary"
-        >
-          <Television />
-        </Button>
-      )}
+        {user.watching
+          .map((series) => series.seriesId === seriesId)
+          .includes(true) ? (
+          <Button
+            onClick={() => listController('DELETE', 'watching')}
+            loading={isLoading}
+            type="success"
+          >
+            <Television />
+          </Button>
+        ) : (
+          <Button
+            onClick={() => listController('POST', 'watching')}
+            loading={isLoading}
+            type="secondary"
+          >
+            <Television />
+          </Button>
+        )}
 
-      {user.watched
-        .map((series) => series.seriesId === seriesId)
-        .includes(true) ? (
-        <Button
-          onClick={() => listController('DELETE', 'watched')}
-          loading={isLoading}
-          type="success"
-        >
-          <Check />
-        </Button>
-      ) : (
-        <Button
-          onClick={() => listController('POST', 'watched')}
-          loading={isLoading}
-          type="secondary"
-        >
-          <Check />
-        </Button>
-      )}
-    </Container>
+        {user.watched
+          .map((series) => series.seriesId === seriesId)
+          .includes(true) ? (
+          <Button
+            onClick={() => listController('DELETE', 'watched')}
+            loading={isLoading}
+            type="success"
+          >
+            <Check />
+          </Button>
+        ) : (
+          <Button
+            onClick={() => listController('POST', 'watched')}
+            loading={isLoading}
+            type="secondary"
+          >
+            <Check />
+          </Button>
+        )}
+      </Container>
+      <div>
+        <Rating precision={0.5} />
+      </div>
+    </div>
   );
 };
 

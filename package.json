@@ -22,7 +22,11 @@
   },
   "homepage": "https://github.com/brynious/pillarboxd-nextjs-mongodb#readme",
   "dependencies": {
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
     "@lukeed/ms": "^2.0.0",
+    "@mui/icons-material": "^5.5.1",
+    "@mui/material": "^5.5.3",
     "ajv": "^8.6.3",
     "axios": "^0.24.0",
     "bcryptjs": "^2.4.3",
