@@ -2,8 +2,6 @@
   min-height: calc(100vh);
 }
 
-.imageContainer {
-  width: 50em;
-  max-width: 300px;
-  margin: 15px 15px 15px 15px
+.flexContainer {
+  flex-wrap: wrap;
 }

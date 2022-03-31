@@ -64,7 +64,7 @@
   padding: 0;
   cursor: pointer;
   color: var(--accents-5);
-  display: block;
+  display: flex;
   width: 100%;
   align-items: center;
   text-decoration: none;
@@ -74,6 +74,10 @@
   transition: ease 0.2s;
   transition-property: background color;
   font-weight: medium;
+}
+
+.item > svg {
+  margin-right: 10px;
 }
 
 .item:focus,

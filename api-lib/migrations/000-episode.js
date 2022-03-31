@@ -7,7 +7,8 @@ const updateEpisode = async (
   client,
   series_tmdb_id,
   season_number,
-  episode_number
+  episode_number,
+  approved_specials
 ) => {
   // const client = new MongoClient(process.env.MONGODB_URI);
 
@@ -30,8 +31,12 @@ const updateEpisode = async (
     episodeData.series_id = series._id;
     episodeData.season_id = season._id;
 
-    await upsertObjToDB(client, 'tv_episodes', episodeData);
-    // return episodeData;
+    if (
+      episodeData.season_number !== 0 ||
+      approved_specials.includes(episodeData.tmdb_id)
+    ) {
+      await upsertObjToDB(client, 'tv_episodes', episodeData);
+    }
   } catch (e) {
     console.error(e);
   } finally {
@@ -111,5 +116,3 @@ const upsertObjToDB = async (client, collection, data) => {
 };
 
 module.exports = { updateEpisode };
-
-// updateEpisode(1396, 1, 1).catch(console.error);

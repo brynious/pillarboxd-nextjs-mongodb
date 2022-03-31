@@ -44,5 +44,13 @@ export async function getServerSideProps(context) {
   post.creatorId = String(post.creatorId);
   post.creator._id = String(post.creator._id);
   post.createdAt = post.createdAt.toJSON();
+
+  for (const listType of ['watchlist', 'watching', 'watched']) {
+    for (let i = 0; i < post.creator[listType].length; i++) {
+      post.creator[listType][i].loggedAt =
+        post.creator[listType][i].loggedAt.toJSON();
+    }
+  }
+
   return { props: { post } };
 }

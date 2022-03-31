@@ -1,38 +1,47 @@
 import styles from './AllSeries.module.css';
-import { Wrapper, Container } from '@/components/Layout';
-import Image from 'next/image';
-import Link from 'next/link';
+import { Wrapper, Container, Spacer } from '@/components/Layout';
+import PosterImage from '@/components/PosterImage/PosterImage';
+import { useAllSeries } from '@/lib/series';
+import { Button } from '@/components/Button';
+import { Text } from '@/components/Text';
 
-const backdropLoader = ({ src }) => {
-  return `https://image.tmdb.org/t/p/w185${src}`;
-};
+export const AllSeries = () => {
+  const { data, size, setSize, isLoadingMore, isReachingEnd } = useAllSeries();
+  const series = data
+    ? data.reduce((acc, val) => [...acc, ...val.seriesList], [])
+    : [];
 
-export const AllSeries = ({ series }) => {
   return (
     <Wrapper className={styles.root}>
+      <Spacer size={2} axis="vertical" />
       <Container flex={true} className={styles.flexContainer}>
         {series.map((tvSeries) => {
           return (
-            <div key={tvSeries.tmdb_id} className={styles.imageContainer}>
-              <Link href={`/series/${tvSeries.slug}`}>
-                <a>
-                  <div>
-                    <Image
-                      loader={backdropLoader}
-                      src={tvSeries.poster_path}
-                      width={185}
-                      height={185 * 1.5}
-                      layout="responsive"
-                      alt={`${tvSeries.name} backdrop image`}
-                      className={styles.image}
-                    />
-                  </div>
-                </a>
-              </Link>
-            </div>
+            <PosterImage
+              key={tvSeries.tmdb_id}
+              poster_path={tvSeries.poster_path}
+              slug={tvSeries.slug}
+              name={tvSeries.name}
+            />
           );
         })}
       </Container>
+      <Spacer size={2} axis="vertical" />
+      <Container justifyContent="center">
+        {isReachingEnd ? (
+          <Text color="secondary">No more posts are found</Text>
+        ) : (
+          <Button
+            variant="ghost"
+            type="success"
+            loading={isLoadingMore}
+            onClick={() => setSize(size + 1)}
+          >
+            Load more
+          </Button>
+        )}
+      </Container>
+      <Spacer size={2} axis="vertical" />
     </Wrapper>
   );
 };

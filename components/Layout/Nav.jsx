@@ -12,6 +12,7 @@ import styles from './Nav.module.css';
 import Spacer from './Spacer';
 import Wrapper from './Wrapper';
 import Search from './Search';
+import { Ribbon, Television, Check } from '../Icons/Icons';
 
 const UserMenu = ({ user, mutate }) => {
   const menuRef = useRef();
@@ -74,6 +75,24 @@ const UserMenu = ({ user, mutate }) => {
           <div className={styles.menu}>
             <Link passHref href={`/user/${user.username}`}>
               <a className={styles.item}>Profile</a>
+            </Link>
+            <Link passHref href={`/user/${user.username}/watchlist`}>
+              <a className={styles.item}>
+                <Ribbon />
+                <span>Watchlist</span>
+              </a>
+            </Link>
+            <Link passHref href={`/user/${user.username}/watching`}>
+              <a className={styles.item}>
+                <Television />
+                <span>Watching</span>
+              </a>
+            </Link>
+            <Link passHref href={`/user/${user.username}/watched`}>
+              <a className={styles.item}>
+                <Check />
+                <span>Watched</span>
+              </a>
             </Link>
             <Link passHref href="/settings">
               <a className={styles.item}>Settings</a>

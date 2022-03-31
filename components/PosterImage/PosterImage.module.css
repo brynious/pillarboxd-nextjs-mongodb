@@ -1,0 +1,17 @@
+.root {
+  position: relative;
+  box-sizing: border-box;
+  padding: 16px;
+  background: var(--background);
+  border: 1px solid var(--accents-2);
+  border-radius: 5px;
+  box-shadow: var(--shadow-smallest);
+}
+
+.imageContainer {
+  width: 8em;
+  max-width: 160px;
+  margin: 0.5em 0.5em 0.5em 0.5em;
+  border: 1px solid gray;
+  border-radius: 3px;
+}

@@ -2,6 +2,7 @@ import styles from './TvSeason.module.css';
 import { Spacer, Wrapper, Container } from '@/components/Layout';
 import Image from 'next/image';
 import Link from 'next/link';
+import ActingCredit from '@/components/Credit/ActingCredit';
 
 const backdropLoader = ({ src }) => {
   return `https://image.tmdb.org/t/p/w500${src}`;
@@ -33,7 +34,6 @@ export const TvSeason = ({ series, season, episodes }) => {
           <Spacer size={0.5} axis="vertical" />
           <ul>
             {episodes.map((episode) => {
-              console.log(episode.slug);
               if (
                 season.name.toLowerCase() !== 'specials' ||
                 series.approved_specials.includes(episode.tmdb_id)
@@ -52,12 +52,14 @@ export const TvSeason = ({ series, season, episodes }) => {
             })}
           </ul>
           <section>
-            <h3>Cast</h3>
+            {season.cast.length > 1 && <h3>Cast</h3>}
             {season.cast.map((castMember) => {
               return (
-                <p key={castMember.id}>
-                  {castMember.name} as {castMember.character}
-                </p>
+                <ActingCredit
+                  key={castMember.id}
+                  name={castMember.name}
+                  role={castMember.character}
+                />
               );
             })}
           </section>

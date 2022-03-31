@@ -1,4 +1,4 @@
-import { findUserByUsername } from '@/api-lib/db';
+import { findUserByUsername, findSeriesById } from '@/api-lib/db';
 import { database } from '@/api-lib/middlewares';
 import { User } from '@/page-components/User';
 import nc from 'next-connect';
@@ -8,9 +8,7 @@ export default function UserPage({ user }) {
   return (
     <>
       <Head>
-        <title>
-          {user.name} (@{user.username})
-        </title>
+        <title>{user.name}&apos;s Profile • Pillarboxd</title>
       </Head>
       <User user={user} />
     </>
@@ -28,6 +26,19 @@ export async function getServerSideProps(context) {
     return {
       notFound: true,
     };
+  } else {
+    for (const listType of ['watchlist', 'watching', 'watched']) {
+      for (let index = 0; index < user[listType].length; index++) {
+        const cursor = await findSeriesById(
+          context.req.db,
+          user[listType][index].seriesId
+        );
+        user[listType][index] = {
+          ...cursor,
+          _id: cursor._id.toString(),
+        };
+      }
+    }
   }
   user._id = String(user._id);
   return { props: { user } };
