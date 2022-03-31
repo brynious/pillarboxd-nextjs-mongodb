@@ -11,8 +11,9 @@
   /* box-shadow: var(--shadow-medium); */
 }
 
-.poster {
+.controllerContainer {
   width: 100%;
+  height: 5em;
 }
 
 .heading {

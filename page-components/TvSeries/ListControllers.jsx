@@ -34,7 +34,7 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
   );
 
   return (
-    <Container className={styles.poster}>
+    <Container className={styles.controllerContainer}>
       {user.watchlist
         .map((series) => series.seriesId === seriesId)
         .includes(true) ? (
