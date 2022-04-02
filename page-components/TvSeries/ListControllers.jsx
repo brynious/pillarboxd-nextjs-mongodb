@@ -17,7 +17,6 @@ import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
 
 const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
-  const [isLoading, setIsLoading] = useState(false);
   const [userScore, setUserScore] = useState(-1);
 
   const dynamicRoute = useRouter().asPath;
@@ -58,7 +57,6 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
   const listController = useCallback(
     async (action, list) => {
       try {
-        setIsLoading(true);
         const response = await fetcher(`/api/user/${list}`, {
           method: action,
           headers: { 'Content-Type': 'application/json' },
@@ -68,8 +66,6 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
         toast.success(response.message);
       } catch (e) {
         toast.error(e.message);
-      } finally {
-        setIsLoading(false);
       }
     },
     [mutate, seriesId]
@@ -83,7 +79,6 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
           .includes(true) ? (
           <Button
             onClick={() => listController('DELETE', 'watchlist')}
-            loading={isLoading}
             type="success"
           >
             <Ribbon />
@@ -91,7 +86,6 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
         ) : (
           <Button
             onClick={() => listController('POST', 'watchlist')}
-            loading={isLoading}
             type="secondary"
           >
             <Ribbon />
@@ -103,7 +97,6 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
           .includes(true) ? (
           <Button
             onClick={() => listController('DELETE', 'watching')}
-            loading={isLoading}
             type="success"
           >
             <Television />
@@ -111,7 +104,6 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
         ) : (
           <Button
             onClick={() => listController('POST', 'watching')}
-            loading={isLoading}
             type="secondary"
           >
             <Television />
@@ -123,7 +115,6 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
           .includes(true) ? (
           <Button
             onClick={() => listController('DELETE', 'watched')}
-            loading={isLoading}
             type="success"
           >
             <Check />
@@ -131,7 +122,6 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
         ) : (
           <Button
             onClick={() => listController('POST', 'watched')}
-            loading={isLoading}
             type="secondary"
           >
             <Check />

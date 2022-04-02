@@ -15,7 +15,7 @@ const main = async () => {
 
     const seriesTmdbIds = [
       // { tmdb_id: 61118, approved_specials: [] },  // You're the Worst
-      { tmdb_id: 1104, approved_specials: [] },  // Mad Men
+      { tmdb_id: 1104, approved_specials: [] }, // Mad Men
     ];
 
     for (const series of seriesTmdbIds) {
