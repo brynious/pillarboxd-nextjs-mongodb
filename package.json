@@ -1,7 +1,7 @@
 {
   "name": "pillarboxd-nextjs-mongodb",
   "version": "1.0.0",
-  "description": "Full fledged app for tracking TV shows made with Next.JS and MongoDB",
+  "description": "App for tracking TV shows made with Next.JS and MongoDB",
   "main": "index.js",
   "scripts": {
     "dev": "next dev",

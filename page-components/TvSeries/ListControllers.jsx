@@ -20,7 +20,7 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
 
   useEffect(() => {
     const getUsersRatingOnLoad = async () => {
-      const data = await fetcher(`/api/user/rating/${seriesId}`, {
+      const data = await fetcher(`/api/user/${user._id}/rating/${seriesId}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
