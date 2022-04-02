@@ -11,6 +11,7 @@ import styles from './ListControllers.module.css';
 import { Ribbon, Television, Check } from '@/components/Icons/Icons';
 
 import Rating from '@mui/material/Rating';
+import Star from '@mui/icons-material/Star';
 import Typography from '@mui/material/Typography';
 
 const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
@@ -68,24 +69,6 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
     },
     [mutate, seriesId]
   );
-
-  // useCallback(
-  //   const updateDB = async (score) => {
-  //     try {
-  //       const action = score ? 'POST' : 'DELETE';
-  //       console.log({ action });
-  //       const response = await fetcher(`/api/user/rating`, {
-  //         method: 'POST',
-  //         headers: { 'Content-Type': 'application/json' },
-  //         body: JSON.stringify({ seriesId: seriesId, score: score }),
-  //       });
-  //       toast.success(response.message);
-  //     } catch (e) {
-  //       toast.error(e.message);
-  //     }
-  //   },
-  //   [userScore]
-  // );
 
   return (
     <div>
@@ -156,6 +139,8 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
         precision={0.5}
         value={userScore}
         size="large"
+        icon={<Star style={{ color: '#00e054' }} fontSize="large" />}
+        emptyIcon={<Star style={{ color: '#334455' }} fontSize="large" />}
         onChange={(event, newUserScore) => {
           setUserScore(newUserScore);
         }}
