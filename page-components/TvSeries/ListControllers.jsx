@@ -21,9 +21,9 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
   const [userScore, setUserScore] = useState(-1);
 
   const dynamicRoute = useRouter().asPath;
-
   useEffect(() => {
     const getUsersRatingOnLoad = async () => {
+      setUserScore(-1);
       const data = await fetcher(`/api/user/${user._id}/rating/${seriesId}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -33,7 +33,7 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
     };
 
     getUsersRatingOnLoad().catch(console.error);
-  }, [dynamicRoute]);
+  }, [dynamicRoute, seriesId, user._id]);
 
   useEffect(() => {
     const uploadRating = async () => {
@@ -43,7 +43,7 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ seriesId: seriesId, score: userScore }),
         });
-      } else if (userScore === 0) {
+      } else if (userScore === null) {
         await fetcher(`/api/user/rating`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
@@ -53,7 +53,7 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
     };
 
     uploadRating().catch(console.error);
-  }, [userScore]);
+  }, [userScore, seriesId]);
 
   const listController = useCallback(
     async (action, list) => {
