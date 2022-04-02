@@ -1,5 +1,13 @@
 import { ObjectId } from 'mongodb';
 
+export async function getSeriesRating(db, { userId, seriesId }) {
+  const dbRating = await db
+    .collection('series_ratings')
+    .findOne({ userId: ObjectId(userId), seriesId: ObjectId(seriesId) });
+
+  return dbRating;
+}
+
 export async function postSeriesRating(db, { userId, seriesId, score }) {
   const dbRating = await db
     .collection('series_ratings')
@@ -9,14 +17,13 @@ export async function postSeriesRating(db, { userId, seriesId, score }) {
       { returnDocument: 'after', projection: { password: 0 }, upsert: true }
     );
 
-  console.log(dbRating.value);
   return dbRating.value;
 }
 
 export async function deleteSeriesRating(db, { userId, seriesId }) {
   const updatedUser = await db
     .collection('series_ratings')
-    .deleteOne({ userId: userId, seriesId });
+    .deleteOne({ userId: ObjectId(userId), seriesId: ObjectId(seriesId) });
 
   return updatedUser.value;
 }
