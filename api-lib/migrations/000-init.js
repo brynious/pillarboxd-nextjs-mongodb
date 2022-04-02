@@ -14,7 +14,8 @@ const main = async () => {
     await client.connect();
 
     const seriesTmdbIds = [
-      { tmdb_id: 61118, approved_specials: [] },  // You're the Worst
+      // { tmdb_id: 61118, approved_specials: [] },  // You're the Worst
+      { tmdb_id: 1104, approved_specials: [] },  // Mad Men
     ];
 
     for (const series of seriesTmdbIds) {

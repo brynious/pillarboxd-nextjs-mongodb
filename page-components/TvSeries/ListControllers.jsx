@@ -14,9 +14,13 @@ import Rating from '@mui/material/Rating';
 import Star from '@mui/icons-material/Star';
 import Typography from '@mui/material/Typography';
 
+import { useRouter } from 'next/router';
+
 const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userScore, setUserScore] = useState(-1);
+
+  const dynamicRoute = useRouter().asPath;
 
   useEffect(() => {
     const getUsersRatingOnLoad = async () => {
@@ -24,11 +28,12 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
-      setUserScore(data.rating.score);
+      const score = data.rating.score;
+      setUserScore(score ? score : -1);
     };
 
     getUsersRatingOnLoad().catch(console.error);
-  }, []);
+  }, [dynamicRoute]);
 
   useEffect(() => {
     const uploadRating = async () => {
