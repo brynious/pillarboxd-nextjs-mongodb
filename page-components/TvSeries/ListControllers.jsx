@@ -35,6 +35,24 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
     [mutate, seriesId]
   );
 
+  const handleRating = useCallback(
+    async (score) => {
+      try {
+        const response = await fetcher(`/api/user/rating`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ seriesId: seriesId, score: score }),
+        });
+        // mutate({ user: response.user }, false);
+        toast.success(response.message);
+      } catch (e) {
+        toast.error(e.message);
+      }
+    },
+    // [mutate]
+    []
+  );
+
   return (
     <div>
       <Container className={styles.controllerContainer}>
@@ -99,7 +117,10 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
         )}
       </Container>
       <div>
-        <Rating precision={0.5} />
+        <Rating handleRating={handleRating} size="small" />
+      </div>
+      <div>
+        <Rating handleRating={handleRating} size="large" />
       </div>
     </div>
   );

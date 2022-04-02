@@ -41,7 +41,7 @@ export const TvSeries = ({ series, seasons }) => {
                   <PosterImage
                     key={season.tmdb_id}
                     poster_path={season.poster_path}
-                    slug={`/${series.slug}/${season.slug}`}
+                    slug={`${series.slug}/${season.slug}`}
                     name={season.name}
                   />
                 );
@@ -54,7 +54,7 @@ export const TvSeries = ({ series, seasons }) => {
                     <PosterImage
                       key={season.tmdb_id}
                       poster_path={season.poster_path}
-                      slug={`/${series.slug}/${season.slug}`}
+                      slug={`${series.slug}/${season.slug}`}
                       name={season.name}
                     />
                   );

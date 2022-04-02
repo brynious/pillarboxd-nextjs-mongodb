@@ -15,4 +15,8 @@ export const ValidateProps = {
   watchlist: {
     seriesId: { type: 'string', minLength: 10, maxLength: 20 },
   },
+  rating: {
+    seriesId: { type: 'string', minLength: 10, maxLength: 25 },
+    score: { type: 'number', minimum: 0.5, maximum: 5 },
+  },
 };

@@ -4,16 +4,17 @@ import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 
 const Rating = ({
-  precision = 1,
+  precision = 0.5,
   totalStars = 5,
   emptyIcon = StarBorderIcon,
   filledIcon = StarIcon,
+  handleRating,
 }) => {
   const [activeStar, setActiveStar] = useState(-1);
   const [hoverActiveStar, setHoverActiveStar] = useState(-1);
   const [isHovered, setIsHovered] = useState(false);
   const ratingContainerRef = useRef(null);
- 
+
   const calculateRating = (e) => {
     const { width, left } = ratingContainerRef.current.getBoundingClientRect();
     let percent = (e.clientX - left) / width;
@@ -29,6 +30,7 @@ const Rating = ({
   const handleClick = (e) => {
     setIsHovered(false);
     setActiveStar(calculateRating(e));
+    handleRating(calculateRating(e));
   };
 
   const handleMouseMove = (e) => {
