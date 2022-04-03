@@ -3,14 +3,26 @@ import { Spacer, Wrapper, Container } from '@/components/Layout';
 import PosterImage from '@/components/PosterImage/PosterImage';
 import ActingCredit from '@/components/Credit/ActingCredit';
 import { useCurrentUser } from '@/lib/user';
+import Image from 'next/image';
 
 import ListControllers from './ListControllers';
 
 export const TvSeries = ({ series, seasons }) => {
   const { data: { user } = {} } = useCurrentUser();
 
+  const backdropLoader = ({ src }) => {
+    return `https://image.tmdb.org/t/p/original${src}`;
+  };
+
   return (
     <Wrapper className={styles.root}>
+      <Image
+        loader={backdropLoader}
+        className={styles.backdropImage}
+        layout="fill"
+        src={series.backdrop_path}
+        alt="background"
+      />
       <Container flex={true}>
         <div className={styles.imageContainer}>
           <PosterImage
