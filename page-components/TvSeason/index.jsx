@@ -3,12 +3,17 @@ import { Spacer, Wrapper, Container } from '@/components/Layout';
 import Image from 'next/image';
 import Link from 'next/link';
 import ActingCredit from '@/components/Credit/ActingCredit';
+// import { useCurrentUser } from '@/lib/user';
+
+import ListControllers from './ListControllers';
 
 const backdropLoader = ({ src }) => {
   return `https://image.tmdb.org/t/p/w500${src}`;
 };
 
 export const TvSeason = ({ series, season, episodes }) => {
+  // const { data: { user } = {} } = useCurrentUser();
+
   return (
     <Wrapper className={styles.root}>
       <Container flex={true}>
@@ -63,6 +68,9 @@ export const TvSeason = ({ series, season, episodes }) => {
               );
             })}
           </section>
+        </div>
+        <div>
+          <ListControllers seasonId={season._id} />
         </div>
       </Container>
     </Wrapper>

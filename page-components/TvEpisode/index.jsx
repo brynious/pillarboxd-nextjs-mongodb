@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import ActingCredit from '@/components/Credit/ActingCredit';
 
+import ListControllers from './ListControllers';
+
 const backdropLoader = ({ src }) => {
   return `https://image.tmdb.org/t/p/w500${src}`;
 };
@@ -49,6 +51,9 @@ export const TvEpisode = ({ series, season, episode }) => {
               );
             })}
           </section>
+        </div>
+        <div>
+          <ListControllers episodeId={episode._id} />
         </div>
       </Container>
     </Wrapper>

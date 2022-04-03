@@ -17,6 +17,8 @@ export const ValidateProps = {
   },
   rating: {
     seriesId: { type: 'string', minLength: 10, maxLength: 25 },
+    seasonId: { type: 'string', minLength: 10, maxLength: 25 },
+    episodeId: { type: 'string', minLength: 10, maxLength: 25 },
     score: { type: 'number', minimum: 0.5, maximum: 5 },
   },
 };

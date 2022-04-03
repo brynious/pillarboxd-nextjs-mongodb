@@ -23,10 +23,13 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
   useEffect(() => {
     const getUsersRatingOnLoad = async () => {
       setUserScore(-1);
-      const data = await fetcher(`/api/user/${user._id}/rating/${seriesId}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const data = await fetcher(
+        `/api/user/${user._id}/rating/series/${seriesId}`,
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
       const score = data.rating.score;
       setUserScore(score ? score : -1);
     };
@@ -37,13 +40,13 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
   useEffect(() => {
     const uploadRating = async () => {
       if (userScore > 0) {
-        await fetcher(`/api/user/rating`, {
+        await fetcher(`/api/user/rating/series`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ seriesId: seriesId, score: userScore }),
         });
       } else if (userScore === null) {
-        await fetcher(`/api/user/rating`, {
+        await fetcher(`/api/user/rating/series`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ seriesId: seriesId }),
