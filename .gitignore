@@ -67,4 +67,5 @@ yarn.lock
 
 .vercel
 
-cache/data.js
+# temporarily removed
+# cache/data.js
