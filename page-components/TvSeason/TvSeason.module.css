@@ -1,6 +1,6 @@
 .root {
   min-height: calc(100vh);
-  padding-top: 250px;
+  padding-top: 25em;
 }
 
 .imageContainer {
@@ -21,6 +21,6 @@
   mask-image: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 1) 30%,
-    rgba(0, 0, 0, 0) 80%
+    rgba(0, 0, 0, 0) 75%
   );
 }
