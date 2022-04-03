@@ -14,8 +14,9 @@ const main = async () => {
     await client.connect();
 
     const seriesTmdbIds = [
+      // { tmdb_id: 114478, approved_specials: [] }, // Star Wars Visions
       // { tmdb_id: 61118, approved_specials: [] },  // You're the Worst
-      { tmdb_id: 1104, approved_specials: [] }, // Mad Men
+      // { tmdb_id: 1104, approved_specials: [] }, // Mad Men
     ];
 
     for (const series of seriesTmdbIds) {
@@ -25,13 +26,27 @@ const main = async () => {
         series.approved_specials
       );
 
-      if (seriesData.number_of_episodes > 100) continue;
+      if (seriesData.number_of_episodes > 40) continue;
+
       if (
-        !seriesData.origin_country.includes('GB') &&
-        !seriesData.origin_country.includes('US')
+        !(
+          seriesData.origin_country.includes('GB') ||
+          seriesData.origin_country.includes('US')
+        )
       )
         continue;
+
       if (!seriesData.languages.includes('en')) continue;
+
+      if (
+        seriesData.episode_run_time.length < 1 ||
+        seriesData.episode_run_time[0] < 10
+      )
+        continue;
+
+      if (seriesData.adult) continue;
+
+      if (seriesData.type === 'Talk Show') continue;
 
       console.log(seriesData.name);
 
