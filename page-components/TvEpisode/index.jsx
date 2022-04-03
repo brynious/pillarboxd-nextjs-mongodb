@@ -4,17 +4,30 @@ import Image from 'next/image';
 import Link from 'next/link';
 import ActingCredit from '@/components/Credit/ActingCredit';
 
+import ListControllers from './ListControllers';
+
 const backdropLoader = ({ src }) => {
+  return `https://image.tmdb.org/t/p/original${src}`;
+};
+
+const posterLoader = ({ src }) => {
   return `https://image.tmdb.org/t/p/w500${src}`;
 };
 
 export const TvEpisode = ({ series, season, episode }) => {
   return (
     <Wrapper className={styles.root}>
+      <Image
+        loader={backdropLoader}
+        className={styles.backdropImage}
+        layout="fill"
+        src={episode.still_path}
+        alt="background"
+      />
       <Container flex={true}>
         <div className={styles.posterContainer}>
           <Image
-            loader={backdropLoader}
+            loader={posterLoader}
             src={season.poster_path}
             width={500}
             height={750}
@@ -49,6 +62,10 @@ export const TvEpisode = ({ series, season, episode }) => {
               );
             })}
           </section>
+          <Spacer size={5} axis="vertical" />
+        </div>
+        <div>
+          <ListControllers episodeId={episode._id} />
         </div>
       </Container>
     </Wrapper>

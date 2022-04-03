@@ -1,6 +1,7 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './search.module.css';
+import { useRouter } from 'next/router';
 
 export default function Search() {
   const searchRef = useRef(null);
@@ -9,6 +10,12 @@ export default function Search() {
   const [results, setResults] = useState([]);
 
   const searchEndpoint = (query) => `/api/search?q=${query}`;
+
+  const dynamicRoute = useRouter().asPath;
+
+  useEffect(() => {
+    setActive(false);
+  }, [dynamicRoute]);
 
   const onChange = useCallback((event) => {
     const query = event.target.value;

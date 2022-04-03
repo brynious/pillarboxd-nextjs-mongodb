@@ -1,9 +1,26 @@
 .root {
   min-height: calc(100vh);
+  padding-top: 250px;
 }
 
 .posterContainer {
   width: 50em;
   max-width: 200px;
-  margin: 15px 15px 15px 15px
+  margin: 15px 15px 15px 15px;
+}
+
+.backdropImage {
+  object-fit: cover;
+  -webkit-mask-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    from(rgba(0, 0, 0, 1)),
+    to(rgba(0, 0, 0, 0))
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 30%,
+    rgba(0, 0, 0, 0) 80%
+  );
 }

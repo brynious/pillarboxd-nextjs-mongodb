@@ -3,18 +3,34 @@ import { Spacer, Wrapper, Container } from '@/components/Layout';
 import Image from 'next/image';
 import Link from 'next/link';
 import ActingCredit from '@/components/Credit/ActingCredit';
+// import { useCurrentUser } from '@/lib/user';
+
+import ListControllers from './ListControllers';
 
 const backdropLoader = ({ src }) => {
+  return `https://image.tmdb.org/t/p/original${src}`;
+};
+
+const posterLoader = ({ src }) => {
   return `https://image.tmdb.org/t/p/w500${src}`;
 };
 
 export const TvSeason = ({ series, season, episodes }) => {
+  // const { data: { user } = {} } = useCurrentUser();
+
   return (
     <Wrapper className={styles.root}>
+      <Image
+        loader={backdropLoader}
+        className={styles.backdropImage}
+        layout="fill"
+        src={season.poster_path}
+        alt="background"
+      />
       <Container flex={true}>
         <div className={styles.imageContainer}>
           <Image
-            loader={backdropLoader}
+            loader={posterLoader}
             src={season.poster_path}
             width={500}
             height={750}
@@ -63,6 +79,10 @@ export const TvSeason = ({ series, season, episodes }) => {
               );
             })}
           </section>
+          <Spacer size={5} axis="vertical" />
+        </div>
+        <div>
+          <ListControllers seasonId={season._id} />
         </div>
       </Container>
     </Wrapper>
