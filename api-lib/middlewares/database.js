@@ -28,6 +28,17 @@ async function createIndexes(db) {
       { key: { tmdb_id: 1 }, unique: true },
       { key: { slug: 1 }, unique: true },
     ]),
+    db.collection('tv_seasons').createIndexes([
+      { key: { tmdb_id: 1 }, unique: true },
+      { key: { series_id: 1 }, unique: false },
+      { key: { slug: 1 }, unique: false },
+    ]),
+    db.collection('tv_episodes').createIndexes([
+      { key: { tmdb_id: 1 }, unique: true },
+      { key: { series_id: 1 }, unique: false },
+      { key: { season_id: 1 }, unique: false },
+      { key: { slug: 1 }, unique: false },
+    ]),
   ]);
   indexesCreated = true;
 }
