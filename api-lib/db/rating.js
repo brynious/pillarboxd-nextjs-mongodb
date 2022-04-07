@@ -83,3 +83,49 @@ export async function deleteEpisodeRating(db, { userId, episodeId }) {
 
   return updatedUser.value;
 }
+
+export async function getAllSeriesRatedByUser(db, user_id) {
+  const ratingsCursor = await db
+    .collection('series_ratings')
+    .find({ userId: ObjectId(user_id) });
+  const ratingsArray = await ratingsCursor.toArray();
+
+  let ratedSeries = [];
+
+  const unresolved = ratingsArray.map(async (rating) => {
+    const _id = await ObjectId(rating.seriesId);
+
+    const seriesCursor = await db.collection('tv_series').findOne(
+      { _id },
+      {
+        projection: {
+          name: 1,
+          poster_path: 1,
+          slug: 1,
+          tmdb_id: 1,
+        },
+      }
+    );
+
+    ratedSeries.push({
+      _id: rating._id,
+      seriesId: rating.seriesId,
+      ratedAt: rating.ratedAt,
+      score: rating.score,
+      tmdb_id: seriesCursor.tmdb_id,
+      name: seriesCursor.name,
+      poster_path: seriesCursor.poster_path,
+      slug: seriesCursor.slug,
+    });
+  });
+
+  await Promise.all(unresolved);
+
+  ratedSeries.sort((a, b) => {
+    if (a.ratedAt < b.ratedAt) {
+      return 1;
+    } else return -1;
+  });
+
+  return ratedSeries;
+}
