@@ -11,7 +11,22 @@ export async function findSeriesById(db, idToSearch) {
 export async function findSeriesBySlug(db, slug) {
   return db
     .collection('tv_series')
-    .findOne({ slug })
+    .findOne(
+      { slug },
+      {
+        projection: {
+          tmdb_id: 1,
+          approved_specials: 1,
+          backdrop_path: 1,
+          cast: 1,
+          name: 1,
+          overview: 1,
+          popularity: 1,
+          poster_path: 1,
+          slug: 1,
+        },
+      }
+    )
     .then((series) => series || null);
 }
 
