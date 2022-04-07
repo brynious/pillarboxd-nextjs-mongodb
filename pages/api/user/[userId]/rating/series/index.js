@@ -10,8 +10,6 @@ handler.use(database);
 handler.get(async (req, res) => {
   const seriesList = await getAllSeriesRatedByUser(req.db, req.query.userId);
 
-  console.log('api req handler', { seriesList });
-
   return res.json({ seriesList });
 });
 
