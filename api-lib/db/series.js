@@ -38,7 +38,22 @@ export async function getSeriesByTmdbId(db, tmdb_id) {
 }
 
 export async function getAllSeries(db) {
-  const cursor = db.collection('tv_series').find({});
+  const cursor = db.collection('tv_series').find(
+    {},
+    {
+      projection: {
+        tmdb_id: 1,
+        approved_specials: 1,
+        backdrop_path: 1,
+        cast: 1,
+        name: 1,
+        overview: 1,
+        popularity: 1,
+        poster_path: 1,
+        slug: 1,
+      },
+    }
+  );
   const allSeries = await cursor.toArray();
   return allSeries;
 }

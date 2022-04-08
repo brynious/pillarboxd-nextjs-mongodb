@@ -13,9 +13,11 @@ import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
 
 const DefaultListControllersInner = ({ user, seasonId }) => {
-  const [userScore, setUserScore] = useState(-1);
+  const [userScore, setUserScore] = useState(null);
+  const [firstRenderComplete, setFirstRenderComplete] = useState(false);
 
   const dynamicRoute = useRouter().asPath;
+
   useEffect(() => {
     const getUsersRatingOnLoad = async () => {
       setUserScore(-1);
@@ -26,14 +28,18 @@ const DefaultListControllersInner = ({ user, seasonId }) => {
           headers: { 'Content-Type': 'application/json' },
         }
       );
-      const score = data.rating.score;
-      setUserScore(score ? score : -1);
+
+      const score = data?.rating?.score;
+      setUserScore(score ? score : null);
+      setFirstRenderComplete(true);
     };
 
     getUsersRatingOnLoad().catch(console.error);
   }, [dynamicRoute, seasonId, user._id]);
 
   useEffect(() => {
+    if (!firstRenderComplete) return;
+
     const uploadRating = async () => {
       if (userScore > 0) {
         await fetcher(`/api/user/rating/season`, {

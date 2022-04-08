@@ -11,7 +11,6 @@ export const Ratings = ({ user_id, name }) => {
   const { data, size, setSize, isLoadingMore, isReachingEnd } =
     useAllUserSeriesRatings({ user_id });
 
-  console.log({ data });
   const series = data
     ? data.reduce((acc, val) => [...acc, ...val.seriesList], [])
     : [];
@@ -34,8 +33,7 @@ export const Ratings = ({ user_id, name }) => {
                 name="read-only"
                 precision={0.5}
                 value={tvSeries.score}
-                size="large"
-                icon={<Star style={{ color: '#00e054' }} fontSize="small" />}
+                icon={<Star style={{ color: '#00e054' }} />}
                 readOnly
               />
             </div>
