@@ -83,3 +83,42 @@ export async function deleteEpisodeRating(db, { userId, episodeId }) {
 
   return updatedUser.value;
 }
+
+export async function getAllSeriesRatedByUser(db, user_id, before, limit = 60) {
+  const ratingsCursor = await db
+    .collection('series_ratings')
+    .aggregate([
+      {
+        $match: {
+          userId: ObjectId(user_id),
+          ...(before && { ratedAt: { $lt: before } }),
+        },
+      },
+      { $sort: { ratedAt: -1 } },
+      { $limit: limit },
+      {
+        $lookup: {
+          from: 'tv_series',
+          localField: 'seriesId',
+          foreignField: '_id',
+          as: 'seriesData',
+        },
+      },
+      { $unwind: '$seriesData' },
+      {
+        $project: {
+          seriesId: 1,
+          userId: 1,
+          ratedAt: 1,
+          score: 1,
+          tmdb_id: '$seriesData.tmdb_id',
+          poster_path: '$seriesData.poster_path',
+          name: '$seriesData.name',
+          slug: '$seriesData.slug',
+        },
+      },
+    ])
+    .toArray();
+
+  return ratingsCursor;
+}

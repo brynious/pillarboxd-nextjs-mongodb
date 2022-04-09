@@ -12,6 +12,7 @@ import styles from './Nav.module.css';
 import Spacer from './Spacer';
 import Wrapper from './Wrapper';
 import Search from './Search';
+import Star from '@mui/icons-material/Star';
 import { Ribbon, Television, Check } from '../Icons/Icons';
 
 const UserMenu = ({ user, mutate }) => {
@@ -92,6 +93,12 @@ const UserMenu = ({ user, mutate }) => {
               <a className={styles.item}>
                 <Check />
                 <span>Watched</span>
+              </a>
+            </Link>
+            <Link passHref href={`/user/${user.username}/ratings`}>
+              <a className={styles.item}>
+                <Star />
+                <span>Ratings</span>
               </a>
             </Link>
             <Link passHref href="/settings">

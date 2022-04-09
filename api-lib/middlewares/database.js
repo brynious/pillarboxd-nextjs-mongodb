@@ -37,6 +37,10 @@ async function createIndexes(db) {
       { key: { series_id: 1 }, unique: false },
       { key: { season_id: 1 }, unique: false },
     ]),
+    db.collection('series_ratings').createIndexes([
+      { key: { seriesId: 1 }, unique: false },
+      { key: { userId: 1 }, unique: false },
+    ]),
   ]);
   indexesCreated = true;
 }

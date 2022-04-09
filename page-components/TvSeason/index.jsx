@@ -3,7 +3,6 @@ import { Spacer, Wrapper, Container } from '@/components/Layout';
 import Image from 'next/image';
 import Link from 'next/link';
 import ActingCredit from '@/components/Credit/ActingCredit';
-// import { useCurrentUser } from '@/lib/user';
 
 import ListControllers from './ListControllers';
 
@@ -16,8 +15,6 @@ const posterLoader = ({ src }) => {
 };
 
 export const TvSeason = ({ series, season, episodes }) => {
-  // const { data: { user } = {} } = useCurrentUser();
-
   return (
     <Wrapper className={styles.root}>
       <Image
@@ -45,6 +42,7 @@ export const TvSeason = ({ series, season, episodes }) => {
             </Link>
           </h1>
           <h2>{season.name}</h2>
+          <p>{season.air_date && new Date(season.air_date).getFullYear()}</p>
           <Spacer size={0.5} axis="vertical" />
           {season.overview && <p>{season.overview}</p>}
           <Spacer size={0.5} axis="vertical" />
