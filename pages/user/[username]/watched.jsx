@@ -27,23 +27,24 @@ export async function getServerSideProps(context) {
       notFound: true,
     };
   } else {
-    for (const listType of ['watchlist', 'watching', 'watched']) {
-      for (let index = 0; index < user[listType].length; index++) {
-        const initial = user[listType][index];
+    for (let index = 0; index < user['watched'].length; index++) {
+      const initial = user['watched'][index];
 
-        const cursor = await findSeriesById(
-          context.req.db,
-          user[listType][index].seriesId
-        );
-        user[listType][index] = {
-          seriesId: initial.seriesId,
-          loggedAt: initial.loggedAt.toJSON(),
-          ...cursor,
-          _id: cursor._id.toString(),
-        };
-      }
+      const cursor = await findSeriesById(
+        context.req.db,
+        user['watched'][index].seriesId
+      );
+      user['watched'][index] = {
+        seriesId: initial.seriesId,
+        loggedAt: initial.loggedAt.toJSON(),
+        ...cursor,
+        _id: cursor._id.toString(),
+      };
     }
   }
+
+  user['watchlist'] = '';
+  user['watching'] = '';
   user._id = String(user._id);
   return { props: { user } };
 }
