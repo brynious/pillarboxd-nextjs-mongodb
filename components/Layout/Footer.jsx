@@ -8,10 +8,23 @@ const Footer = () => {
   return (
     <footer className={styles.footer}>
       <Wrapper>
+        <Text>
+          Created by{' '}
+          <TextLink href="https://github.com/" color="link">
+            Bryn McIvor
+          </TextLink>
+        </Text>
         <Text color="accents-7">
-          Made with ❤️, 🔥, and a keyboard by{' '}
-          <TextLink href="https://github.com/brynious/" color="link">
-            brynious
+          Based on{' '}
+          <TextLink
+            href="https://github.com/hoangvvo/nextjs-mongodb-app"
+            color="link"
+          >
+            the template
+          </TextLink>{' '}
+          created with ❤️, 🔥, and a keyboard by{' '}
+          <TextLink href="https://hoangvvo.com/" color="link">
+            Hoang Vo
           </TextLink>
           .
         </Text>

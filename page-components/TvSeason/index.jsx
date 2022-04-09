@@ -21,7 +21,7 @@ export const TvSeason = ({ series, season, episodes }) => {
         loader={backdropLoader}
         className={styles.backdropImage}
         layout="fill"
-        src={season.poster_path}
+        src={series.backdrop_path}
         alt="background"
       />
       <Container flex={true}>
