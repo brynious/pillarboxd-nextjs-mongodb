@@ -16,7 +16,7 @@ export async function getEpisodesBySeasonId(db, season_id) {
     { season_id: season_id },
     {
       projection: {
-        tmdb_id: 1,
+        air_date: 1,
         episode_number: 1,
         guest_stars: 1,
         name: 1,
@@ -27,6 +27,7 @@ export async function getEpisodesBySeasonId(db, season_id) {
         series_tmdb_id: 1,
         slug: 1,
         still_path: 1,
+        tmdb_id: 1,
       },
     }
   );

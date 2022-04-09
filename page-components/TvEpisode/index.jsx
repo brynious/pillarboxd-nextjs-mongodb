@@ -17,13 +17,15 @@ const posterLoader = ({ src }) => {
 export const TvEpisode = ({ series, season, episode }) => {
   return (
     <Wrapper className={styles.root}>
-      <Image
-        loader={backdropLoader}
-        className={styles.backdropImage}
-        layout="fill"
-        src={episode.still_path}
-        alt="background"
-      />
+      {episode.still_path && (
+        <Image
+          loader={backdropLoader}
+          className={styles.backdropImage}
+          layout="fill"
+          src={episode.still_path}
+          alt="background"
+        />
+      )}
       <Container flex={true}>
         <div className={styles.posterContainer}>
           <Image
@@ -49,7 +51,17 @@ export const TvEpisode = ({ series, season, episode }) => {
             {episode.episode_number}. {episode.name}
           </h2>
           <Spacer size={0.5} axis="vertical" />
-          {episode.overview ? <p>{episode.overview}</p> : <p>No Overview</p>}
+          <p>{episode.overview ? episode.overview : 'No episode overview.'}</p>
+          {episode.air_date && (
+            <p>
+              {new Date(episode.air_date).toLocaleDateString('en-GB', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </p>
+          )}
           <section>
             {episode.guest_stars.length > 0 && <h3>Guest Stars</h3>}
             {episode.guest_stars.map((castMember) => {
