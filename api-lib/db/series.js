@@ -30,15 +30,18 @@ export async function findSeriesBySlug(db, slug) {
       { slug },
       {
         projection: {
-          tmdb_id: 1,
           approved_specials: 1,
           backdrop_path: 1,
           cast: 1,
+          first_air_date: 1,
+          last_air_date: 1,
           name: 1,
           overview: 1,
           popularity: 1,
           poster_path: 1,
           slug: 1,
+          status: 1,
+          tmdb_id: 1,
         },
       }
     )

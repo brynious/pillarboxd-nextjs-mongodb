@@ -10,6 +10,9 @@ import ListControllers from './ListControllers';
 export const TvSeries = ({ series, seasons }) => {
   const { data: { user } = {} } = useCurrentUser();
 
+  const premiere_year = new Date(series.first_air_date).getFullYear();
+  const final_year = new Date(series.last_air_date).getFullYear();
+
   const backdropLoader = ({ src }) => {
     return `https://image.tmdb.org/t/p/original${src}`;
   };
@@ -34,6 +37,10 @@ export const TvSeries = ({ series, seasons }) => {
         </div>
         <div>
           <h1>{series.name}</h1>
+          <p>
+            {premiere_year && premiere_year}
+            {series.status === 'Ended' && ` - ${final_year}`}
+          </p>
           <p>{series.tagline}</p>
           <p>{series.overview}</p>
           <Spacer size={0.5} axis="vertical" />
