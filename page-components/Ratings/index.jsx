@@ -33,7 +33,13 @@ export const Ratings = ({ user_id, name }) => {
                 name="read-only"
                 precision={0.5}
                 value={tvSeries.score}
-                icon={<Star style={{ color: '#00e054' }} />}
+                icon={<Star style={{ color: '#00e054' }} fontSize="small" />}
+                emptyIcon={
+                  <Star
+                    style={{ color: 'var(--background)' }}
+                    fontSize="small"
+                  />
+                }
                 readOnly
               />
             </div>
