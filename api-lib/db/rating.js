@@ -85,54 +85,40 @@ export async function deleteEpisodeRating(db, { userId, episodeId }) {
 }
 
 export async function getAllSeriesRatedByUser(db, user_id, before, limit = 60) {
-  const ratingsCursor = await db.collection('series_ratings').aggregate([
-    {
-      $match: {
-        userId: ObjectId(user_id),
-        ...(before && { ratedAt: { $lt: before } }),
-      },
-    },
-    { $sort: { ratedAt: -1 } },
-    { $limit: limit },
-  ]);
-  const ratingsArray = await ratingsCursor.toArray();
-
-  let ratedSeries = [];
-
-  const unresolved = ratingsArray.map(async (rating) => {
-    const _id = await ObjectId(rating.seriesId);
-
-    const seriesCursor = await db.collection('tv_series').findOne(
-      { _id },
+  const ratingsCursor = await db
+    .collection('series_ratings')
+    .aggregate([
       {
-        projection: {
-          name: 1,
-          poster_path: 1,
-          slug: 1,
-          tmdb_id: 1,
+        $match: {
+          userId: ObjectId(user_id),
+          ...(before && { ratedAt: { $lt: before } }),
         },
-      }
-    );
+      },
+      { $sort: { ratedAt: -1 } },
+      { $limit: limit },
+      {
+        $lookup: {
+          from: 'tv_series',
+          localField: 'seriesId',
+          foreignField: '_id',
+          as: 'seriesData',
+        },
+      },
+      { $unwind: '$seriesData' },
+      {
+        $project: {
+          seriesId: 1,
+          userId: 1,
+          ratedAt: 1,
+          score: 1,
+          tmdb_id: '$seriesData.tmdb_id',
+          poster_path: '$seriesData.poster_path',
+          name: '$seriesData.name',
+          slug: '$seriesData.slug',
+        },
+      },
+    ])
+    .toArray();
 
-    ratedSeries.push({
-      _id: rating._id,
-      seriesId: rating.seriesId,
-      ratedAt: rating.ratedAt,
-      score: rating.score,
-      tmdb_id: seriesCursor.tmdb_id,
-      name: seriesCursor.name,
-      poster_path: seriesCursor.poster_path,
-      slug: seriesCursor.slug,
-    });
-  });
-
-  await Promise.all(unresolved);
-
-  ratedSeries.sort((a, b) => {
-    if (a.ratedAt < b.ratedAt) {
-      return 1;
-    } else return -1;
-  });
-
-  return ratedSeries;
+  return ratingsCursor;
 }
