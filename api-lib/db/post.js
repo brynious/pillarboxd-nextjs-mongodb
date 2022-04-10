@@ -60,25 +60,6 @@ export async function insertPost(db, { content, creatorId }) {
   return post;
 }
 
-export async function insertWatchlist(db, { content, creatorId }) {
-  const watchlistItem = {
-    seriesId: content,
-    loggedAt: new Date(),
-  };
-
-  const userId = ObjectId(creatorId);
-
-  const updatedUser = await db
-    .collection('users')
-    .findOneAndUpdate(
-      { _id: userId },
-      { $push: { watchlist: watchlistItem } },
-      { returnDocument: 'after', projection: { password: 0 } }
-    );
-
-  return updatedUser.value;
-}
-
 export async function deleteFromWatchlist(db, { content, creatorId }) {
   const userId = ObjectId(creatorId);
 

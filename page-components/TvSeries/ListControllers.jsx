@@ -70,13 +70,14 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ content: seriesId }),
         });
-        mutate({ user: response.user }, false);
+        console.log({ response });
+        // mutate({ user: response.user }, false);
         toast.success(response.message);
       } catch (e) {
         toast.error(e.message);
       }
     },
-    [mutate, seriesId]
+    [seriesId]
   );
 
   return (

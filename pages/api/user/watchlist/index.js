@@ -1,5 +1,9 @@
 import { ValidateProps } from '@/api-lib/constants';
-import { findPosts, insertWatchlist, deleteFromWatchlist } from '@/api-lib/db';
+import {
+  getUserSeriesStatus,
+  insertToDefaultList,
+  deleteFromWatchlist,
+} from '@/api-lib/db';
 import { auths, database, validateBody } from '@/api-lib/middlewares';
 import { ncOpts } from '@/api-lib/nc';
 import nc from 'next-connect';
@@ -9,14 +13,12 @@ const handler = nc(ncOpts);
 handler.use(database);
 
 handler.get(async (req, res) => {
-  const posts = await findPosts(
-    req.db,
-    req.query.before ? new Date(req.query.before) : undefined,
-    req.query.by,
-    req.query.limit ? parseInt(req.query.limit, 10) : undefined
-  );
+  const series_status = await getUserSeriesStatus(req.db, {
+    series_id: req.body.content,
+    user_id: req.user._id,
+  });
 
-  res.json({ posts });
+  res.json({ series_status });
 });
 
 handler.post(
@@ -34,9 +36,10 @@ handler.post(
       return res.status(401).end();
     }
 
-    const user = await insertWatchlist(req.db, {
-      content: req.body.content,
-      creatorId: req.user._id,
+    const user = await insertToDefaultList(req.db, {
+      series_id: req.body.content,
+      user_id: req.user._id,
+      default_list: 'watchlist',
     });
 
     return res.json({ user, message: 'Series added to Watchlist' });

@@ -8,20 +8,37 @@ const main = async () => {
     // Connect to the MongoDB cluster
     await client.connect();
 
-    const tmdb_id = 1396;
-
-    const series = await client
+    const cursor = await client
       .db('production0')
-      .collection('tv_series')
-      .findOne({ tmdb_id: tmdb_id });
-    console.log(`Series: ${series._id}`);
+      .collection('users')
+      .aggregate([
+        {
+          $match: {
+            name: 'Bryn',
+          },
+        },
+        {
+          $lookup: {
+            from: 'tv_series',
+            localField: 'seriesId',
+            foreignField: 'tv_series._id',
+            as: 'series',
+          },
+        },
+        {
+          $project: {
+            name: 1,
+            slug: 1,
+            watchlist: 1,
+          },
+        },
+      ])
+      .toArray();
 
-    const cursor = client
-      .db('production0')
-      .collection('tv_seasons')
-      .find({ series_id: series._id });
-    const seasons = await cursor.toArray();
-    return seasons;
+    console.log({ cursor });
+    console.log(cursor[0].watchlist);
+
+    return cursor;
   } catch (e) {
     console.error(e);
   } finally {
