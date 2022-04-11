@@ -7,7 +7,7 @@ export const User = ({ user }) => {
   return (
     <div className={styles.root}>
       <UserHeader user={user} />
-      <DefaultLists user={user} />
+      <DefaultLists />
       <UserPosts user={user} />
     </div>
   );

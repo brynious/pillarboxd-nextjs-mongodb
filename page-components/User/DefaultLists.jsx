@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { Ribbon, Television, Check } from '@/components/Icons/Icons';
 import Star from '@mui/icons-material/Star';
 
-const DefaultLists = ({ user }) => {
+const DefaultLists = () => {
   const router = useRouter();
   const { username } = router.query;
 
