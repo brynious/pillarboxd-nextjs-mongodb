@@ -41,6 +41,10 @@ async function createIndexes(db) {
       { key: { seriesId: 1 }, unique: false },
       { key: { userId: 1 }, unique: false },
     ]),
+    db.collection('user_series_status').createIndexes([
+      { key: { series_id: 1 }, unique: false },
+      { key: { user_id: 1 }, unique: false },
+    ]),
   ]);
   indexesCreated = true;
 }

@@ -5,6 +5,7 @@
   max-width: 720px;
   padding: 32px;
   background-color: var(--background);
+  justify-content: space-around;
 }
 
 .avatar {
@@ -27,4 +28,10 @@
   color: var(--secondary);
   text-align: center;
   line-height: 1.5;
+}
+
+.blockCenter {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }

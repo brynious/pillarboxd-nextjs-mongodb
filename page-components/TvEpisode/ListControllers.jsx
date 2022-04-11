@@ -8,7 +8,6 @@ import styles from './ListControllers.module.css';
 
 import Rating from '@mui/material/Rating';
 import Star from '@mui/icons-material/Star';
-import Typography from '@mui/material/Typography';
 
 import { useRouter } from 'next/router';
 
@@ -55,7 +54,7 @@ const DefaultListControllersInner = ({ user, episodeId }) => {
 
   return (
     <div>
-      <Typography component="legend">Rating</Typography>
+      <h3 className={styles.heading}>Rating</h3>
       <Rating
         name="simple-controlled"
         precision={0.5}
@@ -78,7 +77,6 @@ const DefaultListControllers = ({ episodeId }) => {
   return (
     <section>
       <div className={styles.root}>
-        <h3 className={styles.heading}>Your lists</h3>
         {loading ? (
           <LoadingDots>Loading</LoadingDots>
         ) : data?.user ? (
