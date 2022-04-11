@@ -1,16 +1,20 @@
-import { findUserByUsername, findSeriesById } from '@/api-lib/db';
+import { findUserByUsername } from '@/api-lib/db';
 import { database } from '@/api-lib/middlewares';
 import { DefaultList } from '@/page-components/User/DefaultList';
 import nc from 'next-connect';
 import Head from 'next/head';
 
-export default function UserPage({ user }) {
+export default function UserPage({ user_id, username, list_type }) {
   return (
     <>
       <Head>
-        <title>{user.name}&apos;s Watching • Pillarboxd</title>
+        <title>{username}&apos;s Watching • Pillarboxd</title>
       </Head>
-      <DefaultList user={user} listType="watching" />
+      <DefaultList
+        user_id={user_id}
+        username={username}
+        list_type={list_type}
+      />
     </>
   );
 }
@@ -26,24 +30,11 @@ export async function getServerSideProps(context) {
     return {
       notFound: true,
     };
-  } else {
-    for (let index = 0; index < user['watching'].length; index++) {
-      const initial = user['watching'][index];
-
-      const cursor = await findSeriesById(
-        context.req.db,
-        user['watching'][index].seriesId
-      );
-      user['watching'][index] = {
-        seriesId: initial.seriesId,
-        loggedAt: initial.loggedAt.toJSON(),
-        ...cursor,
-        _id: cursor._id.toString(),
-      };
-    }
   }
-  user['watchlist'] = '';
-  user['watched'] = '';
-  user._id = String(user._id);
-  return { props: { user } };
+
+  const user_id = String(user._id);
+  const username = user.name;
+  const list_type = 'watching';
+
+  return { props: { user_id, username, list_type } };
 }

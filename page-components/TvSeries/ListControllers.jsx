@@ -12,11 +12,14 @@ import { Ribbon, Television, Check } from '@/components/Icons/Icons';
 
 import Rating from '@mui/material/Rating';
 import Star from '@mui/icons-material/Star';
-import Typography from '@mui/material/Typography';
 
 import { useRouter } from 'next/router';
 
-const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
+const DefaultListControllersInner = ({ user, seriesId }) => {
+  const [watchlist, setWatchlist] = useState(false);
+  const [watching, setWatching] = useState(false);
+  const [watched, setWatched] = useState(false);
+
   const [userScore, setUserScore] = useState(null);
   const [firstRenderComplete, setFirstRenderComplete] = useState(false);
 
@@ -62,29 +65,50 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
     uploadRating().catch(console.error);
   }, [userScore]);
 
+  useEffect(() => {
+    const getUserSeriesStatus = async () => {
+      const data = await fetcher(
+        `/api/user/${user._id}/series_status/${seriesId}`,
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+
+      setWatchlist(data?.status?.watchlist);
+      setWatching(data?.status?.watching);
+      setWatched(data?.status?.watched);
+    };
+
+    getUserSeriesStatus().catch(console.error);
+  }, [dynamicRoute, seriesId, user._id]);
+
   const listController = useCallback(
     async (action, list) => {
       try {
-        const response = await fetcher(`/api/user/${list}`, {
-          method: action,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content: seriesId }),
-        });
-        mutate({ user: response.user }, false);
+        const response = await fetcher(
+          `/api/user/${user._id}/series_status/${seriesId}/${list}`,
+          {
+            method: action,
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
+
+        setWatchlist(response?.updated_doc?.watchlist);
+        setWatching(response?.updated_doc?.watching);
+        setWatched(response?.updated_doc?.watched);
         toast.success(response.message);
       } catch (e) {
         toast.error(e.message);
       }
     },
-    [mutate, seriesId]
+    [seriesId]
   );
 
   return (
     <div>
       <Container className={styles.controllerContainer}>
-        {user.watchlist
-          .map((series) => series.seriesId === seriesId)
-          .includes(true) ? (
+        {watchlist ? (
           <Button
             onClick={() => listController('DELETE', 'watchlist')}
             type="success"
@@ -100,9 +124,7 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
           </Button>
         )}
 
-        {user.watching
-          .map((series) => series.seriesId === seriesId)
-          .includes(true) ? (
+        {watching ? (
           <Button
             onClick={() => listController('DELETE', 'watching')}
             type="success"
@@ -118,9 +140,7 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
           </Button>
         )}
 
-        {user.watched
-          .map((series) => series.seriesId === seriesId)
-          .includes(true) ? (
+        {watched ? (
           <Button
             onClick={() => listController('DELETE', 'watched')}
             type="success"
@@ -136,7 +156,7 @@ const DefaultListControllersInner = ({ user, mutate, seriesId }) => {
           </Button>
         )}
       </Container>
-      <Typography component="legend">Rating</Typography>
+      <h3 className={styles.heading}>Rating</h3>
       <Rating
         name="simple-controlled"
         precision={0.5}

@@ -5,6 +5,7 @@
   max-width: 720px;
   padding: 32px;
   background-color: var(--background);
+  justify-content: space-around;
 }
 
 .avatar {

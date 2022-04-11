@@ -39,19 +39,14 @@ export const TvSeries = ({ series, seasons }) => {
           <h1>{series.name}</h1>
           <p>
             {premiere_year && `${premiere_year} - `}
-            {series.status === 'Ended' && final_year}
+            {(series.status === 'Ended' || series.status === 'Canceled') &&
+              final_year}
           </p>
           <p>{series.tagline}</p>
           <p>{series.overview}</p>
-          <Spacer size={0.5} axis="vertical" />
+          <Spacer size={1} axis="vertical" />
 
-          {user
-            ? user.watchlist.includes(series._id) && 'Series in watchlist.'
-            : 'Login to add to watchlist'}
-
-          <Spacer size={0.5} axis="vertical" />
           <h3>Seasons</h3>
-
           <Container flex={true} className={styles.flexContainer}>
             {seasons
               .filter((season) => season.name.toLowerCase() !== 'specials')
