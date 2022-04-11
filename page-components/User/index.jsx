@@ -1,6 +1,5 @@
 import styles from './User.module.css';
 import UserHeader from './UserHeader';
-import UserPosts from './UserPosts';
 import DefaultLists from './DefaultLists';
 
 export const User = ({ user }) => {
@@ -8,7 +7,6 @@ export const User = ({ user }) => {
     <div className={styles.root}>
       <UserHeader user={user} />
       <DefaultLists />
-      <UserPosts user={user} />
     </div>
   );
 };
