@@ -39,7 +39,8 @@ export const TvSeries = ({ series, seasons }) => {
           <h1>{series.name}</h1>
           <p>
             {premiere_year && `${premiere_year} - `}
-            {series.status === 'Ended' && final_year}
+            {(series.status === 'Ended' || series.status === 'Canceled') &&
+              final_year}
           </p>
           <p>{series.tagline}</p>
           <p>{series.overview}</p>
