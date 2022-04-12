@@ -94,7 +94,7 @@ export async function getAllSeriesRatedByUser(db, user_id, before, limit = 60) {
           ...(before && { ratedAt: { $lt: before } }),
         },
       },
-      { $sort: { ratedAt: -1 } },
+      { $sort: { score: -1, ratedAt: -1 } },
       { $limit: limit },
       {
         $lookup: {
