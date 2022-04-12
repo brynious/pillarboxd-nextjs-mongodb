@@ -1,6 +1,6 @@
 import { findUserByUsername } from '@/api-lib/db';
 import { database } from '@/api-lib/middlewares';
-import { SeriesRatings } from '@/page-components/Ratings/SeriesRatings';
+import { SeasonRatings } from '@/page-components/Ratings/SeasonRatings';
 import nc from 'next-connect';
 import Head from 'next/head';
 
@@ -8,9 +8,9 @@ export default function UserPage({ user_id, name }) {
   return (
     <>
       <Head>
-        <title>{name}&apos;s Series Ratings • Pillarboxd</title>
+        <title>{name}&apos;s Season Ratings • Pillarboxd</title>
       </Head>
-      <SeriesRatings user_id={user_id} name={name} />
+      <SeasonRatings user_id={user_id} name={name} />
     </>
   );
 }

@@ -122,3 +122,60 @@ export async function getAllSeriesRatedByUser(db, user_id, before, limit = 60) {
 
   return ratingsCursor;
 }
+
+export async function getAllSeasonsRatedByUser(
+  db,
+  user_id,
+  before,
+  limit = 60
+) {
+  const ratingsCursor = await db
+    .collection('season_ratings')
+    .aggregate([
+      {
+        $match: {
+          userId: ObjectId(user_id),
+          ...(before && { ratedAt: { $lt: before } }),
+        },
+      },
+      { $sort: { score: -1, ratedAt: -1 } },
+      { $limit: limit },
+      {
+        $lookup: {
+          from: 'tv_seasons',
+          localField: 'seasonId',
+          foreignField: '_id',
+          as: 'season_data',
+        },
+      },
+      {
+        $lookup: {
+          from: 'tv_series',
+          localField: 'season_data.series_id',
+          foreignField: '_id',
+          as: 'series_data',
+        },
+      },
+      { $unwind: '$season_data' },
+      { $unwind: '$series_data' },
+      {
+        $project: {
+          seasonId: 1,
+          userId: 1,
+          ratedAt: 1,
+          score: 1,
+          seriesId: '$series_data._id',
+          tmdb_id: '$series_data.tmdb_id',
+          poster_path: '$season_data.poster_path',
+          name: '$series_data.name',
+          series_slug: '$series_data.slug',
+          season_slug: '$season_data.slug',
+        },
+      },
+    ])
+    .toArray();
+
+  console.log(ratingsCursor[0]);
+
+  return ratingsCursor;
+}

@@ -1,38 +1,38 @@
-import styles from './Ratings.module.css';
+import styles from './SeasonRatings.module.css';
 import { Wrapper, Container, Spacer } from '@/components/Layout';
-import { useAllUserSeriesRatings } from '@/lib/ratings';
+import { useAllUserSeasonRatings } from '@/lib/ratings';
 import PosterImage from '@/components/PosterImage/PosterImage';
 import { Button } from '@/components/Button';
 import { Text } from '@/components/Text';
 import Rating from '@mui/material/Rating';
 import Star from '@mui/icons-material/Star';
 
-export const Ratings = ({ user_id, name }) => {
+export const SeasonRatings = ({ user_id, name }) => {
   const { data, size, setSize, isLoadingMore, isReachingEnd } =
-    useAllUserSeriesRatings({ user_id });
+    useAllUserSeasonRatings({ user_id });
 
-  const series = data
-    ? data.reduce((acc, val) => [...acc, ...val.seriesList], [])
+  const seasons = data
+    ? data.reduce((acc, val) => [...acc, ...val.season_list], [])
     : [];
 
   return (
     <Wrapper className={styles.root}>
       <Spacer size={2} axis="vertical" />
-      <h1>{name}&apos;s Ratings</h1>
+      <h1>{name}&apos;s Season Ratings</h1>
       <Container flex={true} className={styles.flexContainer}>
-        {series.map((tvSeries) => {
+        {seasons.map((tv_season) => {
           return (
-            <div key={tvSeries.tmdb_id}>
+            <div key={tv_season.tmdb_id}>
               <PosterImage
-                key={tvSeries.tmdb_id}
-                poster_path={tvSeries.poster_path}
-                slug={tvSeries.slug}
-                name={tvSeries.name}
+                key={tv_season.tmdb_id}
+                poster_path={tv_season.poster_path}
+                slug={`${tv_season.series_slug}/${tv_season.season_slug}`}
+                name={tv_season.name}
               />
               <Rating
                 name="read-only"
                 precision={0.5}
-                value={tvSeries.score}
+                value={tv_season.score}
                 icon={<Star style={{ color: '#00e054' }} fontSize="small" />}
                 emptyIcon={
                   <Star
