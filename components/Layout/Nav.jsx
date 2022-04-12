@@ -74,28 +74,28 @@ const UserMenu = ({ user, mutate }) => {
       >
         {visible && (
           <div className={styles.menu}>
-            <Link passHref href={`/user/${user.username}`}>
+            <Link passHref href={`/${user.username}`}>
               <a className={styles.item}>Profile</a>
             </Link>
-            <Link passHref href={`/user/${user.username}/watchlist`}>
+            <Link passHref href={`/${user.username}/series/watchlist`}>
               <a className={styles.item}>
                 <Ribbon />
                 <span>Watchlist</span>
               </a>
             </Link>
-            <Link passHref href={`/user/${user.username}/watching`}>
+            <Link passHref href={`/${user.username}/series/watching`}>
               <a className={styles.item}>
                 <Television />
                 <span>Watching</span>
               </a>
             </Link>
-            <Link passHref href={`/user/${user.username}/watched`}>
+            <Link passHref href={`/${user.username}/series/watched`}>
               <a className={styles.item}>
                 <Check />
                 <span>Watched</span>
               </a>
             </Link>
-            <Link passHref href={`/user/${user.username}/ratings`}>
+            <Link passHref href={`/${user.username}/series/ratings`}>
               <a className={styles.item}>
                 <Star />
                 <span>Ratings</span>
