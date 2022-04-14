@@ -6,3 +6,4 @@ export * from './season';
 export * from './episode';
 export * from './rating';
 export * from './defaultList';
+export * from './userSeasons';
