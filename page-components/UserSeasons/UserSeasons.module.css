@@ -6,3 +6,7 @@
 .flexContainer {
   flex-wrap: wrap;
 }
+
+.headingContainer {
+  justify-content: space-between;
+}

@@ -7,7 +7,6 @@ export async function getAllUsersSeasons(
   before,
   limit = 60
 ) {
-  console.log({ year });
   const ratingsCursor = await db
     .collection('user_series_status')
     .aggregate([
