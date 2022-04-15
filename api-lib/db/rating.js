@@ -175,7 +175,5 @@ export async function getAllSeasonsRatedByUser(
     ])
     .toArray();
 
-  console.log(ratingsCursor[0]);
-
   return ratingsCursor;
 }

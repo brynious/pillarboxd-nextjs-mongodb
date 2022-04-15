@@ -65,7 +65,5 @@ export async function getAllUsersSeasons(
     ])
     .toArray();
 
-  // console.log({ ratingsCursor });
-
   return ratingsCursor;
 }
