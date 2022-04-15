@@ -18,9 +18,11 @@ import Select from '@mui/material/Select';
 export const UserSeasons = ({ user_id, name }) => {
   const router = useRouter();
 
-  const [year, setYear] = useState(router.query);
+  const [year, setYear] = useState(router.query.year);
 
   const handleChange = (event) => {
+    router.query.year = event.target.value;
+    router.push(router);
     setYear(event.target.value);
   };
 

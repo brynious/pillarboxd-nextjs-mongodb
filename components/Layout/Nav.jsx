@@ -107,6 +107,11 @@ const UserMenu = ({ user, mutate }) => {
                 <span>Season Ratings</span>
               </a>
             </Link>
+            <Link passHref href={`/${user.username}/seasons?year=2022`}>
+              <a className={styles.item}>
+                <span>Seasons</span>
+              </a>
+            </Link>
             <Link passHref href="/settings">
               <a className={styles.item}>Settings</a>
             </Link>
