@@ -12,6 +12,7 @@ import styles from './Nav.module.css';
 import Spacer from './Spacer';
 import Wrapper from './Wrapper';
 import Search from './Search';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Star from '@mui/icons-material/Star';
 import { Ribbon, Television, Check } from '../Icons/Icons';
 
@@ -75,7 +76,10 @@ const UserMenu = ({ user, mutate }) => {
         {visible && (
           <div className={styles.menu}>
             <Link passHref href={`/${user.username}`}>
-              <a className={styles.item}>Profile</a>
+              <a className={styles.item}>
+                <AccountCircleIcon />
+                <span>Profile</span>
+              </a>
             </Link>
             <Link passHref href={`/${user.username}/series/watchlist`}>
               <a className={styles.item}>
