@@ -29,7 +29,7 @@ export const AllSeries = () => {
       <Spacer size={2} axis="vertical" />
       <Container justifyContent="center">
         {isReachingEnd ? (
-          <Text color="secondary">No more posts are found</Text>
+          <Text color="secondary">End of list</Text>
         ) : (
           <Button
             variant="ghost"
