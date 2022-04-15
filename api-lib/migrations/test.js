@@ -1,4 +1,8 @@
+// import ObjectId from 'mongodb';
+const { ObjectId } = require('mongodb');
+
 const { MongoClient } = require('mongodb');
+
 require('dotenv').config();
 
 const main = async () => {
@@ -8,35 +12,33 @@ const main = async () => {
     // Connect to the MongoDB cluster
     await client.connect();
 
+    const limit = 10;
+
     const cursor = await client
       .db('production0')
-      .collection('users')
+      .collection('tv_seasons')
       .aggregate([
         {
-          $match: {
-            name: 'Bryn',
+          $set: {
+            year: {
+              $dateFromString: { dateString: '$air_date', format: '%Y-%m-%d' },
+            },
+            year1: '$air_date',
+            year2: {
+              $year: {
+                $dateFromString: {
+                  dateString: '$air_date',
+                  format: '%Y-%m-%d',
+                },
+              },
+            },
           },
         },
-        {
-          $lookup: {
-            from: 'tv_series',
-            localField: 'seriesId',
-            foreignField: 'tv_series._id',
-            as: 'series',
-          },
-        },
-        {
-          $project: {
-            name: 1,
-            slug: 1,
-            watchlist: 1,
-          },
-        },
+        { $limit: 10 },
       ])
       .toArray();
 
     console.log({ cursor });
-    console.log(cursor[0].watchlist);
 
     return cursor;
   } catch (e) {

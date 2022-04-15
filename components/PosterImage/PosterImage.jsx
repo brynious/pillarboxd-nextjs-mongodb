@@ -3,7 +3,7 @@ import styles from './PosterImage.module.css';
 import Image from 'next/image';
 
 const backdropLoader = ({ src }) => {
-  return `https://image.tmdb.org/t/p/w185${src}`;
+  return `https://image.tmdb.org/t/p/w300${src}`;
 };
 
 const PosterImage = ({ poster_path, slug, alt }) => {
