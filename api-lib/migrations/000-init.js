@@ -17,7 +17,10 @@ const main = async () => {
       // { tmdb_id: 114478, approved_specials: [] }, // Star Wars Visions
       // { tmdb_id: 61118, approved_specials: [] },  // You're the Worst
       // { tmdb_id: 1104, approved_specials: [] }, // Mad Men
-      { tmdb_id: 62611, approved_specials: [] }, // Review
+      // { tmdb_id: 62611, approved_specials: [] }, // Review
+      // { tmdb_id: 8592, approved_specials: [] }, // Parks and Recreation
+      // { tmdb_id: 32726, approved_specials: [] }, // Bob's Burgers
+      { tmdb_id: 4608, approved_specials: [] }, // 30 Rock
     ];
 
     for (const series of seriesTmdbIds) {
@@ -27,7 +30,7 @@ const main = async () => {
         series.approved_specials
       );
 
-      if (seriesData.number_of_episodes > 40) continue;
+      // if (seriesData.number_of_episodes > 40) continue;
 
       if (
         !(
@@ -56,17 +59,21 @@ const main = async () => {
       seriesData.cast = cast;
       seriesData.crew = crew;
 
+      const seasons = seriesData.seasons;
+      delete seriesData.seasons;
+
       await upsertObjToDB(client, 'tv_series', seriesData);
-      for (const season of seriesData.seasons) {
+      for (const season of seasons) {
         if (season.season_number === 0 && series.approved_specials.length === 0)
           continue;
 
-        const seasonData = await updateSeason(
+        const { seasonData, episodes } = await updateSeason(
           client,
           tmdb_id,
           season.season_number
         );
-        for (const episode of seasonData.episodes) {
+
+        for (const episode of episodes) {
           await updateEpisode(
             client,
             tmdb_id,

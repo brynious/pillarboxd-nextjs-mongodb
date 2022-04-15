@@ -19,8 +19,12 @@ const updateSeason = async (client, series_tmdb_id, season_number) => {
     );
     seasonData.cast = cast;
     seasonData.crew = crew;
+
+    const episodes = seasonData.episodes;
+    delete seasonData.episodes;
+
     await upsertObjToDB(client, 'tv_seasons', seasonData);
-    return seasonData;
+    return { seasonData, episodes };
   } catch (e) {
     console.error(e);
   }
