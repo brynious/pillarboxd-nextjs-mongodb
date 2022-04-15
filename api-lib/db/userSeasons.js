@@ -7,24 +7,32 @@ export async function getAllUsersSeasons(
   before,
   limit = 60
 ) {
+  console.log({ year });
   const ratingsCursor = await db
-    .collection('tv_seasons')
+    .collection('user_series_status')
     .aggregate([
       {
-        $set: {
-          year: {
-            $year: {
-              $dateFromString: {
-                dateString: '$air_date',
-                format: '%Y-%m-%d',
-              },
-            },
-          },
+        // get IDs of series user has marked as watchlist, watching, or watched
+        $match: {
+          user_id: ObjectId(user_id),
+          $or: [{ watchlist: true }, { watching: true }, { watched: true }],
         },
       },
       {
+        // match with all seasons for those series
+        $lookup: {
+          from: 'tv_seasons',
+          localField: 'series_id',
+          foreignField: 'series_id',
+          as: 'season_data',
+        },
+      },
+      { $unwind: '$season_data' },
+      {
+        // filter to seasons which came out in the specified year
         $match: {
-          year: 2018,
+          ...(year && { 'season_data.year': parseInt(year) }),
+          'season_data.name': { $ne: 'Specials' },
         },
       },
       {
@@ -36,118 +44,29 @@ export async function getAllUsersSeasons(
         },
       },
       { $unwind: '$series_data' },
-
-      // {
-      //   $set: {
-      //     // test: 'hello there?',
-      //     // year1: {
-      //     //   $dateFromString: { dateString: '$air_date', format: '%Y-%m-%d' },
-      //     // },
-      //     // year2: '$season_data.air_date',
-      //     year: {
-      //       $year: {
-      //         $dateFromString: {
-      //           dateString: '$season_data.air_date',
-      //           format: '%Y-%m-%d',
-      //         },
-      //       },
-      //     },
-      //   },
-      // },
+      { $sort: { 'series_data.popularity': -1 } },
+      {
+        $match: {
+          ...(before && { 'series_data.popularity': { $lt: before } }),
+        },
+      },
+      { $limit: limit },
       {
         $project: {
-          seasonId: 1,
-          // userId: 1,
-          // ratedAt: 1,
-          // score: 1,
           seriesId: '$series_data._id',
-          tmdb_id: 1,
-          poster_path: 1,
+          tmdb_id: '$season_data.tmdb_id',
+          poster_path: '$season_data.poster_path',
           name: '$series_data.name',
-          season_number: 1,
+          season_number: '$season_data.season_number',
           popularity: '$series_data.popularity',
           series_slug: '$series_data.slug',
-          season_slug: 1,
+          season_slug: '$season_data.slug',
         },
       },
     ])
     .toArray();
 
-  // .aggregate([
-  //   {
-  //     $set: {
-  //       // year: {
-  //       //   $dateFromString: { dateString: '$air_date', format: '%Y-%m-%d' },
-  //       // },
-  //       // year1: '$air_date',
-  //       year2: {
-  //         $year: {
-  //           $dateFromString: {
-  //             dateString: '$air_date',
-  //             format: '%Y-%m-%d',
-  //           },
-  //         },
-  //       },
-  //     },
-  //   },
-  // {
-  //   $lookup: {
-  //     from: 'user_series_status',
-  //     localField: 'series_id',
-  //     foreignField: 'series_id',
-  //     as: 'user_series_status',
-  //   },
-  // },
-  // { $unwind: '$user_series_status' },
-  // {
-  //   $match: {
-  //     'user_series_status.user_id': ObjectId(user_id),
-  //     $or: [
-  //       { 'user_series_status.watchlist': true },
-  //       { 'user_series_status.watching': true },
-  //       { 'user_series_status.watched': true },
-  //     ],
-  //     // $eq: [{ $year: '$air_date' }, '2018'],
-  //     year: 2018,
-  //   },
-  // },
-  // {
-  //   $lookup: {
-  //     from: 'tv_series',
-  //     localField: 'user_series_status.series_id',
-  //     foreignField: '_id',
-  //     as: 'series_data',
-  //   },
-  // },
-  // { $unwind: '$series_data' },
-  // {
-  //   $match: {
-  //     ...(before && { 'series_data.popularity': { $lt: before } }),
-  //   },
-  // },
-  // { $sort: { 'series_data.popularity': -1 } },
-  // { $limit: limit },
-  // {
-  //   $project: {
-  //     // seasonId: 1,
-  //     // userId: 1,
-  //     // ratedAt: 1,
-  //     // score: 1,
-  //     // seriesId: '$series_data._id',
-  //     tmdb_id: 1,
-  //     poster_path: 1,
-  //     // name: '$series_data.name',
-  //     // season_number: 1,
-  //     popularity: '$series_data.popularity',
-  //     series_slug: '$series_data.slug',
-  //     season_slug: '$slug',
-  //   },
-  // },
-  // ])
-  // .toArray();
-
-  console.log(ratingsCursor[0]);
-  console.log(ratingsCursor[0].season_data);
+  // console.log({ ratingsCursor });
 
   return ratingsCursor;
 }

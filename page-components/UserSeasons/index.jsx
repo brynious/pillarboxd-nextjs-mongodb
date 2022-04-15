@@ -6,10 +6,14 @@ import { Button } from '@/components/Button';
 import { Text } from '@/components/Text';
 import Rating from '@mui/material/Rating';
 import Star from '@mui/icons-material/Star';
+import { useRouter } from 'next/router';
 
 export const UserSeasons = ({ user_id, name }) => {
+  const router = useRouter();
+  const { year } = router.query;
+
   const { data, size, setSize, isLoadingMore, isReachingEnd } =
-    useUserSeasonsByYear({ user_id, year: 2018 });
+    useUserSeasonsByYear({ user_id, year: year });
 
   const seasons = data
     ? data.reduce((acc, val) => [...acc, ...val.season_list], [])
