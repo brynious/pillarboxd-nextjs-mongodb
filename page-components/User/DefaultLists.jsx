@@ -11,19 +11,19 @@ const DefaultLists = () => {
 
   return (
     <Container flex={true} className={styles.root} alignItems="center">
-      <Link href={`/${username}/series/watchlist`}>
+      <Link href={`/${username}/watchlist`}>
         <a>
           <Ribbon className="blockCenter" />
         </a>
       </Link>
 
-      <Link href={`/${username}/series/watching`}>
+      <Link href={`/${username}/watching`}>
         <a>
           <Television />
         </a>
       </Link>
 
-      <Link href={`/${username}/series/watched`}>
+      <Link href={`/${username}/watched`}>
         <a>
           <Check />
         </a>
