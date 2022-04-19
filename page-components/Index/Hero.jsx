@@ -8,20 +8,21 @@ const Hero = () => {
     <Wrapper>
       <div>
         <h1 className={styles.title}>
-          <span className={styles.nextjs}>Pillarboxd</span>
-          <span className={styles.mongodb}>brynious</span>
-          <span>Television</span>
+          <span className={styles.topline}>Pillarboxd</span>
+          <span className={styles.secondarylines}>Social</span>
+          <span className={styles.secondarylines}>Television</span>
+          <span className={styles.secondarylines}>Discovery</span>
         </h1>
         <Container justifyContent="center" className={styles.buttons}>
           <Container>
-            <Link passHref href="/feed">
-              <ButtonLink className={styles.button}>Explore Feed</ButtonLink>
+            <Link passHref href="/series">
+              <ButtonLink className={styles.button}>Explore Series</ButtonLink>
             </Link>
           </Container>
           <Spacer axis="horizontal" size={1} />
           <Container>
             <ButtonLink
-              href="https://github.com/brynious"
+              href="https://github.com/brynious/pillarboxd-nextjs-mongodb"
               type="secondary"
               className={styles.button}
             >
@@ -30,8 +31,7 @@ const Hero = () => {
           </Container>
         </Container>
         <p className={styles.subtitle}>
-          A Next.js and MongoDB web application, designed with simplicity for
-          learning and real-world applicability in mind.
+          A Next.js and MongoDB web application for tracking TV shows.
         </p>
       </div>
     </Wrapper>
