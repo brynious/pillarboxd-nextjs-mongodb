@@ -5,6 +5,7 @@ import ActingCredit from '@/components/Credit/ActingCredit';
 import { useCurrentUser } from '@/lib/user';
 import Image from 'next/image';
 
+import Reviewer from './Reviewer';
 import ListControllers from './ListControllers';
 
 export const TvSeries = ({ series, seasons }) => {
@@ -35,7 +36,7 @@ export const TvSeries = ({ series, seasons }) => {
             alt={`${series.name} backdrop image`}
           />
         </div>
-        <div>
+        <div className="mainSection">
           <h1>{series.name}</h1>
           <p>
             {premiere_year && `${premiere_year} - `}
@@ -87,6 +88,9 @@ export const TvSeries = ({ series, seasons }) => {
               );
             })}
           </section>
+          <Spacer size={2} axis="vertical" />
+
+          <Reviewer seriesData={series} />
           <Spacer size={5} axis="vertical" />
         </div>
         <div>
