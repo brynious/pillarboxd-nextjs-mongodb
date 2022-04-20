@@ -89,17 +89,37 @@ export async function getAllSeriesRatedByUser(
   user_id,
   beforeScore,
   beforeRatedAt,
-  limit = 60
+  limit = 30
 ) {
+  // Return series that are either:
+  // A: same rating and rated earlier
+  // OR
+  // B: lower rating
+  const match = beforeScore
+    ? {
+        $match: {
+          userId: ObjectId(user_id),
+          $or: [
+            {
+              $and: [
+                { ...(beforeScore && { score: { $lte: beforeScore } }) },
+                { ...(beforeRatedAt && { ratedAt: { $lt: beforeRatedAt } }) },
+              ],
+            },
+            { ...(beforeScore && { score: { $lt: beforeScore } }) },
+          ],
+        },
+      }
+    : {
+        $match: {
+          userId: ObjectId(user_id),
+        },
+      };
+
   const ratingsCursor = await db
     .collection('series_ratings')
     .aggregate([
-      {
-        $match: {
-          userId: ObjectId(user_id),
-          ...(before && { ratedAt: { $lt: before } }), // TODO:
-        },
-      },
+      { ...match },
       { $sort: { score: -1, ratedAt: -1 } },
       { $limit: limit },
       {
