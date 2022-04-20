@@ -9,3 +9,12 @@
 .headingContainer {
   justify-content: space-between;
 }
+
+.inputLabel,
+.select {
+  color: var(--accents-7);
+}
+
+.select {
+  border-color: red;
+}

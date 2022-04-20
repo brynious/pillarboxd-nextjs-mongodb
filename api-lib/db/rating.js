@@ -84,14 +84,20 @@ export async function deleteEpisodeRating(db, { userId, episodeId }) {
   return updatedUser.value;
 }
 
-export async function getAllSeriesRatedByUser(db, user_id, before, limit = 60) {
+export async function getAllSeriesRatedByUser(
+  db,
+  user_id,
+  beforeScore,
+  beforeRatedAt,
+  limit = 60
+) {
   const ratingsCursor = await db
     .collection('series_ratings')
     .aggregate([
       {
         $match: {
           userId: ObjectId(user_id),
-          ...(before && { ratedAt: { $lt: before } }),
+          ...(before && { ratedAt: { $lt: before } }), // TODO:
         },
       },
       { $sort: { score: -1, ratedAt: -1 } },
