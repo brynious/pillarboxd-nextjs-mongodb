@@ -11,7 +11,8 @@ handler.get(async (req, res) => {
   const seriesList = await getAllSeriesRatedByUser(
     req.db,
     req.query.userId,
-    req.query.before ? new Date(req.query.before) : undefined,
+    req.query.beforeScore ? Number(req.query.beforeScore) : undefined,
+    req.query.beforeRatedAt ? new Date(req.query.beforeRatedAt) : undefined,
     req.query.limit ? parseInt(req.query.limit, 10) : undefined
   );
 

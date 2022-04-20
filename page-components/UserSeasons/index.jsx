@@ -38,10 +38,16 @@ export const UserSeasons = ({ user_id, name }) => {
       <Spacer size={2} axis="vertical" />
       <Container flex={true} className={styles.headingContainer}>
         <h1>{name}&apos;s Seasons</h1>
-        <Box sx={{ minWidth: 120 }}>
+        <Box sx={{ minWidth: 120 }} className={styles.box}>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Year</InputLabel>
+            <InputLabel
+              className={styles.inputLabel}
+              id="demo-simple-select-label"
+            >
+              Year
+            </InputLabel>
             <Select
+              className={styles.select}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={year}

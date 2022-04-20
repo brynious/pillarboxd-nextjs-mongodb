@@ -24,7 +24,6 @@ export const SeasonRatings = ({ user_id, name }) => {
           return (
             <div key={tv_season.tmdb_id}>
               <PosterImage
-                key={tv_season.tmdb_id}
                 poster_path={tv_season.poster_path}
                 slug={`${tv_season.series_slug}/${tv_season.season_slug}`}
                 name={tv_season.name}
