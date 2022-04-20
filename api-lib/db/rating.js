@@ -156,7 +156,7 @@ export async function getAllSeasonsRatedByUser(
   beforeRatedAt,
   limit = 60
 ) {
-  // Return series that are either:
+  // Return seasons that are either:
   // A: same rating and rated earlier
   // OR
   // B: lower rating
