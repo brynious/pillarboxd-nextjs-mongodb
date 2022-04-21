@@ -152,6 +152,7 @@ export async function getAllSeriesRatedByUser(
 export async function getAllSeasonsRatedByUser(
   db,
   user_id,
+  year,
   beforeScore,
   beforeRatedAt,
   limit = 60
@@ -181,6 +182,10 @@ export async function getAllSeasonsRatedByUser(
         },
       };
 
+  const yearMatch = year
+    ? { $match: { 'season_data.year': year } }
+    : { $match: { score: { $gte: 0 } } }; // always true
+
   const ratingsCursor = await db
     .collection('season_ratings')
     .aggregate([
@@ -195,6 +200,9 @@ export async function getAllSeasonsRatedByUser(
           as: 'season_data',
         },
       },
+      { $unwind: '$season_data' },
+      { ...yearMatch },
+      { $limit: limit },
       {
         $lookup: {
           from: 'tv_series',
@@ -203,7 +211,6 @@ export async function getAllSeasonsRatedByUser(
           as: 'series_data',
         },
       },
-      { $unwind: '$season_data' },
       { $unwind: '$series_data' },
       {
         $project: {
