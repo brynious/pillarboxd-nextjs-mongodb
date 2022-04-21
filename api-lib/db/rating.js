@@ -191,7 +191,6 @@ export async function getAllSeasonsRatedByUser(
     .aggregate([
       { ...match },
       { $sort: { score: -1, ratedAt: -1 } },
-      { $limit: limit },
       {
         $lookup: {
           from: 'tv_seasons',
