@@ -128,13 +128,3 @@ You can also deploy this with serverless providers given the correct setup.
 Please see my [contributing.md](CONTRIBUTING.md).
 
 </div>
-
-<h2 align="center">
-  License
-</h2>
-
-<div align="center">
-  
-  [MIT](LICENSE)
-  
-</div>
