@@ -20,7 +20,39 @@ const main = async () => {
       // { tmdb_id: 62611, approved_specials: [] }, // Review
       // { tmdb_id: 8592, approved_specials: [] }, // Parks and Recreation
       // { tmdb_id: 32726, approved_specials: [] }, // Bob's Burgers
-      { tmdb_id: 4608, approved_specials: [] }, // 30 Rock
+      // { tmdb_id: 4608, approved_specials: [] }, // 30 Rock
+      // { tmdb_id: 85519, approved_specials: [] }, // The Other Two
+      // { tmdb_id: 85702, approved_specials: [] }, // Pen15
+      // { tmdb_id: 73107, approved_specials: [] }, // Barry
+      // { tmdb_id: 65495, approved_specials: [] }, // Atlanta
+      // { tmdb_id: 60059, approved_specials: [] }, // Better Call Saul
+      // { tmdb_id: 86340, approved_specials: [] }, // Undone
+      // { tmdb_id: 84977, approved_specials: [] }, // Russian Doll
+      // { tmdb_id: 63593, approved_specials: [] }, // Documentary Now
+
+      // { tmdb_id: 61175, approved_specials: [] }, // Steven Universe
+      // { tmdb_id: 2710, approved_specials: [] }, // It's Always Sunny in Philadelphia
+      // { tmdb_id: 69017, approved_specials: [] }, // One Day at a Time
+      // { tmdb_id: 61662, approved_specials: [] }, // Schitt's Creek
+      // { tmdb_id: 32829, approved_specials: [] }, // Happy Endings
+      // { tmdb_id: 10283, approved_specials: [] }, // Archer
+      // { tmdb_id: 61671, approved_specials: [] }, // Unbreakable Kimmy Schmidt
+      // { tmdb_id: 15260, approved_specials: [] }, // Adventure Time
+      // { tmdb_id: 1435, approved_specials: [] }, // The Good Wife
+      // { tmdb_id: 80925, approved_specials: [] }, // Lodge 49
+      // { tmdb_id: 42282, approved_specials: [] }, // Girls
+      // { tmdb_id: 63248, approved_specials: [] }, // Show Me a Hero
+      // { tmdb_id: 33056, approved_specials: [] }, // Childrens Hospital
+
+      // { tmdb_id: 58957, approved_specials: [] }, // Nathan For You
+      // { tmdb_id: 48891, approved_specials: [] }, // Brooklyn Nine Nine
+      // { tmdb_id: 63161, approved_specials: [] }, // Crazy Ex-Girlfriend
+      // { tmdb_id: 1420, approved_specials: [] }, // New Girl
+      // { tmdb_id: 79356, approved_specials: [] }, // Tuca & Bertie
+      // { tmdb_id: 62649, approved_specials: [] }, // Superstore
+      // { tmdb_id: 46648, approved_specials: [] }, // True Detective
+
+      { tmdb_id: 110971, approved_specials: [] }, // How To with John Wilson
     ];
 
     for (const series of seriesTmdbIds) {
@@ -51,6 +83,8 @@ const main = async () => {
       if (seriesData.adult) continue;
 
       if (seriesData.type === 'Talk Show') continue;
+
+      if (!seriesData.first_air_date) continue;
 
       console.log(seriesData.name);
 
