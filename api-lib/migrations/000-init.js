@@ -35,7 +35,7 @@ const main = async () => {
       // { tmdb_id: 69017, approved_specials: [] }, // One Day at a Time
       // { tmdb_id: 61662, approved_specials: [] }, // Schitt's Creek
       // { tmdb_id: 32829, approved_specials: [] }, // Happy Endings
-      // { tmdb_id: 10283, approved_specials: [] }, // Archer
+      // { tmdb_id: 10283, approved_specials: [1206544, 1206545, 1206546] }, // Archer
       // { tmdb_id: 61671, approved_specials: [] }, // Unbreakable Kimmy Schmidt
       // { tmdb_id: 15260, approved_specials: [] }, // Adventure Time
       // { tmdb_id: 1435, approved_specials: [] }, // The Good Wife

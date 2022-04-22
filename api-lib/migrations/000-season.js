@@ -78,6 +78,7 @@ const getTmdbSeasonData = async (series_tmdb_id, season_number) => {
       season_number: data.season_number,
       slug: slugify(data.name, { lower: true, strict: true }),
       tmdb_id: data.id,
+      year: new Date(data.air_date).getFullYear(),
     };
     return seriesProperties;
   } catch (err) {
