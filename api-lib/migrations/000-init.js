@@ -52,9 +52,11 @@ const main = async () => {
       // { tmdb_id: 62649, approved_specials: [] }, // Superstore
       // { tmdb_id: 46648, approved_specials: [] }, // True Detective
       // { tmdb_id: 110971, approved_specials: [] }, // How To with John Wilson
-      { tmdb_id: 75944, approved_specials: [] }, // Mosaic
-      { tmdb_id: 80730, approved_specials: [] }, // Who is America
-      { tmdb_id: 7166, approved_specials: [] }, // The Mighty Boosh
+      // { tmdb_id: 75944, approved_specials: [] }, // Mosaic
+      // { tmdb_id: 80730, approved_specials: [] }, // Who is America
+      // { tmdb_id: 7166, approved_specials: [] }, // The Mighty Boosh
+      // { tmdb_id: 110382, approved_specials: [] }, // Pachinko
+      { tmdb_id: 2004, approved_specials: [] }, // Malcolm in the Middle
     ];
 
     for (const series of seriesTmdbIds) {
