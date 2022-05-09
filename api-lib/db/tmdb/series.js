@@ -115,4 +115,29 @@ const getTmdbApiSeriesCreditsData = async (tmdb_id) => {
   }
 };
 
-module.exports = { findOrCreateSeries, createSeriesObj };
+const getTop100PopularSeries = async () => {
+  try {
+    let seriesIdArray = [];
+    for (let page = 1; page < 6; page++) {
+      const resp = await axios.get(
+        `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.TMDB_API_KEY}&language=en-US&page=${page}`
+      );
+
+      const data = resp.data.results;
+
+      for (const series of data) {
+        seriesIdArray.push(series.id);
+      }
+    }
+
+    return seriesIdArray;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+module.exports = {
+  findOrCreateSeries,
+  createSeriesObj,
+  getTop100PopularSeries,
+};

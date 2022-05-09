@@ -4,6 +4,7 @@ const slugify = require('slugify');
 const { updateSeason } = require('./000-season');
 const { updateEpisode } = require('./000-episode');
 const { getVerifiedSlug } = require('../db/tmdb/slug');
+const { getTop100PopularSeries } = require('../db/tmdb/series');
 require('dotenv').config();
 
 const main = async () => {
@@ -13,60 +14,12 @@ const main = async () => {
     // Connect to the MongoDB cluster
     await client.connect();
 
-    const seriesTmdbIds = [
-      // { tmdb_id: 114478, approved_specials: [] }, // Star Wars Visions
-      // { tmdb_id: 61118, approved_specials: [] },  // You're the Worst
-      // { tmdb_id: 1104, approved_specials: [] }, // Mad Men
-      // { tmdb_id: 62611, approved_specials: [] }, // Review
-      // { tmdb_id: 8592, approved_specials: [] }, // Parks and Recreation
-      // { tmdb_id: 32726, approved_specials: [] }, // Bob's Burgers
-      // { tmdb_id: 4608, approved_specials: [] }, // 30 Rock
-      // { tmdb_id: 85519, approved_specials: [] }, // The Other Two
-      // { tmdb_id: 85702, approved_specials: [] }, // Pen15
-      // { tmdb_id: 73107, approved_specials: [] }, // Barry
-      // { tmdb_id: 65495, approved_specials: [] }, // Atlanta
-      // { tmdb_id: 60059, approved_specials: [] }, // Better Call Saul
-      // { tmdb_id: 86340, approved_specials: [] }, // Undone
-      // { tmdb_id: 84977, approved_specials: [] }, // Russian Doll
-      // { tmdb_id: 63593, approved_specials: [] }, // Documentary Now
+    const top100Series = await getTop100PopularSeries();
 
-      // { tmdb_id: 61175, approved_specials: [] }, // Steven Universe
-      // { tmdb_id: 2710, approved_specials: [] }, // It's Always Sunny in Philadelphia
-      // { tmdb_id: 69017, approved_specials: [] }, // One Day at a Time
-      // { tmdb_id: 61662, approved_specials: [] }, // Schitt's Creek
-      // { tmdb_id: 32829, approved_specials: [] }, // Happy Endings
-      // { tmdb_id: 10283, approved_specials: [1206544, 1206545, 1206546] }, // Archer
-      // { tmdb_id: 61671, approved_specials: [] }, // Unbreakable Kimmy Schmidt
-      // { tmdb_id: 15260, approved_specials: [] }, // Adventure Time
-      // { tmdb_id: 1435, approved_specials: [] }, // The Good Wife
-      // { tmdb_id: 80925, approved_specials: [] }, // Lodge 49
-      // { tmdb_id: 42282, approved_specials: [] }, // Girls
-      // { tmdb_id: 63248, approved_specials: [] }, // Show Me a Hero
-      // { tmdb_id: 33056, approved_specials: [] }, // Childrens Hospital
+    for (const tmdb_id of top100Series) {
+      const seriesData = await getTmdbApiSeriesData(tmdb_id);
 
-      // { tmdb_id: 58957, approved_specials: [] }, // Nathan For You
-      // { tmdb_id: 48891, approved_specials: [] }, // Brooklyn Nine Nine
-      // { tmdb_id: 63161, approved_specials: [] }, // Crazy Ex-Girlfriend
-      // { tmdb_id: 1420, approved_specials: [] }, // New Girl
-      // { tmdb_id: 79356, approved_specials: [] }, // Tuca & Bertie
-      // { tmdb_id: 62649, approved_specials: [] }, // Superstore
-      // { tmdb_id: 46648, approved_specials: [] }, // True Detective
-      // { tmdb_id: 110971, approved_specials: [] }, // How To with John Wilson
-      // { tmdb_id: 75944, approved_specials: [] }, // Mosaic
-      // { tmdb_id: 80730, approved_specials: [] }, // Who is America
-      // { tmdb_id: 7166, approved_specials: [] }, // The Mighty Boosh
-      // { tmdb_id: 110382, approved_specials: [] }, // Pachinko
-      { tmdb_id: 2004, approved_specials: [] }, // Malcolm in the Middle
-    ];
-
-    for (const series of seriesTmdbIds) {
-      const tmdb_id = series.tmdb_id;
-      const seriesData = await getTmdbApiSeriesData(
-        series.tmdb_id,
-        series.approved_specials
-      );
-
-      // if (seriesData.number_of_episodes > 40) continue;
+      if (seriesData.number_of_episodes > 200) continue;
 
       if (
         !(
@@ -102,23 +55,22 @@ const main = async () => {
 
       await upsertObjToDB(client, 'tv_series', seriesData);
       for (const season of seasons) {
-        if (season.season_number === 0 && series.approved_specials.length === 0)
-          continue;
+        if (season.season_number === 0) continue;
 
         const { seasonData, episodes } = await updateSeason(
           client,
           tmdb_id,
           season.season_number
         );
-        if (episodes.length <= 1) continue;
+        if (!(episodes?.length > 0)) continue;
 
         for (const episode of episodes) {
           await updateEpisode(
             client,
             tmdb_id,
             season.season_number,
-            episode.episode_number,
-            series.approved_specials
+            episode.episode_number
+            // series.approved_specials
           );
         }
       }
@@ -131,7 +83,7 @@ const main = async () => {
   }
 };
 
-const getTmdbApiSeriesData = async (tmdb_id, approved_specials) => {
+const getTmdbApiSeriesData = async (tmdb_id, approved_specials = []) => {
   try {
     const resp = await axios.get(
       `https://api.themoviedb.org/3/tv/${tmdb_id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`
