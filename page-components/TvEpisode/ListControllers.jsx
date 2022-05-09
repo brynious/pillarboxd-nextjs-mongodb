@@ -12,12 +12,12 @@ import Star from '@mui/icons-material/Star';
 import { useRouter } from 'next/router';
 
 const DefaultListControllersInner = ({ user, episodeId }) => {
-  const [userScore, setUserScore] = useState(-1);
+  const [userScore, setUserScore] = useState(0);
 
   const dynamicRoute = useRouter().asPath;
+
   useEffect(() => {
-    const getUsersRatingOnLoad = async () => {
-      setUserScore(-1);
+    const getRatingOnLoad = async () => {
       const data = await fetcher(
         `/api/user/${user._id}/rating/episode/${episodeId}`,
         {
@@ -25,32 +25,30 @@ const DefaultListControllersInner = ({ user, episodeId }) => {
           headers: { 'Content-Type': 'application/json' },
         }
       );
-      const score = data.rating.score;
-      setUserScore(score ? score : -1);
+
+      const score = data?.rating?.score;
+      setUserScore(score ? score : 0);
     };
 
-    getUsersRatingOnLoad().catch(console.error);
-  }, [dynamicRoute, episodeId, user._id]);
+    getRatingOnLoad().catch(console.error);
+  }, [dynamicRoute]);
 
-  useEffect(() => {
-    const uploadRating = async () => {
-      if (userScore > 0) {
-        await fetcher(`/api/user/rating/episode`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ episodeId: episodeId, score: userScore }),
-        });
-      } else if (userScore === null) {
-        await fetcher(`/api/user/rating/episode`, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ episodeId: episodeId }),
-        });
-      }
-    };
-
-    uploadRating().catch(console.error);
-  }, [userScore, episodeId]);
+  const postRating = (newRating) => {
+    setUserScore(newRating);
+    if (newRating > 0) {
+      fetcher(`/api/user/rating/episode`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ episodeId: episodeId, score: newRating }),
+      });
+    } else if (newRating === null) {
+      fetcher(`/api/user/rating/episode`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ episodeId: episodeId }),
+      });
+    }
+  };
 
   return (
     <div>
@@ -62,8 +60,8 @@ const DefaultListControllersInner = ({ user, episodeId }) => {
         size="large"
         icon={<Star style={{ color: '#00e054' }} fontSize="large" />}
         emptyIcon={<Star style={{ color: '#334455' }} fontSize="large" />}
-        onChange={(event, newUserScore) => {
-          setUserScore(newUserScore);
+        onChange={(event, newRating) => {
+          postRating(newRating);
         }}
       />
     </div>

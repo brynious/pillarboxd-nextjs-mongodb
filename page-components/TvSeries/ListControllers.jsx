@@ -20,13 +20,12 @@ const DefaultListControllersInner = ({ user, seriesId }) => {
   const [watching, setWatching] = useState(false);
   const [watched, setWatched] = useState(false);
 
-  const [userScore, setUserScore] = useState(null);
-  const [firstRenderComplete, setFirstRenderComplete] = useState(false);
+  const [userScore, setUserScore] = useState(0);
 
   const dynamicRoute = useRouter().asPath;
 
   useEffect(() => {
-    const getUsersRatingOnLoad = async () => {
+    const getRatingOnLoad = async () => {
       const data = await fetcher(
         `/api/user/${user._id}/rating/series/${seriesId}`,
         {
@@ -36,34 +35,28 @@ const DefaultListControllersInner = ({ user, seriesId }) => {
       );
 
       const score = data?.rating?.score;
-      setUserScore(score ? score : null);
-      setFirstRenderComplete(true);
+      setUserScore(score ? score : 0);
     };
 
-    getUsersRatingOnLoad().catch(console.error);
-  }, [dynamicRoute, seriesId, user._id]);
+    getRatingOnLoad().catch(console.error);
+  }, [dynamicRoute]);
 
-  useEffect(() => {
-    if (!firstRenderComplete) return;
-
-    const uploadRating = async () => {
-      if (userScore > 0) {
-        await fetcher(`/api/user/rating/series`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ seriesId: seriesId, score: userScore }),
-        });
-      } else if (userScore === null) {
-        await fetcher(`/api/user/rating/series`, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ seriesId: seriesId }),
-        });
-      }
-    };
-
-    uploadRating().catch(console.error);
-  }, [userScore]);
+  const postRating = (newRating) => {
+    setUserScore(newRating);
+    if (newRating > 0) {
+      fetcher(`/api/user/rating/series`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ seriesId: seriesId, score: newRating }),
+      });
+    } else if (newRating === null) {
+      fetcher(`/api/user/rating/series`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ seriesId: seriesId }),
+      });
+    }
+  };
 
   useEffect(() => {
     const getUserSeriesStatus = async () => {
@@ -164,8 +157,8 @@ const DefaultListControllersInner = ({ user, seriesId }) => {
         size="large"
         icon={<Star style={{ color: '#00e054' }} fontSize="large" />}
         emptyIcon={<Star style={{ color: '#334455' }} fontSize="large" />}
-        onChange={(event, newUserScore) => {
-          setUserScore(newUserScore);
+        onChange={(event, newRating) => {
+          postRating(newRating);
         }}
       />
     </div>

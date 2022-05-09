@@ -13,13 +13,11 @@ import { useRouter } from 'next/router';
 
 const DefaultListControllersInner = ({ user, seasonId }) => {
   const [userScore, setUserScore] = useState(null);
-  const [firstRenderComplete, setFirstRenderComplete] = useState(false);
 
   const dynamicRoute = useRouter().asPath;
 
   useEffect(() => {
-    const getUsersRatingOnLoad = async () => {
-      setUserScore(-1);
+    const getRatingOnLoad = async () => {
       const data = await fetcher(
         `/api/user/${user._id}/rating/season/${seasonId}`,
         {
@@ -29,34 +27,28 @@ const DefaultListControllersInner = ({ user, seasonId }) => {
       );
 
       const score = data?.rating?.score;
-      setUserScore(score ? score : null);
-      setFirstRenderComplete(true);
+      setUserScore(score ? score : 0);
     };
 
-    getUsersRatingOnLoad().catch(console.error);
-  }, [dynamicRoute, seasonId, user._id]);
+    getRatingOnLoad().catch(console.error);
+  }, [dynamicRoute]);
 
-  useEffect(() => {
-    if (!firstRenderComplete) return;
-
-    const uploadRating = async () => {
-      if (userScore > 0) {
-        await fetcher(`/api/user/rating/season`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ seasonId: seasonId, score: userScore }),
-        });
-      } else if (userScore === null) {
-        await fetcher(`/api/user/rating/season`, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ seasonId: seasonId }),
-        });
-      }
-    };
-
-    uploadRating().catch(console.error);
-  }, [userScore, seasonId]);
+  const postRating = (newRating) => {
+    setUserScore(newRating);
+    if (newRating > 0) {
+      fetcher(`/api/user/rating/season`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ seasonId: seasonId, score: newRating }),
+      });
+    } else if (newRating === null) {
+      fetcher(`/api/user/rating/season`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ seasonId: seasonId }),
+      });
+    }
+  };
 
   return (
     <div>
@@ -68,8 +60,8 @@ const DefaultListControllersInner = ({ user, seasonId }) => {
         size="large"
         icon={<Star style={{ color: '#00e054' }} fontSize="large" />}
         emptyIcon={<Star style={{ color: '#334455' }} fontSize="large" />}
-        onChange={(event, newUserScore) => {
-          setUserScore(newUserScore);
+        onChange={(event, newRating) => {
+          postRating(newRating);
         }}
       />
     </div>
