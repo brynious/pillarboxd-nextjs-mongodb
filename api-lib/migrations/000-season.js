@@ -23,7 +23,9 @@ const updateSeason = async (client, series_tmdb_id, season_number) => {
     const episodes = seasonData.episodes;
     delete seasonData.episodes;
 
-    await upsertObjToDB(client, 'tv_seasons', seasonData);
+    if (seasonData?.episodes?.length > 0) {
+      await upsertObjToDB(client, 'tv_seasons', seasonData);
+    }
     return { seasonData, episodes };
   } catch (e) {
     console.error(e);

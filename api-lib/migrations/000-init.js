@@ -110,6 +110,7 @@ const main = async () => {
           tmdb_id,
           season.season_number
         );
+        if (episodes.length <= 1) continue;
 
         for (const episode of episodes) {
           await updateEpisode(

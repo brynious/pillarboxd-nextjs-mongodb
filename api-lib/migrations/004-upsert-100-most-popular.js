@@ -1,9 +1,9 @@
 const { MongoClient } = require('mongodb');
 const axios = require('axios');
 const slugify = require('slugify');
-// const { updateSeason } = require('./000-season');
-// const { updateEpisode } = require('./000-episode');
-// const { getVerifiedSlug } = require('../db/tmdb/slug');
+const { updateSeason } = require('./000-season');
+const { updateEpisode } = require('./000-episode');
+const { getVerifiedSlug } = require('../db/tmdb/slug');
 const { getTop100PopularSeries } = require('../db/tmdb/series');
 require('dotenv').config();
 
@@ -16,71 +16,65 @@ const main = async () => {
 
     const top100Series = await getTop100PopularSeries();
 
-    console.log(top100Series.length);
+    for (const tmdb_id of top100Series) {
+      const seriesData = await getTmdbApiSeriesData(tmdb_id);
 
-    // for (const series of seriesTmdbIds) {
-    //   const tmdb_id = series.tmdb_id;
-    //   const seriesData = await getTmdbApiSeriesData(
-    //     series.tmdb_id,
-    //     series.approved_specials
-    //   );
+      if (seriesData.number_of_episodes > 200) continue;
 
-    //   // if (seriesData.number_of_episodes > 40) continue;
+      if (
+        !(
+          seriesData.origin_country.includes('GB') ||
+          seriesData.origin_country.includes('US')
+        )
+      )
+        continue;
 
-    //   if (
-    //     !(
-    //       seriesData.origin_country.includes('GB') ||
-    //       seriesData.origin_country.includes('US')
-    //     )
-    //   )
-    //     continue;
+      if (!seriesData.languages.includes('en')) continue;
 
-    //   if (!seriesData.languages.includes('en')) continue;
+      if (
+        seriesData.episode_run_time.length < 1 ||
+        seriesData.episode_run_time[0] < 10
+      )
+        continue;
 
-    //   if (
-    //     seriesData.episode_run_time.length < 1 ||
-    //     seriesData.episode_run_time[0] < 10
-    //   )
-    //     continue;
+      if (seriesData.adult) continue;
 
-    //   if (seriesData.adult) continue;
+      if (seriesData.type === 'Talk Show') continue;
 
-    //   if (seriesData.type === 'Talk Show') continue;
+      if (!seriesData.first_air_date) continue;
 
-    //   if (!seriesData.first_air_date) continue;
+      console.log(seriesData.name);
 
-    //   console.log(seriesData.name);
+      seriesData.slug = await getVerifiedSlug(client, 'tv_series', seriesData);
+      const [cast, crew] = await getTmdbSeriesCredits(seriesData.tmdb_id);
+      seriesData.cast = cast;
+      seriesData.crew = crew;
 
-    //   seriesData.slug = await getVerifiedSlug(client, 'tv_series', seriesData);
-    //   const [cast, crew] = await getTmdbSeriesCredits(seriesData.tmdb_id);
-    //   seriesData.cast = cast;
-    //   seriesData.crew = crew;
+      const seasons = seriesData.seasons;
+      delete seriesData.seasons;
 
-    //   const seasons = seriesData.seasons;
-    //   delete seriesData.seasons;
+      await upsertObjToDB(client, 'tv_series', seriesData);
+      for (const season of seasons) {
+        if (season.season_number === 0) continue;
 
-    //   await upsertObjToDB(client, 'tv_series', seriesData);
-    //   for (const season of seasons) {
-    //     if (season.season_number === 0 && series.approved_specials.length === 0)
-    //       continue;
+        const { seasonData, episodes } = await updateSeason(
+          client,
+          tmdb_id,
+          season.season_number
+        );
+        if (!(episodes?.length > 0)) continue;
 
-    //     const { seasonData, episodes } = await updateSeason(
-    //       client,
-    //       tmdb_id,
-    //       season.season_number
-    //     );
-
-    //     for (const episode of episodes) {
-    //       await updateEpisode(
-    //         client,
-    //         tmdb_id,
-    //         season.season_number,
-    //         episode.episode_number,
-    //         series.approved_specials
-    //       );
-    //     }
-    //   }
-    // }
+        for (const episode of episodes) {
+          await updateEpisode(
+            client,
+            tmdb_id,
+            season.season_number,
+            episode.episode_number
+            // series.approved_specials
+          );
+        }
+      }
+    }
   } catch (e) {
     console.error(e);
   } finally {
@@ -89,7 +83,7 @@ const main = async () => {
   }
 };
 
-const getTmdbApiSeriesData = async (tmdb_id, approved_specials) => {
+const getTmdbApiSeriesData = async (tmdb_id, approved_specials = []) => {
   try {
     const resp = await axios.get(
       `https://api.themoviedb.org/3/tv/${tmdb_id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`
