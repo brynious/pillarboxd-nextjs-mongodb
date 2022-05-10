@@ -3,35 +3,27 @@ import { Text, TextLink } from '@/components/Text';
 import { fetcher } from '@/lib/fetch';
 import { useCurrentUser } from '@/lib/user';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styles from './ListControllers.module.css';
 
 import Rating from '@mui/material/Rating';
 import Star from '@mui/icons-material/Star';
 
-import { useRouter } from 'next/router';
-
 const DefaultListControllersInner = ({ user, episodeId }) => {
   const [userScore, setUserScore] = useState(0);
 
-  const dynamicRoute = useRouter().asPath;
-
-  useEffect(() => {
-    const getRatingOnLoad = async () => {
-      const data = await fetcher(
-        `/api/user/${user._id}/rating/episode/${episodeId}`,
-        {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
-
-      const score = data?.rating?.score;
-      setUserScore(score ? score : 0);
-    };
-
-    getRatingOnLoad().catch(console.error);
-  }, [dynamicRoute]);
+  const getRatingOnLoad = async () => {
+    const data = await fetcher(
+      `/api/user/${user._id}/rating/episode/${episodeId}`,
+      {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+    const score = data?.rating?.score;
+    setUserScore(score ? score : 0);
+  };
+  getRatingOnLoad();
 
   const postRating = (newRating) => {
     setUserScore(newRating);
