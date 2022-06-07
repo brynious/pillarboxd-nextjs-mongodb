@@ -20,12 +20,14 @@ const updateSeason = async (client, series_tmdb_id, season_number) => {
     seasonData.cast = cast;
     seasonData.crew = crew;
 
+    if (seasonData?.episodes?.length < 1) {
+      throw 'No episodes in season';
+    }
+
     const episodes = seasonData.episodes;
     delete seasonData.episodes;
 
-    if (seasonData?.episodes?.length > 0) {
-      await upsertObjToDB(client, 'tv_seasons', seasonData);
-    }
+    await upsertObjToDB(client, 'tv_seasons', seasonData);
     return { seasonData, episodes };
   } catch (e) {
     console.error(e);

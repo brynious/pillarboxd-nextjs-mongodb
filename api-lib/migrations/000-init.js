@@ -56,7 +56,10 @@ const main = async () => {
       // { tmdb_id: 80730, approved_specials: [] }, // Who is America
       // { tmdb_id: 7166, approved_specials: [] }, // The Mighty Boosh
       // { tmdb_id: 110382, approved_specials: [] }, // Pachinko
-      { tmdb_id: 2004, approved_specials: [] }, // Malcolm in the Middle
+      // { tmdb_id: 2004, approved_specials: [] }, // Malcolm in the Middle
+      // { tmdb_id: 124101, approved_specials: [] }, // Hacks
+      // { tmdb_id: 125949, approved_specials: [] }, // We Own This City
+      { tmdb_id: 153742, approved_specials: [] }, // We Need To Talk About Cosby
     ];
 
     for (const series of seriesTmdbIds) {
@@ -110,7 +113,7 @@ const main = async () => {
           tmdb_id,
           season.season_number
         );
-        if (episodes.length <= 1) continue;
+        if (episodes.length < 1) continue;
 
         for (const episode of episodes) {
           await updateEpisode(
