@@ -12,7 +12,7 @@ const moviedb = new MovieDb(process.env.TMDB_API_KEY);
 const main = async () => {
   const client = new MongoClient(process.env.MONGODB_URI);
 
-  const seriesCount = 200;
+  const seriesCount = 400;
   const totalPages = seriesCount / 20;
 
   const getPopularSeries = async (page) => {
@@ -22,7 +22,7 @@ const main = async () => {
 
   try {
     let seriesTmdbIds = [];
-    for (let page = 9; page <= totalPages; page++) {
+    for (let page = 18; page <= totalPages; page++) {
       const results = await getPopularSeries(page);
       for (const series of results.results) {
         seriesTmdbIds.push(series.id);
@@ -37,7 +37,7 @@ const main = async () => {
       if (!seriesData.name) continue;
       console.log(index, seriesData.name);
 
-      if (seriesData.number_of_episodes > 100) continue;
+      if (seriesData.number_of_episodes > 50) continue;
 
       if (
         !(
@@ -48,8 +48,6 @@ const main = async () => {
       )
         continue;
 
-      if (!seriesData.languages.includes('en')) continue;
-
       if (
         seriesData.episode_run_time.length < 1 ||
         seriesData.episode_run_time[0] < 10
@@ -58,7 +56,7 @@ const main = async () => {
 
       if (seriesData.adult) continue;
 
-      if (seriesData.type === 'Talk Show') continue;
+      if (['News', 'Reality', 'Talk Show'].includes(seriesData.type)) continue;
 
       if (!seriesData.first_air_date) continue;
 

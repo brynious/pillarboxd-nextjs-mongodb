@@ -96,10 +96,7 @@ const getTmdbEpisodeData = async (
       }),
       tmdb_id: data.id,
     };
-
-    setTimeout(() => {
-      return seriesProperties;
-    }, 1000);
+    return seriesProperties;
   } catch (err) {
     console.error(err);
   }
