@@ -8,7 +8,7 @@ const updateEpisode = async (
   series_tmdb_id,
   season_number,
   episode_number,
-  approved_specials
+  approved_specials = []
 ) => {
   // const client = new MongoClient(process.env.MONGODB_URI);
 
@@ -96,7 +96,10 @@ const getTmdbEpisodeData = async (
       }),
       tmdb_id: data.id,
     };
-    return seriesProperties;
+
+    setTimeout(() => {
+      return seriesProperties;
+    }, 1000);
   } catch (err) {
     console.error(err);
   }

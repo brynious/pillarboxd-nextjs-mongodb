@@ -10,7 +10,7 @@
     "lint": "next lint",
     "init": "node api-lib/migrations/000-init.js",
     "cache": "node scripts/cache.js",
-    "test": "node api-lib/migrations/test.js"
+    "popular-series": "node api-lib/migrations/004-upsert-100-most-popular"
   },
   "repository": {
     "type": "git",
@@ -39,6 +39,7 @@
     "express-session": "^1.17.2",
     "modern-normalize": "^1.1.0",
     "mongodb": "^4.1.2",
+    "moviedb-promise": "^3.2.1",
     "multer": "^1.4.3",
     "nanoid": "^3.1.25",
     "next": "^12.1.4",
@@ -60,7 +61,6 @@
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "^2.4.1"
+    "eslint-plugin-prettier": "^4.0.0"
   }
 }

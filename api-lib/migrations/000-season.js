@@ -21,7 +21,7 @@ const updateSeason = async (client, series_tmdb_id, season_number) => {
     seasonData.crew = crew;
 
     if (seasonData?.episodes?.length < 1) {
-      throw 'No episodes in season';
+      return { seasonData, episodes: seasonData.episodes };
     }
 
     const episodes = seasonData.episodes;
