@@ -9,4 +9,5 @@
 .headingContainer {
   max-width: 800px;
   justify-content: space-between;
+  align-items: center;
 }

@@ -7,13 +7,7 @@ import { Text } from '@/components/Text';
 import Rating from '@mui/material/Rating';
 import Star from '@mui/icons-material/Star';
 import { useRouter } from 'next/router';
-
 import { useState } from 'react';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 
 export const SeasonRatings = ({ user_id, name }) => {
   const router = useRouter();
@@ -48,33 +42,21 @@ export const SeasonRatings = ({ user_id, name }) => {
 
       <Container flex={true} className={styles.headingContainer}>
         <h1>{name}&apos;s Season Ratings</h1>
-        <Box sx={{ minWidth: 120 }} className={styles.box}>
-          <FormControl fullWidth>
-            <InputLabel
-              className={styles.inputLabel}
-              id="demo-simple-select-label"
-            >
-              Year
-            </InputLabel>
-            <Select
-              className={styles.select}
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={year}
-              label="Year"
-              onChange={handleChange}
-            >
-              <MenuItem value={null}>All Years</MenuItem>
-              {availableYears().map((year) => {
-                return (
-                  <MenuItem key={year} value={year}>
-                    {year}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-        </Box>
+        <select
+          className={styles.select}
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          onChange={handleChange}
+        >
+          <option value={null}>All Years</option>
+          {availableYears().map((year) => {
+            return (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            );
+          })}
+        </select>
       </Container>
 
       <Container flex={true} className={styles.flexContainer}>

@@ -8,6 +8,7 @@
 
 .headingContainer {
   justify-content: space-between;
+  align-items: center;
 }
 
 .inputLabel,
