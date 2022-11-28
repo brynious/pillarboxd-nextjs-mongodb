@@ -7,15 +7,7 @@
 }
 
 .headingContainer {
+  max-width: 800px;
   justify-content: space-between;
   align-items: center;
-}
-
-.inputLabel,
-.select {
-  color: var(--accents-7);
-}
-
-.select {
-  border-color: red;
 }

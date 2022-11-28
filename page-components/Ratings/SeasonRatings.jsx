@@ -7,7 +7,7 @@ import { Text } from '@/components/Text';
 import Rating from '@mui/material/Rating';
 import Star from '@mui/icons-material/Star';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export const SeasonRatings = ({ user_id, name }) => {
   const router = useRouter();
@@ -15,10 +15,22 @@ export const SeasonRatings = ({ user_id, name }) => {
   const [year, setYear] = useState(router.query.year);
 
   const handleChange = (event) => {
-    router.query.year = event.target.value;
-    router.push(router);
-    setYear(event.target.value);
+    if (event.target.value === 'All Years') {
+      delete router.query.year;
+      router.push(router);
+      setYear(null);
+    } else {
+      router.query.year = event.target.value;
+      router.push(router);
+      setYear(event.target.value);
+    }
   };
+
+  useEffect(() => {
+    if (router.query.year) {
+      setYear(router.query.year);
+    }
+  }, [router]);
 
   const { data, size, setSize, isLoadingMore, isReachingEnd } =
     useAllUserSeasonRatings({ user_id, year });
@@ -30,8 +42,8 @@ export const SeasonRatings = ({ user_id, name }) => {
   const availableYears = () => {
     let years = [];
     const currentYear = new Date().getFullYear();
-    for (let year = currentYear; year >= 2000; year--) {
-      years.push(year);
+    for (let yearOption = currentYear; yearOption >= 2000; yearOption--) {
+      years.push(yearOption);
     }
     return years;
   };
@@ -44,15 +56,14 @@ export const SeasonRatings = ({ user_id, name }) => {
         <h1>{name}&apos;s Season Ratings</h1>
         <select
           className={styles.select}
-          labelId="demo-simple-select-label"
           id="demo-simple-select"
           onChange={handleChange}
         >
           <option value={null}>All Years</option>
-          {availableYears().map((year) => {
+          {availableYears().map((yearOption) => {
             return (
-              <option key={year} value={year}>
-                {year}
+              <option key={yearOption} value={yearOption}>
+                {yearOption}
               </option>
             );
           })}
